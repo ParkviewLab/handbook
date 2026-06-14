@@ -41,6 +41,12 @@ tagging, and releasing write to shared state and need explicit authorization.**
 - **Feature PR → `develop` is the user's merge.** A human reviews and squash-merges
   it (the repo is squash-only, so the button can't do the wrong thing). Don't merge
   a feature PR yourself without an explicit ask.
+- **Prompt for a release after every `develop` merge.** As soon as a merge into
+  `develop` is confirmed, proactively ask the user whether to cut a release —
+  every time, don't wait to be told. Asking is not acting: it doesn't conflict
+  with the "no unprompted action" norm, and the release still needs the explicit
+  per-release authorization below. The prompt just guarantees the release decision
+  is never silently skipped.
 - **Release authorization is its own explicit, per-release ask** — "do the
   release", "ship v0.1.x", "you handle the release". Descriptive labels are **not**
   authorization: "→ v0.1.1 patch", "this should land in v0.1.x", "headed for
