@@ -155,9 +155,9 @@ hold:
 
 - **`README.md`** in the root — the standard entry point (see
   [`documentation.md`](documentation.md) for its shape).
-- **`docs/`** — all substantive documentation, including `northstar.md`
-  (+ its designed HTML) and `in-flight_ideas.md`. See
-  [`documentation.md`](documentation.md).
+- **`docs/`** — all substantive documentation. A repo **may** include `northstar.md`
+  (+ its designed HTML) and `in-flight_ideas.md` (author's choice, not required —
+  see [`documentation.md`](documentation.md)), alongside whatever convention docs it needs.
 - **`scripts/`** — project-specific scripts. Cross-project scripts live in
   `dev-tools` instead (see [`ci.md`](ci.md) and [`releases.md`](releases.md)).
 - **`AGENTS.md` + `CLAUDE.md`** — thin pointers to this handbook, synced by

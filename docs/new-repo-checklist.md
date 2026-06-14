@@ -72,8 +72,8 @@ convention. Each step links to the doc with the detail.
 
 ## 6. Docs
 
-- [ ] `docs/northstar.md` (complementary intents → axioms → "what it is not").
-      See [`documentation.md`](documentation.md).
+- [ ] _(optional)_ `docs/northstar.md` (complementary intents → axioms → "what it
+      is not") — the author's choice. See [`documentation.md`](documentation.md).
 - [ ] Optionally an AI-authored `docs/northstar.html` per
       [`md-to-html.md`](md-to-html.md).
 - [ ] `docs/in-flight_ideas.md` started.

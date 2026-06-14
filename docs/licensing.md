@@ -20,7 +20,9 @@ below.
   (inquiries → `garyf@parkviewlab.ai`), and the copyright holder
   **Gary Frattarola**.
 - **`LICENSE`** in the root holds the primary license text — kept there for
-  GitHub's license auto-detection.
+  GitHub's license auto-detection. (A **dual-permissive** repo instead ships
+  `LICENSE-MIT` + `LICENSE-APACHE` and no single `LICENSE` — see
+  [Permissive dual-licensing](#permissive-dual-licensing-mit-or-apache-20) below.)
 - **`LICENSES/`** holds the full REUSE license texts (one file per SPDX id used,
   e.g. `AGPL-3.0-or-later.txt`, `CC-BY-4.0.txt`, `LicenseRef-AllRightsReserved.txt`).
 - **`REUSE.toml`** is the catch-all annotator (see below).
@@ -99,6 +101,40 @@ Use the SPDX expression form, no trove classifier:
 license = "AGPL-3.0-or-later"      # or "MIT", per the repo's choice
 license-files = ["LICENSE"]
 ```
+
+## Permissive dual-licensing (`MIT OR Apache-2.0`)
+
+A repo that wants to be **maximally reusable** can license under `MIT OR Apache-2.0`
+— the Rust-ecosystem convention, where the recipient picks *either* license at their
+option. It's a **uniform** permissive license, so it skips the per-bucket split above.
+**Reference implementation: [deco-assaying](https://github.com/ParkviewLab/deco-assaying).**
+
+- **Root license files:** ship **both** `LICENSE-MIT` and `LICENSE-APACHE`, and **no
+  single `LICENSE`** (the pair *is* the license). Their full REUSE texts go in
+  `LICENSES/MIT.txt` + `LICENSES/Apache-2.0.txt`, fetched with:
+  ```bash
+  uvx --from "reuse[charset-normalizer]" reuse download MIT Apache-2.0
+  ```
+- **Uniform per-file SPDX:** every source file carries
+  <!-- REUSE-IgnoreStart -->`SPDX-License-Identifier: MIT OR Apache-2.0`<!-- REUSE-IgnoreEnd --> (uppercase `OR`). No per-bucket split —
+  one identifier everywhere. `REUSE.toml` keeps a single catch-all annotation for the
+  files that can't hold a comment header (dotfiles, the lockfile, the version pin).
+- **`pyproject.toml` (PEP 639):**
+  ```toml
+  license = "MIT OR Apache-2.0"
+  license-files = ["LICENSE-MIT", "LICENSE-APACHE"]
+  ```
+- **GitHub shows `NOASSERTION`.** GitHub's licensee can't resolve an SPDX `OR`
+  expression (or a pair of root license files) to one license, so the repo sidebar
+  shows **NOASSERTION** instead of a license badge. That's expected — **the fix is a
+  README `## License` section** in the Rust convention:
+  > Licensed under either of Apache License 2.0 or the MIT license at your option.
+  > In SPDX terms: `MIT OR Apache-2.0`.
+
+  …followed by the standard "any contribution … shall be dual-licensed as above" clause.
+- **`LICENSING.md`** uses the permissive **"either at your option"** framing — *not*
+  the AGPL + commercial-alternative wording from [File layout](#file-layout) above
+  (there's no commercial alternative to sell once the code is already permissive).
 
 ## This handbook eats its own dogfood
 
