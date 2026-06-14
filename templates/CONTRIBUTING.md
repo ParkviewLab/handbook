@@ -39,14 +39,20 @@ changelog. So: prefix it.
 
 ## Local checks before opening a PR
 
+Run the same checks CI requires, so the PR is green on arrival:
+
 ```bash
 uv sync
 uv run ruff check src tests
+uv run ruff format --check src tests
 uv run ty check
 uv run pytest -m "not network and not docling" -q
+uvx --from "reuse[charset-normalizer]" reuse lint
 ```
 
-Push after each commit. See the handbook's `python-tooling.md` and `testing.md`.
+A PR **can't be merged until the required checks pass** (lint, format, types,
+tests, REUSE, the version guard — see the handbook's `ci.md`). Push after each
+commit. See also `python-tooling.md` and `testing.md`.
 
 ## Versioning
 

@@ -24,5 +24,11 @@ jobs:
       - name: Lint
         run: uv run ruff check src tests
 
+      - name: Format check
+        run: uv run ruff format --check src tests
+
+      - name: Type check
+        run: uv run ty check          # ty must be a dev dependency
+
       - name: Tests (excluding network + docling marker)
         run: uv run pytest -m "not network and not docling" -q

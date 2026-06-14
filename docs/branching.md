@@ -101,7 +101,9 @@ disabled), so a PR's merge button can only squash — there's no wrong option to
 pick. Set new repos up the same way; see [`ci.md`](ci.md#repo-merge-settings).
 
 - **Feature PR → `develop`:** opened by anyone (including AI devs); a **human
-  reviews and squash-merges** it (the merge button, or `gh pr merge <n> --squash`).
+  reviews and squash-merges** it (the merge button, or `gh pr merge <n> --squash`)
+  once the **required checks are green** — branch protection keeps the button
+  disabled until they pass (see [`ci.md`](ci.md#required-checks-before-merge)).
   Merged branches auto-delete. A broad directive ("fix all that", "finish it")
   authorises the *work*, not the merge.
 - **`develop → main`:** done from the CLI as part of a **release**, not a reviewed
