@@ -12,8 +12,9 @@ describes how the work is expected to go.
 
 ## Workflow rules
 
-- **Read `docs/northstar.md` before working.** It's the authoritative statement of
-  intent; evaluate your work against it.
+- **If the repo has a `docs/northstar.md`, read it before working.** It's the
+  authoritative statement of intent; evaluate your work against it. (Not every repo
+  has one — it's the author's choice.)
 - **Reference the handbook's `main`, not `develop`.** `main` is the released,
   stable conventions; `develop` is integration and may be ahead/in-flux. The
   `AGENTS.md`/`CLAUDE.md` pointer links resolve to `…/tree/main`; pin a `vX.Y.Z`
