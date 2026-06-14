@@ -70,8 +70,10 @@ git branch -d feature-foo
   parses). That one dated commit is the record of *when the feature landed*; the
   branch's individual commits stay viewable on the PR. (A squash always creates a
   fresh commit, so `--no-ff` doesn't apply here.)
-- Promotion `develop → main` uses a **merge commit** (`gh pr merge --merge`), so
-  `git log --first-parent main` reads as a dated per-release ledger.
+- Promotion `develop → main` is part of a **release**, not a reviewed PR: run from
+  the CLI on `main` with `git merge --no-ff develop` (a merge commit → a dated
+  per-release ledger via `git log --first-parent main`), then bump + tag + push.
+  See [`releases.md`](releases.md).
 - Pulls are **`git pull --ff-only`** — never an implicit merge on pull.
 
 ## Tracking when a feature was added
@@ -87,10 +89,18 @@ The two merge strategies above yield a dated history at three granularities:
 
 ## Who merges
 
-Opening a PR is fair game for anyone, including AI devs. **Merging a PR into
-`develop` or `main` is the user's action** — it writes to a shared trunk. A
-broad directive ("fix all that", "finish it") authorises the *work*, not the
-merge. See [`ai-collaboration.md`](ai-collaboration.md).
+The repo is configured **squash-only** (merge-commit and rebase merges are
+disabled), so a PR's merge button can only squash — there's no wrong option to
+pick. Set new repos up the same way; see [`ci.md`](ci.md#repo-merge-settings).
+
+- **Feature PR → `develop`:** opened by anyone (including AI devs); a **human
+  reviews and squash-merges** it (the merge button, or `gh pr merge <n> --squash`).
+  Merged branches auto-delete. A broad directive ("fix all that", "finish it")
+  authorises the *work*, not the merge.
+- **`develop → main`:** done from the CLI as part of a **release**, not a reviewed
+  PR. A single release authorisation ("do the release") covers the whole flow —
+  including the `git merge --no-ff develop` promotion — with no second approval.
+  See [`ai-collaboration.md`](ai-collaboration.md) and [`releases.md`](releases.md).
 
 ## AI devs
 

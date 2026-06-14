@@ -28,16 +28,24 @@ describes how the work is expected to go.
 
 ### Shared-state writes need explicit authorization
 
-Opening or updating a PR is fine. But **merging a PR into `develop`/`main`,
-tagging, and releasing write to shared state and are the user's call.**
+Opening or updating a PR is fine. But **merging a feature PR into `develop`,
+tagging, and releasing write to shared state and need explicit authorization.**
 
 - A **broad directive** ("fix all that", "finish it", "do everything") authorises
   the *work on the working branch* — commits, pushes, opening/updating PRs — **not**
   the merge or the release. When in doubt, leave the PR open and hand it back.
+- **Feature PR → `develop` is the user's merge.** A human reviews and squash-merges
+  it (the repo is squash-only, so the button can't do the wrong thing). Don't merge
+  a feature PR yourself without an explicit ask.
 - **Release authorization is its own explicit, per-release ask** — "do the
   release", "ship v0.1.x", "you handle the release". Descriptive labels are **not**
   authorization: "→ v0.1.1 patch", "this should land in v0.1.x", "headed for
   v0.1.x" describe, they don't authorise. Each release needs a fresh ask.
+- **That one release ask authorises the whole CLI flow** — including the
+  `develop → main` promotion (`git merge --no-ff develop`), bump, tag, push, and
+  back-merge cascade. `develop → main` is **not** a separate reviewed PR, so it
+  does **not** need a second approval. Do it all from the CLI (see
+  [`releases.md`](releases.md)); don't pause mid-release to re-ask for the promotion.
 - **Release preflight:** before tagging, confirm every PR that should ship is
   actually merged (`gh pr list --state open --base develop`). If any release-blocker
   is open, stop and say so.
