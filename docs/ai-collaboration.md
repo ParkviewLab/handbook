@@ -23,7 +23,10 @@ describes how the work is expected to go.
 - **Work in an ephemeral, prefixed-branch worktree** like everyone else — no
   special `claude/` branch. Follow [`branching.md`](branching.md) and put the
   Conventional Commit prefix on the **PR title** (see
-  [`commits-and-changelogs.md`](commits-and-changelogs.md)).
+  [`commits-and-changelogs.md`](commits-and-changelogs.md)). Your non-versioned
+  session state — the harness's session worktree, scratch notes — lives at the
+  container root `<repo>/.claude/`, not inside a branch worktree (see
+  [`repo-layout.md`](repo-layout.md#operating-the-layout-safely)).
 - **Never hand-type a version.** Use `git bump` / `git release`
   ([`releases.md`](releases.md)). Never edit the version field by hand or type a
   tag on the `git tag` line.
