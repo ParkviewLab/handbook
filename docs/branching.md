@@ -65,10 +65,25 @@ git worktree remove feature-foo
 git branch -d feature-foo
 ```
 
-- Branches merge into `develop` with **`--no-ff`** (an explicit merge commit per
-  branch keeps the integration history legible). Promotion `develop → main` uses
-  `gh pr merge --merge`.
+- Working branches **squash-merge** into `develop`: each PR collapses to a single
+  commit whose subject is the PR title (the `feat:`/`fix:`/… prefix `git-cliff`
+  parses). That one dated commit is the record of *when the feature landed*; the
+  branch's individual commits stay viewable on the PR. (A squash always creates a
+  fresh commit, so `--no-ff` doesn't apply here.)
+- Promotion `develop → main` uses a **merge commit** (`gh pr merge --merge`), so
+  `git log --first-parent main` reads as a dated per-release ledger.
 - Pulls are **`git pull --ff-only`** — never an implicit merge on pull.
+
+## Tracking when a feature was added
+
+The two merge strategies above yield a dated history at three granularities:
+
+- **Per feature** — `git log --first-parent develop` is one line per squash
+  commit (one per feature), each with its merge date.
+- **Per release** — `git log --first-parent main` is one line per release merge
+  commit.
+- **Per release, with contents** — annotated, dated tags (`git tag --list 'v*'`)
+  and the dated sections of `CHANGELOG.md`, which group each release's features.
 
 ## Who merges
 

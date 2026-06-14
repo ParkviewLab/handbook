@@ -95,7 +95,9 @@ deliberate "I'm shipping" moment, and the tag is trivially reachable from
 `origin/main` so the CI gate passes by construction.
 
 Promotion is `develop → main` via `gh pr merge --merge` (merge-commit
-convention); pulls use `git pull --ff-only`.
+convention — gives `main` a dated per-release ledger via
+`git log --first-parent main`; see [`branching.md`](branching.md)). Pulls use
+`git pull --ff-only`.
 
 ## What the release workflow does
 
