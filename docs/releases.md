@@ -11,6 +11,8 @@ Every project keeps its version in **exactly one file**:
 
 - **Python** → `pyproject.toml` `[project].version`
 - **Node** → `package.json` `version`
+- **Docs / other (no package manifest)** → a top-level `VERSION.txt` file (one
+  line, e.g. `0.1.0`). This handbook uses one.
 
 Two hard rules follow:
 
@@ -71,7 +73,9 @@ helpers derive it from the source-of-truth file (see [`ci.md`](ci.md) for the
 helpers' home).
 
 ```bash
-# on the main worktree, after develop has been promoted to main (see below):
+# on the main worktree — the whole release runs from the CLI under one authorisation:
+git pull --ff-only                   # sync main
+git merge --no-ff develop            # promote develop→main; the merge commit is the release ledger entry
 git bump <patch|minor|major|X.Y.Z>   # edits the SoT file, commits "release v<new>"
 git release                          # annotated tag v<new>, derived from the SoT
 git push --follow-tags               # the tag push fires the release workflow
@@ -83,8 +87,24 @@ git push --follow-tags               # the tag push fires the release workflow
 - **`git release`** reads the version back out and makes the annotated tag
   `v<version>`. It refuses on a dirty tree or an existing tag. It does **not**
   push.
-- **Default bump kind:** *minor* for new surface, *patch* for fix-only — but if
-  the user didn't specify, **ask** (see [`ai-collaboration.md`](ai-collaboration.md)).
+- **Choosing the bump kind:** the releaser **reviews the changes since the last
+  release, proposes** major / minor / patch with a one-line rationale, and the
+  **engineer confirms** before `git bump`. The Conventional Commit types in the
+  range are the signal — any breaking change → **major**, any `feat:` → **minor**,
+  otherwise (`fix:`/`perf:`) → **patch**. Never bump silently; never infer the kind
+  from past cadence. See [`ai-collaboration.md`](ai-collaboration.md).
+- **`VERSION.txt`-file repos** (no `pyproject`/`package.json`, e.g. this handbook):
+  `git bump`/`git release` are pyproject-based, so bump by editing `VERSION.txt`
+  and tagging by hand (a `VERSION.txt`-aware `git bump` is an in-flight idea).
+
+### Version rules
+
+- **Feature work never changes the version.** A PR into `develop` must not touch the
+  version source-of-truth file; the bump happens only at release, on `main`. A CI
+  check on `develop` PRs enforces this — see [`ci.md`](ci.md#version-checks).
+- **The version only ever increases.** The release gate rejects a tag whose version
+  isn't **strictly greater** than the last released one — a guard against forgetting
+  to bump or going backwards (see [`ci.md`](ci.md#version-checks)).
 
 ### Branch roles & why bump+tag on `main`
 
@@ -94,17 +114,23 @@ clean working-branch history (no release mechanics on feature branches), a
 deliberate "I'm shipping" moment, and the tag is trivially reachable from
 `origin/main` so the CI gate passes by construction.
 
-Promotion is `develop → main` via `gh pr merge --merge` (merge-commit
-convention); pulls use `git pull --ff-only`.
+Promotion is `develop → main` done **from the CLI** with `git merge --no-ff
+develop` — a merge commit, so `git log --first-parent main` is a dated per-release
+ledger (see [`branching.md`](branching.md)). It is **not** a reviewed PR: the repo
+is squash-only, so this merge commit is made locally as part of the release, and a
+single release authorisation covers it (see
+[`ai-collaboration.md`](ai-collaboration.md)). Pulls use `git pull --ff-only`.
 
 ## What the release workflow does
 
 `.github/workflows/release.yml` fires on `push: tags: ['v*']` and runs:
 
 1. **`gate`** (both publish jobs `needs: gate`, so a failure ships nothing):
-   - tag (minus `v`) **==** the source-of-truth version, and
+   - tag (minus `v`) **==** the source-of-truth version,
    - the tagged commit is **reachable from `origin/main`** (release tags must
-     come from `main`).
+     come from `main`), and
+   - the version is **strictly greater than the previous tag** (monotonic — see
+     [`ci.md`](ci.md#version-checks)).
    A shared gate — rather than inline checks in one publish job — means a bad tag
    can't slip out through the job that didn't check.
 2. **`docker`** — build + push to GHCR (`ghcr.io/parkviewlab/<repo>`), multi-arch

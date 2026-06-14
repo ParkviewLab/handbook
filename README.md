@@ -9,6 +9,8 @@ The engineering handbook for the **[ParkviewLab](https://github.com/ParkviewLab)
 GitHub org — the conventions, procedures, and methods we use when building
 software here. It is written for **human and AI developers alike**.
 
+> 📌 **Use the released conventions on [`main`](https://github.com/ParkviewLab/handbook/tree/main)** (or a [`vX.Y.Z`](https://github.com/ParkviewLab/handbook/tags) tag). This default view is **`develop`** — the integration branch, which may be ahead of the last release. Current version: [`VERSION.txt`](VERSION.txt).
+
 Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed
 [`docs/northstar.html`](docs/northstar.html)) — *why* we build the way we do.
 Everything else is downstream of it.
