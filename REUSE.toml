@@ -5,7 +5,7 @@ SPDX-PackageSupplier = "Gary Frattarola <garyf@parkviewlab.ai>"
 
 # Documentation + repo meta → CC-BY-4.0
 [[annotations]]
-path = ["docs/**", "templates/md-to-html/README.md", "templates/CONTRIBUTING.md", "templates/LICENSING.md.template", "README.md", "LICENSING.md", "REUSE.toml", ".gitignore", "AGENTS.md", "CLAUDE.md"]
+path = ["docs/**", "templates/md-to-html/README.md", "templates/CONTRIBUTING.md", "templates/LICENSING.md.template", "README.md", "LICENSING.md", "REUSE.toml", ".gitignore", "AGENTS.md", "CLAUDE.md", "VERSION.txt"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Gary Frattarola <garyf@parkviewlab.ai>"
 SPDX-License-Identifier = "CC-BY-4.0"

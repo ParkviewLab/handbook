@@ -14,6 +14,10 @@ describes how the work is expected to go.
 
 - **Read `docs/northstar.md` before working.** It's the authoritative statement of
   intent; evaluate your work against it.
+- **Reference the handbook's `main`, not `develop`.** `main` is the released,
+  stable conventions; `develop` is integration and may be ahead/in-flux. The
+  `AGENTS.md`/`CLAUDE.md` pointer links resolve to `…/tree/main`; pin a `vX.Y.Z`
+  tag if you need an exact reference.
 - **Honour `docs/in-flight_ideas.md` as questions, not commitments.** Don't act on
   an entry silently.
 - **Work in an ephemeral, prefixed-branch worktree** like everyone else — no
@@ -49,8 +53,14 @@ tagging, and releasing write to shared state and need explicit authorization.**
 - **Release preflight:** before tagging, confirm every PR that should ship is
   actually merged (`gh pr list --state open --base develop`). If any release-blocker
   is open, stop and say so.
-- **Ask the bump kind** if the user didn't specify (default: minor for new
-  surface, patch for fix-only) — don't infer it from repo history.
+- **Propose the bump kind, then let the engineer confirm.** Review the changes
+  since the last release, **suggest** major / minor / patch with a one-line
+  rationale (breaking → major, any `feat:` → minor, else `fix:`/`perf:` → patch),
+  and **ask the engineer to confirm** before `git bump`. Don't bump silently, don't
+  just ask blind, and don't infer the kind from past cadence. See
+  [`releases.md`](releases.md#version-rules).
+- **Never change the version in feature work** — the version SoT is bumped only at
+  release, on `main` (CI rejects a `develop` PR that touches it).
 - After a release, run the **back-merge cascade** ([`releases.md`](releases.md)).
 - Never force-push `main`/`develop`; never bypass the release gate.
 

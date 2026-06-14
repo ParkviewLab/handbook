@@ -73,6 +73,19 @@ Fully described in [`releases.md`](releases.md). Notes that belong to CI:
   `uv run --with anthropic …` so the workflow snippet stays identical in every
   repo that adopts it, regardless of whether `anthropic` is a project dep.
 
+## Version checks
+
+Two guards keep versioning honest (see [`releases.md`](releases.md#version-rules)):
+
+- **Feature PRs into `develop` must not change the version.** A `test.yml` step
+  fails the PR if the version source-of-truth (`pyproject.toml` `[project].version`
+  / `package.json` `version` / a `VERSION.txt` file) differs from `origin/develop` —
+  bumps belong at release, on `main`, not in feature work.
+- **The release gate enforces a monotonic increase.** On top of the existing gate
+  checks (tag == SoT version, tag reachable from `origin/main`), it rejects a tag
+  whose version is not **strictly greater** than the previous tag — catching a
+  forgotten or backwards bump before anything publishes.
+
 ## `license-check.yml` — copyleft guard
 
 Some repos run `pip-licenses` to block copyleft transitive dependencies

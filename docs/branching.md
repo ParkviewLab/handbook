@@ -21,6 +21,13 @@ PRs target `develop`; releases are cut from `main`. (jonobones makes `develop`
 its GitHub *default* branch so PRs target integration by default; some older
 Python repos still default to `main` — the flow is the same either way.)
 
+> **Consume `main`, not `develop`.** Because `main` only advances at a release,
+> its tip is always the latest **released** state — so that's what to depend on:
+> the published artifact (PyPI/npm) or a `vX.Y.Z` tag for code repos, and `main`
+> (or a tag) for read-consumed repos like this handbook. `develop` is integration
+> and may be ahead of the last release / mid-change. Pin a `vX.Y.Z` tag when you
+> need an exact, immutable reference.
+
 ## Branch prefixes (canonical set)
 
 Working branches are named `<prefix>-<short-description>`, **hyphen not slash**.
