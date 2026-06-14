@@ -74,7 +74,7 @@ include = ["src"]
 python-version = "3.13"
 ```
 
-Source: `deco-assaying/worktrees/main/pyproject.toml`.
+Source: deco-assaying's `pyproject.toml`.
 
 ### The settings that are fixed across repos
 

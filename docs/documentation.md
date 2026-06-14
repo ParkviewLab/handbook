@@ -64,8 +64,8 @@ There are two HTML tracks:
 
 - **Bespoke high-impact docs** (northstar, manifestos) — hand-authored layout
   using the brand tokens, with inline SVG where structure reads better seen than
-  listed. The bar is `~/.claude/exemplars/northstar/` and
-  `jonobones/main/docs/northstar.html`.
+  listed. The bar is `~/.claude/exemplars/northstar/` and jonobones's
+  `docs/northstar.html`.
 - **Other docs rendered to HTML** — also **AI-authored** from the MD (reworked
   for impact), *not* mechanically converted. See [`md-to-html.md`](md-to-html.md).
 

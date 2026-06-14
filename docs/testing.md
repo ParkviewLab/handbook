@@ -67,7 +67,7 @@ Source: `smalt-mcp/.../tests/conftest.py` (the reload guard + seeded store);
 jonobones runs tiered CI: unit/lint/typecheck, an **interop** tier (round-trips
 against the official Joplin CLI), a docker image-boot check, and an **e2e** tier
 that boots a real Joplin Server in Docker. Locally, e2e needs Docker + the joplin
-CLI (`JOPLIN_CLI_BIN`). See `jonobones/main/docs/testing.md`.
+CLI (`JOPLIN_CLI_BIN`). See jonobones's `docs/testing.md`.
 
 ## Visual / front-end verification
 
