@@ -1,8 +1,8 @@
 <!-- PARKVIEWLAB:BEGIN (managed by ParkviewLab/handbook — do not edit inside this block; run scripts/sync-agent-files.sh to update) -->
 # ParkviewLab conventions
 
-This repo follows the **[ParkviewLab handbook](https://github.com/ParkviewLab/handbook)**.
-Read it for the full conventions; the load-bearing rules are inlined here.
+This repo follows the **[ParkviewLab handbook](https://github.com/ParkviewLab/handbook/tree/main)**
+(the released conventions on `main`). Read it for the full conventions; the load-bearing rules are inlined here.
 
 **Read `docs/northstar.md` before working.** It states the project's intent and is authoritative.
 
