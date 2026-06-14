@@ -1,0 +1,86 @@
+<!--
+SPDX-FileCopyrightText: 2026 Gary Frattarola <garyf@parkviewlab.ai>
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
+# New-repo checklist
+
+The master sequence for bootstrapping a new ParkviewLab repo into every
+convention. Each step links to the doc with the detail.
+
+## 1. Name & create
+
+- [ ] Pick a name in the house style — mineral/pigment + gerund (or `-mcp`).
+      See [`repo-layout.md`](repo-layout.md#repo-naming).
+- [ ] Create the GitHub repo under `ParkviewLab/`.
+- [ ] Set up the local **`.bare` + worktrees** layout (`main`, `develop`).
+      See [`repo-layout.md`](repo-layout.md#creating-the-layout).
+- [ ] Make `develop` the GitHub default branch (PRs target integration).
+
+## 2. Language scaffold
+
+- [ ] `pyproject.toml` from [`templates/pyproject.toml.template`](../templates/pyproject.toml.template)
+      — name, description, deps; src-layout; ruff/ty/pytest config; `.python-version` = `3.13`.
+      See [`python-tooling.md`](python-tooling.md).
+- [ ] If it's an MCP server: the `src/<pkg>/` skeleton
+      (`config.py`, `__main__.py`, `server.py`, `tools.py`, `schema.py`) with
+      `/health` + `/admin/version` and `--transport`. See
+      [`mcp-server-conventions.md`](mcp-server-conventions.md).
+- [ ] Version read from package metadata at runtime — no literal. See
+      [`releases.md`](releases.md).
+- [ ] `tests/` + `conftest.py` (session-scoped client if MCP); pytest markers.
+      See [`testing.md`](testing.md).
+
+## 3. Packaging
+
+- [ ] `Dockerfile` (uv base, `/data` volume, `CMD python -m <pkg>`) and
+      `docker-compose.yml` (CHANGE-ME env, named volume). See
+      [`packaging-and-deployment.md`](packaging-and-deployment.md).
+- [ ] README in the house shape, incl. the "five ways to run it" table and the
+      Configuration env-var table. See [`documentation.md`](documentation.md).
+
+## 4. Changelog & CI
+
+- [ ] `cliff.toml` — copy **verbatim** from [`templates/cliff.toml`](../templates/cliff.toml).
+- [ ] `scripts/generate_changelog.py` from
+      [`templates/generate_changelog.py`](../templates/generate_changelog.py).
+- [ ] `.github/workflows/{test,release,license-check}.yml` from
+      [`templates/.github/workflows/`](../templates/.github/workflows/).
+      Pin action versions exactly; GHCR tags include `latest`. See [`ci.md`](ci.md).
+- [ ] Confirm the org `ANTHROPIC_API_KEY` secret is inherited.
+- [ ] Configure PyPI (and npm, if applicable) **trusted publishers**.
+
+## 5. Licensing
+
+- [ ] Choose the repo's license (per-repo decision).
+- [ ] `LICENSE` (root, for GitHub detection), `LICENSING.md`
+      ([template](../templates/LICENSING.md.template)), `LICENSES/` texts,
+      `REUSE.toml` ([template](../templates/REUSE.toml.template)) with the
+      per-bucket split. Per-file SPDX headers on source. See
+      [`licensing.md`](licensing.md).
+- [ ] `reuse lint` green:
+      `uvx --from "reuse[charset-normalizer]" reuse lint`.
+
+## 6. Docs
+
+- [ ] `docs/northstar.md` (complementary intents → axioms → "what it is not").
+      See [`documentation.md`](documentation.md).
+- [ ] Optionally an AI-authored `docs/northstar.html` per
+      [`md-to-html.md`](md-to-html.md).
+- [ ] `docs/in-flight_ideas.md` started.
+- [ ] `CONTRIBUTING.md` from [`templates/CONTRIBUTING.md`](../templates/CONTRIBUTING.md).
+- [ ] Visible copyright footer on published/standalone docs (HTML footers, root
+      README, northstar) — bottom of file, consistent with the SPDX header. See
+      [`documentation.md`](documentation.md#copyright-footers).
+
+## 7. AI pointers
+
+- [ ] Run `scripts/sync-agent-files.sh` (from the handbook) to write `AGENTS.md` +
+      `CLAUDE.md`. See [`ai-collaboration.md`](ai-collaboration.md).
+
+## 8. First release
+
+- [ ] `git bump` → `git release` → `git push --follow-tags` (from `main`).
+- [ ] `gh run watch` until the whole workflow (incl. `changelog`) is green.
+- [ ] Back-merge cascade `main → develop → working branches`. See
+      [`releases.md`](releases.md).

@@ -1,0 +1,38 @@
+# Template — copy to a new repo as `REUSE.toml` and adjust paths/licenses.
+# Catch-all REUSE annotations so whole trees are covered without per-file
+# headers. Per-file SPDX headers still win where present. See handbook licensing.md.
+# Verify: uvx --from "reuse[charset-normalizer]" reuse lint
+version = 1
+
+SPDX-PackageName = "<repo-name>"
+SPDX-PackageSupplier = "Gary Frattarola <garyf@parkviewlab.ai>"
+
+# --- Documentation → CC-BY-4.0 ---------------------------------------------
+[[annotations]]
+path = ["docs/**", "README.md", "LICENSING.md"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Gary Frattarola <garyf@parkviewlab.ai>"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# --- Brand logos/marks → all rights reserved -------------------------------
+[[annotations]]
+path = ["brand/logos/**", "assets/img/parkview_lab_*", "**/parkview_lab_*.svg"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Gary Frattarola <garyf@parkviewlab.ai>"
+SPDX-License-Identifier = "LicenseRef-AllRightsReserved"
+
+# --- Bundled third-party font (if you vendor one) → its own license --------
+# Only if the repo ships a font. Don't relabel a third-party font; use its
+# upstream license + copyright. Example: the Michroma woff2 is OFL-1.1.
+[[annotations]]
+path = ["brand/fonts/**", "**/michroma-*.woff2"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 The Michroma Project Authors"
+SPDX-License-Identifier = "OFL-1.1"
+
+# --- Lockfiles / generated → match the code license ------------------------
+[[annotations]]
+path = ["uv.lock"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Gary Frattarola <garyf@parkviewlab.ai>"
+SPDX-License-Identifier = "<PRIMARY-SPDX>"   # e.g. AGPL-3.0-or-later
