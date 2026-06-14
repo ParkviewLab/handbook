@@ -60,7 +60,7 @@ const pkg = createRequire(import.meta.url)('../package.json') as { version: stri
 export const VERSION = pkg.version;
 ```
 
-Source: `jonobones/main/src/version.ts`.
+Source: jonobones's `src/version.ts`.
 
 > If you find the version duplicated somewhere, remove the duplicate and replace
 > the read-site with the metadata lookup.
@@ -73,7 +73,7 @@ helpers derive it from the source-of-truth file (see [`ci.md`](ci.md) for the
 helpers' home).
 
 ```bash
-# on the main worktree — the whole release runs from the CLI under one authorisation:
+# in the <repo>-main worktree — the whole release runs from the CLI under one authorisation:
 git pull --ff-only                   # sync main
 git merge --no-ff develop            # promote develop→main; the merge commit is the release ledger entry
 git bump <patch|minor|major|X.Y.Z>   # edits the SoT file, commits "release v<new>"
@@ -143,8 +143,8 @@ single release authorisation covers it (see
    `origin/main`, `--mode=insert`, commits `docs(changelog): v<new> [skip ci]`
    back to `main`, and creates the GitHub Release from the same body.
 
-Reference implementations: `deco-assaying/.../release.yml` (Python/PyPI),
-`jonobones/main/.github/workflows/release.yml` (Node/npm).
+Reference implementations: deco-assaying's `release.yml` (Python/PyPI) and
+jonobones's `.github/workflows/release.yml` (Node/npm).
 
 ## After the release: the back-merge cascade (mandatory)
 
@@ -162,10 +162,10 @@ So, after a release:
 3. **Cascade down:** `main → develop`, then `develop → each open working branch`.
 
 ```bash
-# after `gh run watch` shows the whole workflow (incl. changelog) green:
-git -C ../main pull --ff-only
-git -C ../develop merge main && git -C ../develop push
-# repeat develop → <branch> for each open working branch
+# in the <repo>-main worktree, after `gh run watch` shows the whole workflow green:
+git pull --ff-only                                   # main picks up the changelog auto-commit
+git -C ../<repo>-develop merge main && git -C ../<repo>-develop push
+# repeat for each open working branch: git -C ../<repo>-<branch> merge develop
 ```
 
 The cascade is **manual on purpose** (a small number of commands at a moment the

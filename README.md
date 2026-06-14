@@ -20,7 +20,7 @@ Everything else is downstream of it.
 | Doc | What it covers |
 |---|---|
 | [northstar.md](docs/northstar.md) · [.html](docs/northstar.html) | Methodology intents + axioms |
-| [repo-layout.md](docs/repo-layout.md) | `.bare` + worktrees layout, required contents, repo naming |
+| [repo-layout.md](docs/repo-layout.md) | Contained, repo-prefixed worktree layout, required contents, repo naming |
 | [branching.md](docs/branching.md) | Two-trunk model, branch prefixes, ephemeral worktrees, merge flow |
 | [commits-and-changelogs.md](docs/commits-and-changelogs.md) | Conventional Commits, `cliff.toml`, the LLM-Highlights changelog |
 | [releases.md](docs/releases.md) | Version single-source-of-truth, `git bump`/`git release`, the gate, back-merge cascade |
