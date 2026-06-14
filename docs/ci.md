@@ -8,6 +8,36 @@ SPDX-License-Identifier: CC-BY-4.0
 Each repo has up to three GitHub Actions workflows. Templates are in
 [`templates/.github/workflows/`](../templates/.github/workflows/).
 
+## Repo merge settings
+
+Configure every repo so the merge **method can't be picked wrong** — make it
+**squash-only**:
+
+```bash
+gh repo edit <owner>/<repo> \
+  --enable-squash-merge=true \
+  --enable-merge-commit=false \
+  --enable-rebase-merge=false \
+  --delete-branch-on-merge=true
+# squash commit subject = the PR title, so git-cliff parses the Conventional
+# Commit prefix even on a single-commit PR:
+gh api -X PATCH repos/<owner>/<repo> \
+  -f squash_merge_commit_title=PR_TITLE \
+  -f squash_merge_commit_message=COMMIT_MESSAGES
+```
+
+- **Squash-only** means a PR's merge button can only squash — no one can pick the
+  wrong method for a feature PR into `develop` (see [`branching.md`](branching.md)).
+- **`squash_merge_commit_title=PR_TITLE` is load-bearing.** The GitHub default
+  (`COMMIT_OR_PR_TITLE`) uses the *commit* subject on a single-commit PR, which may
+  miss the `feat:`/`fix:` prefix and silently drop the entry from the changelog.
+- **`delete_branch_on_merge`** auto-removes the branch after merge.
+- Because the repo is squash-only, `develop → main` (which needs a merge commit) is
+  done **from the CLI during a release** — `git merge --no-ff develop` on `main`,
+  not the PR button. That needs `main` to accept direct pushes; don't add a
+  PR-required ruleset to `main` without rethinking this (you'd have to re-enable
+  merge commits for that path). See [`releases.md`](releases.md).
+
 ## `test.yml` — on every PR/push
 
 Triggers on `pull_request` and `push` to `main` and `develop`. Steps:

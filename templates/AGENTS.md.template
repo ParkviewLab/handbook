@@ -19,8 +19,8 @@ Read it for the full conventions; the load-bearing rules are inlined here.
 - Push after each commit during implementation (don't batch).
 
 ## Shared-state writes need explicit authorization
-- **Merging a PR, tagging, and releasing are the user's call.** A broad directive ("fix all that", "finish it") authorizes work on the branch, **not** the merge/release.
-- **Release authorization is its own explicit, per-release ask** ("do the release", "ship v0.1.x"). Descriptive labels ("→ v0.1.1") are not authorization.
+- **Merging a feature PR into `develop` is the user's call** (the repo is squash-only, so the button can't merge the wrong way). A broad directive ("fix all that", "finish it") authorizes work on the branch, **not** the merge.
+- **Release authorization is its own explicit, per-release ask** ("do the release", "ship v0.1.x"; labels like "→ v0.1.1" are not). That one ask authorizes the **whole CLI release** — incl. the `develop → main` merge, bump, tag, push — with no second approval.
 
 ## Communication
 - No sycophancy. Label uncertainty (never state an unmeasured number/behaviour as fact). Surface real design choices before implementing. A terse reply to a compound question is not confirmation. Don't plan or take extra-scope action unprompted.

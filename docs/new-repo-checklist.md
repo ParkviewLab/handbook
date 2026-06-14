@@ -16,6 +16,9 @@ convention. Each step links to the doc with the detail.
 - [ ] Set up the local **`.bare` + worktrees** layout (`main`, `develop`).
       See [`repo-layout.md`](repo-layout.md#creating-the-layout).
 - [ ] Make `develop` the GitHub default branch (PRs target integration).
+- [ ] Configure **squash-only** merge settings (squash on; merge-commit + rebase
+      off; `squash_merge_commit_title=PR_TITLE`; auto-delete branches). See
+      [`ci.md`](ci.md#repo-merge-settings).
 
 ## 2. Language scaffold
 

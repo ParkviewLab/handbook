@@ -71,7 +71,9 @@ helpers derive it from the source-of-truth file (see [`ci.md`](ci.md) for the
 helpers' home).
 
 ```bash
-# on the main worktree, after develop has been promoted to main (see below):
+# on the main worktree — the whole release runs from the CLI under one authorisation:
+git pull --ff-only                   # sync main
+git merge --no-ff develop            # promote develop→main; the merge commit is the release ledger entry
 git bump <patch|minor|major|X.Y.Z>   # edits the SoT file, commits "release v<new>"
 git release                          # annotated tag v<new>, derived from the SoT
 git push --follow-tags               # the tag push fires the release workflow
@@ -94,10 +96,12 @@ clean working-branch history (no release mechanics on feature branches), a
 deliberate "I'm shipping" moment, and the tag is trivially reachable from
 `origin/main` so the CI gate passes by construction.
 
-Promotion is `develop → main` via `gh pr merge --merge` (merge-commit
-convention — gives `main` a dated per-release ledger via
-`git log --first-parent main`; see [`branching.md`](branching.md)). Pulls use
-`git pull --ff-only`.
+Promotion is `develop → main` done **from the CLI** with `git merge --no-ff
+develop` — a merge commit, so `git log --first-parent main` is a dated per-release
+ledger (see [`branching.md`](branching.md)). It is **not** a reviewed PR: the repo
+is squash-only, so this merge commit is made locally as part of the release, and a
+single release authorisation covers it (see
+[`ai-collaboration.md`](ai-collaboration.md)). Pulls use `git pull --ff-only`.
 
 ## What the release workflow does
 
