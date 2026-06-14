@@ -14,9 +14,10 @@ SPDX-License-Identifier: CC-BY-4.0
 
 ## The northstar
 
-Every repo has `docs/northstar.md` — the canonical statement of the project's
-**intent** (why it exists), treated as authoritative even where it contradicts the
-README or the code. Structure (from jonobones and conception-space):
+A repo **may** have a `docs/northstar.md` — the author's choice, not a requirement.
+When present, it's the canonical statement of the project's **intent** (why it
+exists), treated as authoritative even where it contradicts the README or the code.
+Structure (from jonobones and conception-space):
 
 1. **Intent** — one to several **complementary intents**, presented as peers (not
    one primary + the rest secondary). Two to four is the sweet spot. The tensions
