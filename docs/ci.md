@@ -5,8 +5,35 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # CI & shared tooling
 
-Each repo has up to three GitHub Actions workflows. Templates are in
+Workflow templates are in
 [`templates/.github/workflows/`](../templates/.github/workflows/).
+
+## Required checks before merge
+
+A PR can't merge into `develop` until its required checks are green — enforced by
+**branch protection** (required status checks on `develop`), so the squash button
+stays disabled until CI passes.
+
+**Every repo (code *and* docs):**
+- **`reuse`** — `reuse lint` (REUSE/SPDX compliance). [`reuse.yml`]
+- **`version guard`** — the PR didn't change the version source-of-truth; bumps
+  happen at release on `main`, not in feature work. [`version-guard.yml`]
+
+**Code repos add** (all in `test.yml`):
+- `ruff check` (lint) + `ruff format --check` (formatting)
+- `ty check` (types — `ty` must be a dev dependency)
+- `pytest -m "not network and not docling"` (the fast test tier)
+- **`license-check`** (pip-licenses copyleft block) **where the repo's license
+  requires it** [`license-check.yml`]
+
+(A docs repo like this handbook has no code, so it runs only `reuse` + `version
+guard`.)
+
+**Enforcement.** Add these as **required status checks** on `develop` (Settings →
+Branches, or `gh api`), and **let admins bypass** — the release flow's back-merge
+(`main→develop`) and promotion (`develop→main`) are direct pushes, not PRs, so they
+must not be blocked by these PR checks. The release's own gate
+(see [`releases.md`](releases.md)) covers the promotion.
 
 ## Repo merge settings
 
@@ -38,7 +65,20 @@ gh api -X PATCH repos/<owner>/<repo> \
   PR-required ruleset to `main` without rethinking this (you'd have to re-enable
   merge commits for that path). See [`releases.md`](releases.md).
 
-## `test.yml` — on every PR/push
+## `reuse.yml` — REUSE/SPDX (every repo)
+
+Triggers on `pull_request`/`push` to `main` and `develop`; runs
+`uvx --from "reuse[charset-normalizer]" reuse lint`. Universal — code and docs
+repos alike (it's the handbook's main gate, since the handbook has no `test.yml`).
+
+## `version-guard.yml` — version SoT unchanged (every repo)
+
+On `pull_request` to `develop`, fails if the version source-of-truth
+(`pyproject.toml` `[project].version` / `package.json` `version` / `VERSION.txt`)
+differs from the base — bumps belong at release on `main`. See
+[Version checks](#version-checks).
+
+## `test.yml` — code repos, on every PR/push
 
 Triggers on `pull_request` and `push` to `main` and `develop`. Steps:
 
@@ -47,6 +87,8 @@ Triggers on `pull_request` and `push` to `main` and `develop`. Steps:
 - uses: astral-sh/setup-uv@v8.1.0      # pin exactly — not floating @v8
 - run: uv sync
 - run: uv run ruff check src tests
+- run: uv run ruff format --check src tests
+- run: uv run ty check                 # ty must be a dev dependency
 - run: uv run pytest -m "not network and not docling" -q
 ```
 
@@ -77,10 +119,11 @@ Fully described in [`releases.md`](releases.md). Notes that belong to CI:
 
 Two guards keep versioning honest (see [`releases.md`](releases.md#version-rules)):
 
-- **Feature PRs into `develop` must not change the version.** A `test.yml` step
+- **Feature PRs into `develop` must not change the version.** `version-guard.yml`
   fails the PR if the version source-of-truth (`pyproject.toml` `[project].version`
-  / `package.json` `version` / a `VERSION.txt` file) differs from `origin/develop` —
-  bumps belong at release, on `main`, not in feature work.
+  / `package.json` `version` / a `VERSION.txt` file) differs from the base —
+  bumps belong at release, on `main`, not in feature work. (The release back-merge
+  to `develop` is a direct push, not a PR, so it isn't subject to this.)
 - **The release gate enforces a monotonic increase.** On top of the existing gate
   checks (tag == SoT version, tag reachable from `origin/main`), it rejects a tag
   whose version is not **strictly greater** than the previous tag — catching a
