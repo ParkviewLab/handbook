@@ -47,7 +47,7 @@ CMD ["uv", "run", "python", "-m", "deco_assaying"]
 Conventions: `PYTHONUNBUFFERED=1`; persistent state under `VOLUME ["/data"]`;
 `EXPOSE` the server's port; `CMD ["uv","run","python","-m","<pkg>"]`. Node images
 base on `node:24-slim` (multi-stage) and set OCI `org.opencontainers.image.*`
-labels. Source: `deco-assaying/.../Dockerfile`, `jonobones/main/Dockerfile`.
+labels. Source: deco-assaying's and jonobones's `Dockerfile`.
 
 ## docker-compose.yml
 

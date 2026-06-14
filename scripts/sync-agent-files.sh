@@ -15,12 +15,14 @@
 #   scripts/sync-agent-files.sh [--dry-run] [--base DIR] [TARGET_DIR ...]
 #
 #   --dry-run     show what would change; write nothing
-#   --base DIR    org root to scan for repos (default: parent of the handbook repo)
+#   --base DIR    org root to scan for repos (default: the handbook's org root)
 #   TARGET_DIR…   explicit repo working-dirs to write into (skips auto-discovery)
 #
-# Auto-discovery: for each immediate child REPO of --base (excluding this
-# handbook), the first existing of REPO/develop, REPO/worktrees/develop,
-# REPO/main, REPO/worktrees/main, or REPO itself (flat clone) is the target.
+# Auto-discovery: for each immediate child REPO container of --base, write into the
+# repo's develop worktree (or main, or a flat clone) — the first existing of, in order:
+#   REPO/<name>-develop, REPO/develop, REPO/worktrees/develop,
+#   REPO/<name>-main, REPO/main, REPO/worktrees/main, or REPO itself (flat clone),
+# where <name> is the container's basename (the contained, repo-prefixed layout).
 
 set -euo pipefail
 
@@ -31,15 +33,26 @@ TEMPLATE="$HANDBOOK_ROOT/templates/AGENTS.md.template"
 BEGIN_MARK="PARKVIEWLAB:BEGIN"
 END_MARK="PARKVIEWLAB:END"
 
+# Default BASE = the org root = the parent of the handbook's CONTAINER. In the
+# contained/bare worktree layouts the script lives in a worktree one level below the
+# container (e.g. handbook/handbook-develop/scripts), so the container is HANDBOOK_ROOT's
+# parent and the org root is its grandparent; for a flat clone HANDBOOK_ROOT *is* the
+# container. Detect the worktree case by a sibling bare repo (<name>.git or .bare).
 DRY_RUN=0
-BASE="$(cd "$HANDBOOK_ROOT/.." && pwd)"
+_parent="$(cd "$HANDBOOK_ROOT/.." && pwd)"
+if [[ -d "$_parent/$(basename "$_parent").git" || -d "$_parent/.bare" ]]; then
+  _container="$_parent"          # HANDBOOK_ROOT is a worktree; its parent is the container
+else
+  _container="$HANDBOOK_ROOT"    # flat clone: HANDBOOK_ROOT is the container
+fi
+BASE="$(cd "$_container/.." && pwd)"
 TARGETS=()
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run) DRY_RUN=1; shift ;;
     --base) BASE="$2"; shift 2 ;;
-    -h|--help) sed -n '2,23p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,25p' "$0"; exit 0 ;;
     *) TARGETS+=("$1"); shift ;;
   esac
 done
@@ -96,10 +109,12 @@ write_one() {  # $1 = target dir
   done
 }
 
-# Resolve the write target inside a repo (handles new + old layouts + flat clone).
-resolve_target() {  # $1 = repo dir -> prints target working-dir or nothing
-  local repo="$1" c
-  for c in develop worktrees/develop main worktrees/main ""; do
+# Resolve the write target inside a repo container (new contained, bare+children,
+# old nested, and flat clone layouts all handled).
+resolve_target() {  # $1 = repo container dir -> prints target working-dir or nothing
+  local repo="$1" name c
+  name="$(basename "$repo")"
+  for c in "$name-develop" develop worktrees/develop "$name-main" main worktrees/main ""; do
     if [[ -n "$c" && -d "$repo/$c" ]]; then echo "$repo/$c"; return; fi
     if [[ -z "$c" && ( -f "$repo/pyproject.toml" || -f "$repo/package.json" || -f "$repo/README.md" ) ]]; then
       echo "$repo"; return
@@ -112,16 +127,14 @@ if [[ ${#TARGETS[@]} -eq 0 ]]; then
   [[ -d "$BASE" ]] || { echo "error: base not found: $BASE" >&2; exit 2; }
   for repo in "$BASE"/*/; do
     repo="${repo%/}"
-    [[ "$repo" == "$HANDBOOK_ROOT" ]] && continue   # skip the handbook itself by default? no — include it.
-    t="$(resolve_target "$repo")"
+    t="$(resolve_target "$repo")"   # resolves the handbook itself uniformly too
     [[ -n "$t" ]] && TARGETS+=("$t")
   done
-  # include the handbook's own root too (it follows its own conventions)
-  TARGETS+=("$HANDBOOK_ROOT")
 fi
 
 [[ "$DRY_RUN" == 1 ]] && echo "(dry run — no files will be written)"
 echo "managed block source: $TEMPLATE"
+echo "org root (base):      $BASE"
 echo
 
 for t in "${TARGETS[@]}"; do

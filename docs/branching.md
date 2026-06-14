@@ -58,17 +58,18 @@ when a change is purely tests, CI, build plumbing, or a release bump.
 ## Working-branch lifecycle (ephemeral worktree)
 
 ```bash
-# from the repo root (repo_name/), branch off develop into a sibling worktree:
-git worktree add -b feature-foo feature-foo develop
-cd feature-foo
+# from the develop worktree, branch off develop into a new sibling worktree:
+cd repo_name/repo_name-develop
+git worktree add ../repo_name-feature-foo -b feature-foo develop
+cd ../repo_name-feature-foo
 uv sync                       # each worktree gets its own deps (or: npm ci)
 
 # …work, committing as you go; push after each commit (see ai-collaboration.md)…
 git push -u origin feature-foo
 
 # open a PR into develop. The USER merges it (see below). Then clean up:
-cd ..
-git worktree remove feature-foo
+cd ../repo_name-develop
+git worktree remove ../repo_name-feature-foo
 git branch -d feature-foo
 ```
 

@@ -13,7 +13,8 @@ convention. Each step links to the doc with the detail.
 - [ ] Pick a name in the house style — mineral/pigment + gerund (or `-mcp`).
       See [`repo-layout.md`](repo-layout.md#repo-naming).
 - [ ] Create the GitHub repo under `ParkviewLab/`.
-- [ ] Set up the local **`.bare` + worktrees** layout (`main`, `develop`).
+- [ ] Set up the local **contained, repo-prefixed worktree** layout
+      (`<repo>.git` + `<repo>-main` + `<repo>-develop`).
       See [`repo-layout.md`](repo-layout.md#creating-the-layout).
 - [ ] Make `develop` the GitHub default branch (PRs target integration).
 - [ ] Configure **squash-only** merge settings (squash on; merge-commit + rebase
