@@ -19,7 +19,7 @@ dependencies = [
 "<command-name>" = "<import_package>.__main__:main"
 
 [dependency-groups]
-dev = ["pytest", "pytest-asyncio", "httpx"]
+dev = ["pytest", "pytest-asyncio", "httpx", "ruff", "ty"]
 
 [build-system]
 requires = ["hatchling"]
