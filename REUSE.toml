@@ -12,7 +12,7 @@ SPDX-License-Identifier = "CC-BY-4.0"
 
 # Scripts + templates (code/config/boilerplate) → AGPL-3.0-or-later
 [[annotations]]
-path = [".github/**", "scripts/**", "templates/cliff.toml", "templates/generate_changelog.py", "templates/pyproject.toml.template", "templates/REUSE.toml.template", "templates/AGENTS.md.template", "templates/CLAUDE.md.template", "templates/package.json.template", "templates/md-to-html/default.html", "templates/.github/**"]
+path = [".github/**", "scripts/**", "templates/cliff.toml", "templates/generate_changelog.py", "templates/pyproject.toml.template", "templates/REUSE.toml.template", "templates/AGENTS.md.template", "templates/CLAUDE.md.template", "templates/package.json.template", "templates/electron-builder.yml", "templates/md-to-html/default.html", "templates/.github/**"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Gary Frattarola <garyf@parkviewlab.ai>"
 SPDX-License-Identifier = "AGPL-3.0-or-later"
