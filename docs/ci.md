@@ -78,6 +78,11 @@ On `pull_request` to `develop`, fails if the version source-of-truth
 differs from the base — bumps belong at release on `main`. See
 [Version checks](#version-checks).
 
+Because the check is *unchanged-vs-base* (not a format check), it's fine for `develop` to sit at a
+`X.Y.Z.dev0` between releases (the post-release open-cycle — see
+[`releases.md`](releases.md#development-versioning)); feature PRs that don't touch it still pass. A
+branch cut *before* the open-cycle fails this check until it merges `develop` — sync up.
+
 ## `test.yml` — code repos, on every PR/push
 
 Triggers on `pull_request` and `push` to `main` and `develop`. Steps:
@@ -114,6 +119,16 @@ Fully described in [`releases.md`](releases.md). Notes that belong to CI:
   org-level `ANTHROPIC_API_KEY`. It pulls the anthropic SDK just-in-time with
   `uv run --with anthropic …` so the workflow snippet stays identical in every
   repo that adopts it, regardless of whether `anthropic` is a project dep.
+
+## `dev-release.yml` — on-demand dev build (optional, code repos)
+
+A **manually-triggered** (`workflow_dispatch`) pre-release publish, for exercising a candidate before
+the real release — run from `develop` (`gh workflow run dev-release.yml --ref develop`, or via
+`git dev-release`). It builds and publishes a **pre-release** — a GHCR **`:dev`** image (+
+`:X.Y.Z.devN`) and `X.Y.Z.devN` to **TestPyPI** — and creates **no `v*` tag**, so it never trips the
+`release.yml` gate; no changelog/CHANGELOG-commit. Needs a **TestPyPI trusted publisher**
+(`environment: testpypi`), set up like the PyPI one. See
+[`releases.md`](releases.md#development-versioning).
 
 ## Version checks
 

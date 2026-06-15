@@ -93,9 +93,15 @@ git push --follow-tags               # the tag push fires the release workflow
   range are the signal — any breaking change → **major**, any `feat:` → **minor**,
   otherwise (`fix:`/`perf:`) → **patch**. Never bump silently; never infer the kind
   from past cadence. See [`ai-collaboration.md`](ai-collaboration.md).
+- **Docs-only / `VERSION.txt` repos have no Conventional-Commit signal** (it's all
+  docs), so choose the bump by the **significance** of the change: a whole new
+  convention or section → **minor**; a clarification, correction, or typo →
+  **patch**; removing or reversing an established convention → **major**. (This
+  handbook's v0.4.0 was a minor — it added the dual-license layout.)
 - **`VERSION.txt`-file repos** (no `pyproject`/`package.json`, e.g. this handbook):
-  `git bump`/`git release` are pyproject-based, so bump by editing `VERSION.txt`
-  and tagging by hand (a `VERSION.txt`-aware `git bump` is an in-flight idea).
+  `git bump`/`git release` are **SoT-aware** — they detect `VERSION.txt` and bump /
+  tag from it just like a `pyproject` repo, so docs repos release with the same
+  tooling, no hand-editing.
 
 ### Version rules
 
@@ -171,16 +177,42 @@ git -C ../<repo>-develop merge main && git -C ../<repo>-develop push
 The cascade is **manual on purpose** (a small number of commands at a moment the
 user is already at the keyboard; an auto-PR version was considered and declined).
 
-## Dev releases vs real releases — PROPOSED
+## Development versioning
 
-> **Current state:** there is a single release tier — a `v*` tag from `main`
-> produces a real release. There is **no** `develop`-triggered prerelease today.
-> Pre-release/RC tags from `develop` were considered and deferred (the gate's
-> reachability check would have to relax for `*-rc*` / `*.devN` tag shapes).
->
-> **Proposed (not yet built — do not add CI for this without explicit
-> go-ahead):** keep real releases exactly as above, and add an *optional*
-> dev-release path where a push/merge to `develop` publishes a prerelease — e.g.
-> a GHCR `:dev` / `:develop` image tag, and optionally `X.Y.Z.devN` to TestPyPI.
-> This would make "merge to develop → dev release; merge to main → real release"
-> real. Revisit when the need is concrete.
+Between releases `develop` should carry an **honest pre-release version**, and an engineer should be
+able to cut a **dev build** on demand — to exercise a candidate in real settings before the real
+release.
+
+**1. The dev version names the *next* release, not the last one.** A dev suffix is a *pre-release* —
+it sorts **before** the version it's attached to:
+
+```
+0.3.0   <   0.3.1.dev0   <   0.3.1
+```
+
+So after shipping `0.3.0`, `develop` works toward `0.3.1.dev0` — above the last release, below the
+target. **Never** suffix a version you've already shipped: `0.3.0-dev` sorts *below* `0.3.0`, so
+pip/uv/Docker treat it as *older* than the release. Form: Python `X.Y.Z.devN` (PEP 440);
+`VERSION.txt` / Docker `X.Y.Z-dev` / a `:dev` tag.
+
+**2. Open the next cycle at release time.** The
+[back-merge cascade](#after-the-release-the-back-merge-cascade-mandatory) also bumps `develop`'s SoT
+to the next-patch placeholder `X.Y.(Z+1).dev0` (a direct push — exempt from `version-guard.yml`, like
+the back-merge itself). Feature PRs leave it unchanged, so the guard still passes; `develop` now
+reports e.g. `0.3.1.dev0` everywhere — `/admin/version`, a casual editable install, a deploy. *(A
+feature branch cut before the open-cycle trips the version-guard until it merges `develop` — the same
+sync the up-to-date rule already requires.)*
+
+**3. Cut a dev build on demand — never per-merge.** When an engineer asks for one, `git dev-release`
+**asks the bump kind** (patch/minor/major) — re-pointing the target if it's now known to be a minor or
+major (e.g. `0.4.0.dev0`) — then sets the SoT to `<target>.devN` (incrementing `N` per build), pushes
+`develop`, and dispatches the dev-publish workflow. It publishes a **pre-release**: a GHCR **`:dev`**
+image (+ `:X.Y.Z.devN`) and `X.Y.Z.devN` to **TestPyPI**. It creates **no `v*` tag**, so the real
+`release.yml` and its main-reachability gate are untouched. See [`ci.md`](ci.md) (`dev-release.yml`).
+
+**4. The real release finalizes the cycle.** Promote `develop → main`; `git bump <target>` drops the
+dev suffix (`0.3.1.dev0 → 0.3.1`); then `git release` + push the tag as above. The monotonic gate
+passes (`0.3.1 > 0.3.0`).
+
+**`VERSION.txt` / docs repos** carry the same honest `X.Y.Z-dev` on `develop` and finalize at release,
+but publish **no** dev artifacts (nothing to build) — the dev *build/publish* path is code-repo-only.
