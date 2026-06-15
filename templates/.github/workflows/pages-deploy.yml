@@ -1,0 +1,68 @@
+name: Deploy site
+
+# Website repos deploy GitHub Pages via Actions (not legacy branch serving), so the
+# deploy can build generated pages + stamp "last updated" dates without committing
+# artifacts. Set the Pages source once: gh api -X PUT repos/<owner>/<repo>/pages
+# -f build_type=workflow. See the handbook's website.md.
+#
+# Triggers: publish (push to live), nightly refresh (generated pages pick up new
+# data, e.g. a releases list), and manual.
+
+on:
+  push:
+    branches: [live]
+  schedule:
+    - cron: "17 7 * * *"        # nightly — refresh generated pages
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; let an in-flight publish finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: live              # always deploy production
+          fetch-depth: 0         # full history — needed for per-page git dates
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Build generated pages + stamp dates
+        run: |
+          python3 build.py            # refresh any generated page(s); no git commit
+          python3 scripts/stamp.py    # fill "This page updated on <date>" from git
+      - name: Assemble the published site
+        run: |
+          # Publish the site files only — not build scripts, docs, licenses, CI.
+          # Adjust the excludes to your repo. Keep CNAME so the custom domain holds.
+          mkdir _site
+          rsync -a \
+            --exclude '.git' --exclude '.github' --exclude '_site' \
+            --exclude 'build.py' --exclude 'scripts' --exclude 'docs' \
+            --exclude 'LICENSES' --exclude 'LICENSING.md' --exclude 'REUSE.toml' \
+            --exclude 'README.md' --exclude 'AGENTS.md' --exclude 'CLAUDE.md' \
+            --exclude 'CONTRIBUTING.md' --exclude '.gitignore' \
+            ./ _site/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

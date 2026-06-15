@@ -26,6 +26,7 @@ Everything else is downstream of it.
 | [releases.md](docs/releases.md) | Version single-source-of-truth, `git bump`/`git release`, the gate, back-merge cascade |
 | [python-tooling.md](docs/python-tooling.md) | uv + ruff + ty + hatchling, the `pyproject.toml` shape |
 | [mcp-server-conventions.md](docs/mcp-server-conventions.md) | The shared Python MCP server architecture |
+| [website.md](docs/website.md) | Website repos: `live`/`staging`, Pages-via-Actions deploy, page footers — the lighter profile |
 | [testing.md](docs/testing.md) | pytest markers/tiers, conftest patterns, visual verification |
 | [packaging-and-deployment.md](docs/packaging-and-deployment.md) | Dockerfile, compose, the "five ways to run it" README |
 | [licensing.md](docs/licensing.md) | REUSE/SPDX, per-bucket licensing, `LICENSING.md` |
