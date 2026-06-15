@@ -151,6 +151,10 @@ single release authorisation covers it (see
    `origin/main`, `--mode=insert`, commits `docs(changelog): v<new> [skip ci]`
    back to `main`, and creates the GitHub Release from the same body.
 
+**Electron apps diverge:** no GHCR image — the middle is a macOS/Windows/Linux build
+matrix (electron-builder), and the `changelog` job attaches the OS installers to the
+GitHub Release. See [`electron-tooling.md`](electron-tooling.md).
+
 Reference implementations: deco-assaying's `release.yml` (Python/PyPI) and
 jonobones's `.github/workflows/release.yml` (Node/npm).
 
@@ -195,6 +199,7 @@ it sorts **before** the version it's attached to:
 So after shipping `0.3.0`, `develop` works toward `0.3.1.dev0` — above the last release, below the
 target. **Never** suffix a version you've already shipped: `0.3.0-dev` sorts *below* `0.3.0`, so
 pip/uv/Docker treat it as *older* than the release. Form: Python `X.Y.Z.devN` (PEP 440);
+**Node/Electron `X.Y.Z-devN`** (semver — `npm version` rejects the dotted PEP-440 form);
 `VERSION.txt` / Docker `X.Y.Z-dev` / a `:dev` tag.
 
 **2. Open the next cycle at release time.** The
