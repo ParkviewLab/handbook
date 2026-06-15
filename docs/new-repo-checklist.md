@@ -8,6 +8,16 @@ SPDX-License-Identifier: CC-BY-4.0
 The master sequence for bootstrapping a new ParkviewLab repo into every
 convention. Each step links to the doc with the detail.
 
+> **If it's a website** (static site on GitHub Pages — e.g. parkviewlab.ai),
+> follow the lighter path in [`website.md`](website.md): contained worktrees named
+> **`live`/`staging`** (default branch `staging`); Pages via Actions; REUSE with
+> `LicenseRef-AllRightsReserved` + the bundled font's license; `reuse-website.yml`
+> + `pages-deploy.yml`; the page footers (copyright + "updated on" date) + a stamp
+> step + a local preview script. **Skip §2 (language scaffold), §3 (packaging), and
+> §8 (first release) entirely** — a website has no version, tags, or PyPI/Docker
+> publish; "publishing" is promoting `staging`→`live`. §1, §5 (licensing), §6
+> (docs), and §7 (AI pointers) still apply, adapted as `website.md` describes.
+
 ## 1. Name & create
 
 - [ ] Pick a name in the house style — mineral/pigment + gerund (or `-mcp`).

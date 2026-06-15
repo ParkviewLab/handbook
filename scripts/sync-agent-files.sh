@@ -19,9 +19,11 @@
 #   TARGET_DIR…   explicit repo working-dirs to write into (skips auto-discovery)
 #
 # Auto-discovery: for each immediate child REPO container of --base, write into the
-# repo's develop worktree (or main, or a flat clone) — the first existing of, in order:
+# repo's integration worktree (or production, or a flat clone) — the first existing of, in order:
 #   REPO/<name>-develop, REPO/develop, REPO/worktrees/develop,
-#   REPO/<name>-main, REPO/main, REPO/worktrees/main, or REPO itself (flat clone),
+#   REPO/<name>-staging, REPO/staging,                  (website repos — see docs/website.md)
+#   REPO/<name>-main, REPO/main, REPO/worktrees/main,
+#   REPO/<name>-live, REPO/live, or REPO itself (flat clone),
 # where <name> is the container's basename (the contained, repo-prefixed layout).
 
 set -euo pipefail
@@ -114,7 +116,11 @@ write_one() {  # $1 = target dir
 resolve_target() {  # $1 = repo container dir -> prints target working-dir or nothing
   local repo="$1" name c
   name="$(basename "$repo")"
-  for c in "$name-develop" develop worktrees/develop "$name-main" main worktrees/main ""; do
+  # develop/main = package & docs repos; staging/live = website repos (docs/website.md).
+  for c in "$name-develop" develop worktrees/develop \
+           "$name-staging" staging \
+           "$name-main" main worktrees/main \
+           "$name-live" live ""; do
     if [[ -n "$c" && -d "$repo/$c" ]]; then echo "$repo/$c"; return; fi
     if [[ -z "$c" && ( -f "$repo/pyproject.toml" || -f "$repo/package.json" || -f "$repo/README.md" ) ]]; then
       echo "$repo"; return
