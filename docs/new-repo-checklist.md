@@ -50,14 +50,15 @@ convention. Each step links to the doc with the detail.
       [`templates/generate_changelog.py`](../templates/generate_changelog.py).
 - [ ] Workflows from [`templates/.github/workflows/`](../templates/.github/workflows/):
       `reuse.yml` + `version-guard.yml` (**every** repo), plus `test.yml`,
-      `release.yml`, and `license-check.yml` (code repos). Pin actions exactly;
-      GHCR tags include `latest`. See [`ci.md`](ci.md).
+      `release.yml`, `license-check.yml`, and optional `dev-release.yml` (code repos).
+      Pin actions exactly; GHCR tags include `latest`. See [`ci.md`](ci.md).
 - [ ] **Branch protection on `develop`:** mark the workflow checks as **required
       status checks** (so the merge button waits for green); **let admins bypass**
       so the release back-merge/promotion (direct pushes) aren't blocked. See
       [`ci.md`](ci.md#required-checks-before-merge).
 - [ ] Confirm the org `ANTHROPIC_API_KEY` secret is inherited.
-- [ ] Configure PyPI (and npm, if applicable) **trusted publishers**.
+- [ ] Configure PyPI (and npm, if applicable) **trusted publishers** — plus a
+      **TestPyPI** trusted publisher if the repo adopts `dev-release.yml`.
 
 ## 5. Licensing
 
