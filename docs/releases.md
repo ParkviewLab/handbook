@@ -76,14 +76,16 @@ helpers' home).
 # in the <repo>-main worktree — the whole release runs from the CLI under one authorisation:
 git pull --ff-only                   # sync main
 git merge --no-ff develop            # promote develop→main; the merge commit is the release ledger entry
-git bump <patch|minor|major|X.Y.Z>   # edits the SoT file, commits "release v<new>"
+git bump <patch|minor|major|release|X.Y.Z>   # edits the SoT file, commits "release v<new>"
 git release                          # annotated tag v<new>, derived from the SoT
 git push --follow-tags               # the tag push fires the release workflow
 ```
 
-- **`git bump`** bumps the version (Python: via `uv version --bump`), stages the
-  change (+ `uv.lock` if touched), and commits `release v<new>`. It does **not**
-  tag.
+- **`git bump`** bumps the version in the source of truth (`pyproject.toml` /
+  `package.json` / `VERSION.txt`, auto-detected), stages the change (+ lockfile if
+  touched), and commits `release v<new>`. It does **not** tag. `git bump release`
+  finalizes a dev cycle (drops the `.devN`) — see
+  [Development versioning](#development-versioning).
 - **`git release`** reads the version back out and makes the annotated tag
   `v<version>`. It refuses on a dirty tree or an existing tag. It does **not**
   push.
@@ -210,9 +212,11 @@ major (e.g. `0.4.0.dev0`) — then sets the SoT to `<target>.devN` (incrementing
 image (+ `:X.Y.Z.devN`) and `X.Y.Z.devN` to **TestPyPI**. It creates **no `v*` tag**, so the real
 `release.yml` and its main-reachability gate are untouched. See [`ci.md`](ci.md) (`dev-release.yml`).
 
-**4. The real release finalizes the cycle.** Promote `develop → main`; `git bump <target>` drops the
-dev suffix (`0.3.1.dev0 → 0.3.1`); then `git release` + push the tag as above. The monotonic gate
-passes (`0.3.1 > 0.3.0`).
+**4. The real release finalizes the cycle.** Promote `develop → main`, then **`git bump`** drops the
+`.devN` — the engineer just confirms the bump kind, as always. From the placeholder `0.3.1.dev0`:
+`git bump patch` → `0.3.1` (ship it); `git bump minor` → `0.4.0` (it was a feature release —
+re-points off the last tag); `git bump release` → `0.3.1` (ship exactly the declared target, no
+re-point). Then `git release` + push the tag as above; the monotonic gate passes (`0.3.1 > 0.3.0`).
 
 **`VERSION.txt` / docs repos** carry the same honest `X.Y.Z-dev` on `develop` and finalize at release,
 but publish **no** dev artifacts (nothing to build) — the dev *build/publish* path is code-repo-only.
