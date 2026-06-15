@@ -1,0 +1,198 @@
+name: Release
+
+# Tag-driven Node release — the Node peer of `release.yml` (Python). On a `v*`
+# tag: gate → GHCR multi-arch image + npm trusted publishing (OIDC) → the shared
+# changelog job. REUSE-covered by the `templates/.github/**` AGPL bucket (no
+# per-file SPDX header). Reference impl: jonobones. See node-tooling.md / ci.md.
+#
+# npm one-time setup: the package's first version must be published manually,
+# then configure the trusted publisher (this repo + release.yml) at npmjs.com.
+# Requires npm >= 11.5.1 for OIDC.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  # Pre-flight. Both publish jobs depend on this, so a bad tag ships nothing.
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0          # full history for the ancestor check below
+
+      - name: Verify tag matches package.json version
+        run: |
+          TAG="${GITHUB_REF#refs/tags/v}"
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG" != "$PKG_VERSION" ]; then
+            echo "tag $TAG != package.json $PKG_VERSION"
+            exit 1
+          fi
+
+      - name: Verify tag is reachable from origin/main
+        run: |
+          git fetch --no-tags origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "tagged commit $GITHUB_SHA is not on origin/main"
+            echo "release tags must come from main — back-merge through, then re-tag from main"
+            exit 1
+          fi
+
+  image:
+    needs: gate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write       # GHCR push
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up QEMU (arm64 emulation)
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags + labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest
+
+      - name: Build and push (linux/amd64 + linux/arm64)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  npm:
+    needs: gate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write       # npm trusted publishing (OIDC) + provenance
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - name: Upgrade npm (trusted publishing needs >= 11.5.1)
+        run: npm install -g npm@11
+
+      - run: npm ci
+
+      - run: npm test
+
+      - name: Publish (skips when already on the registry)
+        run: |
+          PKG=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "$PKG@$VERSION" version >/dev/null 2>&1; then
+            echo "$PKG@$VERSION is already on the registry — skipping"
+            exit 0
+          fi
+          npm publish
+
+      # Optional: ParkviewLab scoped-alias publish — a second name `@org/<pkg>`
+      # that depends on the canonical package and ships the same bin (e.g.
+      # jonobones publishes `jonobones` + `@parkviewlab/jonobones`). Needs its own
+      # npm trusted-publisher config and a `scripts/build-scoped-alias.mjs`.
+      # OMIT this step entirely if you don't publish a scoped alias.
+      #
+      # - name: Publish scoped alias (skips when already published)
+      #   run: |
+      #     VERSION=$(node -p "require('./package.json').version")
+      #     ALIAS="@your-org/$(node -p "require('./package.json').name")"
+      #     if npm view "$ALIAS@$VERSION" version >/dev/null 2>&1; then
+      #       echo "$ALIAS@$VERSION is already published — skipping"
+      #       exit 0
+      #     fi
+      #     node scripts/build-scoped-alias.mjs
+      #     cd alias-build && npm publish
+
+  # Generate the Highlights paragraph + categorized list, commit the new
+  # CHANGELOG.md section back to main, and create the GitHub Release. Identical
+  # to the Python release.yml changelog job — the script is language-agnostic
+  # (reads package.json as well as pyproject.toml). Needs cliff.toml +
+  # scripts/generate_changelog.py copied from the handbook templates.
+  changelog:
+    needs: [gate, image, npm]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # scoped here — only this job commits CHANGELOG.md back to main
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0          # full history + all tags for git-cliff
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+
+      - name: Install git-cliff
+        uses: taiki-e/install-action@v2
+        with:
+          tool: git-cliff
+
+      - name: Generate release-body.md (LLM call happens here)
+        env:
+          # Set at the ParkviewLab org level — inherited by every repo. Missing
+          # key → the script writes a placeholder and the release still ships.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_REF: ${{ github.ref }}
+        run: uv run --with anthropic python scripts/generate_changelog.py --mode=generate
+
+      - name: Switch to fresh origin/main and insert into CHANGELOG.md
+        run: |
+          cp release-body.md /tmp/release-body.md
+          git fetch origin main
+          git checkout origin/main
+          mv /tmp/release-body.md release-body.md
+          uv run python scripts/generate_changelog.py --mode=insert
+
+      - name: Commit CHANGELOG.md back to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          if git diff --staged --quiet; then
+            echo "no changelog change to commit"
+            exit 0
+          fi
+          TAG="${GITHUB_REF#refs/tags/}"
+          git commit -m "docs(changelog): $TAG [skip ci]"
+          git push origin HEAD:main
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes-file release-body.md \
+            --target main

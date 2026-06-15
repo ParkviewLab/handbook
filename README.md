@@ -25,6 +25,7 @@ Everything else is downstream of it.
 | [commits-and-changelogs.md](docs/commits-and-changelogs.md) | Conventional Commits, `cliff.toml`, the LLM-Highlights changelog |
 | [releases.md](docs/releases.md) | Version single-source-of-truth, `git bump`/`git release`, the gate, back-merge cascade |
 | [python-tooling.md](docs/python-tooling.md) | uv + ruff + ty + hatchling, the `pyproject.toml` shape |
+| [node-tooling.md](docs/node-tooling.md) | npm + TypeScript + ESLint + Vitest, the `package.json` shape |
 | [mcp-server-conventions.md](docs/mcp-server-conventions.md) | The shared Python MCP server architecture |
 | [website.md](docs/website.md) | Website repos: `live`/`staging`, Pages-via-Actions deploy, page footers — the lighter profile |
 | [testing.md](docs/testing.md) | pytest markers/tiers, conftest patterns, visual verification |
@@ -40,7 +41,7 @@ Everything else is downstream of it.
 ## Templates & tooling
 
 - **[`templates/`](templates/)** — copy-paste sources kept identical across repos:
-  `cliff.toml`, `pyproject.toml.template`, `CONTRIBUTING.md`, the
+  `cliff.toml`, `pyproject.toml.template`/`package.json.template`, `CONTRIBUTING.md`, the
   `.github/workflows/`, `generate_changelog.py`, the `LICENSING.md`/`REUSE.toml`
   templates, the `AGENTS.md`/`CLAUDE.md` pointer templates, and the
   [`md-to-html/`](templates/md-to-html/) default HTML scaffold.

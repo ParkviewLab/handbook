@@ -99,6 +99,10 @@ Triggers on `pull_request` and `push` to `main` and `develop`. Steps:
 
 The test subset excludes the slow/networked tiers (see [`testing.md`](testing.md)).
 
+**Node repos** use [`test-node.yml`](../templates/.github/workflows/test-node.yml) instead — a
+`node-version` matrix running `npm ci` · `npm run typecheck`/`lint`/`test`. See
+[`node-tooling.md`](node-tooling.md).
+
 ## `release.yml` — on `v*` tag push
 
 The tag-driven publish pipeline: `gate` → `docker` + `pypi`/npm → `changelog`.
@@ -119,6 +123,9 @@ Fully described in [`releases.md`](releases.md). Notes that belong to CI:
   org-level `ANTHROPIC_API_KEY`. It pulls the anthropic SDK just-in-time with
   `uv run --with anthropic …` so the workflow snippet stays identical in every
   repo that adopts it, regardless of whether `anthropic` is a project dep.
+- **Node repos** use [`release-node.yml`](../templates/.github/workflows/release-node.yml) — the
+  same `gate` → image + **npm** (OIDC) → `changelog` shape, with an optional scoped-alias publish.
+  See [`node-tooling.md`](node-tooling.md).
 
 ## `dev-release.yml` — on-demand dev build (optional, code repos)
 
