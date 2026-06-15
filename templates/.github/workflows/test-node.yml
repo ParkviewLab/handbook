@@ -1,0 +1,44 @@
+name: Test
+
+# Node CI — typecheck + lint + tests across the supported Node versions.
+# The Node peer of `test.yml` (Python). REUSE-covered by the `templates/.github/**`
+# AGPL bucket, so no per-file SPDX header. See the handbook's node-tooling.md / ci.md.
+#
+# Repos may add further tiers as separate jobs (e.g. jonobones runs an `interop`
+# tier against the Joplin CLI, a `docker` image-boot check, and an `e2e` tier) —
+# those are repo-specific and not part of this template. See testing.md.
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [24.x, 26.x]
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test

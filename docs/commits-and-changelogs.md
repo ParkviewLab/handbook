@@ -72,8 +72,9 @@ Each release section is:
 ## `generate_changelog.py` — two-phase
 
 The canonical script is [`generate_changelog.py`](../templates/generate_changelog.py)
-(copied into a repo's `scripts/` when it adopts the changelog flow). It runs in
-two phases so the single LLM call survives the changelog being committed onto a
+(copied into a repo's `scripts/` when it adopts the changelog flow). It's
+**language-agnostic** — it reads the package name from `pyproject.toml` *or*
+`package.json`, so Python and Node repos share it. It runs in two phases so the single LLM call survives the changelog being committed onto a
 `main` that moved during CI:
 
 - **`--mode=generate`** — reads git history at the tagged commit, runs git-cliff

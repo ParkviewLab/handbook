@@ -33,6 +33,12 @@ convention. Each step links to the doc with the detail.
 
 ## 2. Language scaffold
 
+> **If it's a Node repo**, use the Node stack instead of the Python one below:
+> `package.json` from [`templates/package.json.template`](../templates/package.json.template),
+> TypeScript + ESLint + Vitest, version read at runtime via `src/version.ts` — see
+> [`node-tooling.md`](node-tooling.md). §3–§8 still apply (Node publishes to npm + GHCR,
+> as Python does to PyPI + GHCR).
+
 - [ ] `pyproject.toml` from [`templates/pyproject.toml.template`](../templates/pyproject.toml.template)
       — name, description, deps; src-layout; ruff/ty/pytest config; `.python-version` = `3.13`.
       See [`python-tooling.md`](python-tooling.md).
@@ -60,7 +66,8 @@ convention. Each step links to the doc with the detail.
       [`templates/generate_changelog.py`](../templates/generate_changelog.py).
 - [ ] Workflows from [`templates/.github/workflows/`](../templates/.github/workflows/):
       `reuse.yml` + `version-guard.yml` (**every** repo), plus `test.yml`,
-      `release.yml`, `license-check.yml`, and optional `dev-release.yml` (code repos).
+      `release.yml`, `license-check.yml`, and optional `dev-release.yml` (Python code
+      repos; **Node** repos use `test-node.yml` + `release-node.yml` instead).
       Pin actions exactly; GHCR tags include `latest`. See [`ci.md`](ci.md).
 - [ ] **Branch protection on `develop`:** mark the workflow checks as **required
       status checks** (so the merge button waits for green); **let admins bypass**

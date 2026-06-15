@@ -1,0 +1,44 @@
+{
+  "name": "<repo-name>",
+  "version": "0.1.0",
+  "description": "…",
+  "license": "MIT",
+  "author": "Gary Frattarola <garyf@parkviewlab.ai>",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ParkviewLab/<repo-name>.git"
+  },
+  "homepage": "https://github.com/ParkviewLab/<repo-name>#readme",
+  "bugs": {
+    "url": "https://github.com/ParkviewLab/<repo-name>/issues"
+  },
+  "keywords": [],
+  "bin": {
+    "<repo-name>": "bin/<repo-name>.js"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.0",
+    "vitest": "^4.1.8"
+  }
+}
