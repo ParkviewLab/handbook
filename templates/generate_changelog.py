@@ -30,6 +30,7 @@ Exit codes:
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import shutil
@@ -44,6 +45,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CHANGELOG = ROOT / "CHANGELOG.md"
 RELEASE_BODY = ROOT / "release-body.md"
 PYPROJECT = ROOT / "pyproject.toml"
+PACKAGE_JSON = ROOT / "package.json"
 CLIFF_TOML = ROOT / "cliff.toml"
 
 # Cap the commit-log slice we feed the LLM. 50k chars is roughly 12-15k
@@ -90,8 +92,15 @@ def categorized_section(tag: str, prev: str | None) -> str:
 
 
 def project_meta() -> tuple[str, str]:
-    data = tomllib.loads(PYPROJECT.read_text())
-    return data["project"]["name"], data["project"].get("description", "")
+    # Package name + description from the repo's manifest — supports both
+    # Python (pyproject.toml) and Node (package.json) repos.
+    if PYPROJECT.exists():
+        data = tomllib.loads(PYPROJECT.read_text())
+        return data["project"]["name"], data["project"].get("description", "")
+    if PACKAGE_JSON.exists():
+        data = json.loads(PACKAGE_JSON.read_text())
+        return data["name"], data.get("description", "")
+    raise FileNotFoundError("no pyproject.toml or package.json at repo root")
 
 
 def commit_log(tag: str, prev: str | None) -> str:
