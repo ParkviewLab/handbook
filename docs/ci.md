@@ -103,6 +103,10 @@ The test subset excludes the slow/networked tiers (see [`testing.md`](testing.md
 `node-version` matrix running `npm ci` · `npm run typecheck`/`lint`/`test`. See
 [`node-tooling.md`](node-tooling.md).
 
+**Electron apps** use [`test-electron.yml`](../templates/.github/workflows/test-electron.yml) — `npm ci` ·
+`npm run lint` · `npm run build` (the electron-vite build as a smoke test). See
+[`electron-tooling.md`](electron-tooling.md).
+
 ## `release.yml` — on `v*` tag push
 
 The tag-driven publish pipeline: `gate` → `docker` + `pypi`/npm → `changelog`.
@@ -126,6 +130,10 @@ Fully described in [`releases.md`](releases.md). Notes that belong to CI:
 - **Node repos** use [`release-node.yml`](../templates/.github/workflows/release-node.yml) — the
   same `gate` → image + **npm** (OIDC) → `changelog` shape, with an optional scoped-alias publish.
   See [`node-tooling.md`](node-tooling.md).
+- **Electron apps** use [`release-electron.yml`](../templates/.github/workflows/release-electron.yml) — the
+  same `gate` + `changelog` shape, but the middle is a **macOS/Windows/Linux build matrix** (electron-builder)
+  whose installers the `changelog` job attaches to the GitHub Release. **No GHCR image.** See
+  [`electron-tooling.md`](electron-tooling.md).
 
 ## `dev-release.yml` — on-demand dev build (optional, code repos)
 
@@ -136,6 +144,10 @@ the real release — run from `develop` (`gh workflow run dev-release.yml --ref 
 `release.yml` gate; no changelog/CHANGELOG-commit. Needs a **TestPyPI trusted publisher**
 (`environment: testpypi`), set up like the PyPI one. See
 [`releases.md`](releases.md#development-versioning).
+
+**Electron apps** use [`dev-release-electron.yml`](../templates/.github/workflows/dev-release-electron.yml) —
+`workflow_dispatch` from `develop` builds the macOS/Windows/Linux installers as 7-day **workflow artifacts** (no
+registry, no `v*` tag, no dev-version requirement). See [`electron-tooling.md`](electron-tooling.md).
 
 ## Version checks
 

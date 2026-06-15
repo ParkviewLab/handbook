@@ -39,6 +39,13 @@ convention. Each step links to the doc with the detail.
 > [`node-tooling.md`](node-tooling.md). §3–§8 still apply (Node publishes to npm + GHCR,
 > as Python does to PyPI + GHCR).
 
+> **If it's an Electron desktop app**, use the Electron stack: the app at the repo
+> **root** (`package.json` + `src/{main,preload,renderer}` + `electron.vite.config.js`
+> + `electron-builder.yml`), electron-vite + electron-builder, plain JS **or** TS — see
+> [`electron-tooling.md`](electron-tooling.md). It ships OS installers to a GitHub
+> Release (no Docker / npm / PyPI): §3 uses `electron-builder.yml` instead of a
+> Dockerfile, and §4 uses the `*-electron.yml` workflows.
+
 - [ ] `pyproject.toml` from [`templates/pyproject.toml.template`](../templates/pyproject.toml.template)
       — name, description, deps; src-layout; ruff/ty/pytest config; `.python-version` = `3.13`.
       See [`python-tooling.md`](python-tooling.md).
@@ -67,7 +74,8 @@ convention. Each step links to the doc with the detail.
 - [ ] Workflows from [`templates/.github/workflows/`](../templates/.github/workflows/):
       `reuse.yml` + `version-guard.yml` (**every** repo), plus `test.yml`,
       `release.yml`, `license-check.yml`, and optional `dev-release.yml` (Python code
-      repos; **Node** repos use `test-node.yml` + `release-node.yml` instead).
+      repos; **Node** repos use `test-node.yml` + `release-node.yml`; **Electron** apps
+      use `test-electron.yml` + `release-electron.yml` + `dev-release-electron.yml` instead).
       Pin actions exactly; GHCR tags include `latest`. See [`ci.md`](ci.md).
 - [ ] **Branch protection on `develop`:** mark the workflow checks as **required
       status checks** (so the merge button waits for green); **let admins bypass**
