@@ -83,7 +83,9 @@ locally with `npm run build:dist` (= `electron-vite build && electron-builder`).
   `workflow_dispatch` from `develop` → the same 3-OS matrix → installers as 7-day
   **workflow artifacts**. It creates **no `v*` tag** and no Release (so the real
   release gate is untouched), and — unlike the Python/TestPyPI dev-release — it
-  publishes to no registry, so it does **not** require a distinct dev version.
+  publishes to no registry, so it needs no unique dev *counter*. `develop` must
+  still carry a `-dev` version, or the build is stamped identically to a real
+  release; the gate fails fast if it isn't (open a cycle with `git dev-release --open`).
 - Changelog automation (`cliff.toml` + `scripts/generate_changelog.py`) is the same
   language-agnostic pair as everywhere else.
 
@@ -92,9 +94,10 @@ locally with `npm run build:dist` (= `electron-vite build && electron-builder`).
 Between releases `develop` carries a pre-release version (see
 [`releases.md`](releases.md#development-versioning)). For a Node/Electron repo it
 must be **semver** — `X.Y.Z-devN` (e.g. `0.9.1-dev0`) — **not** the Python PEP-440
-`X.Y.Z.devN`, which `npm version` rejects. (conception-space's dev build is
-artifacts-only, so it doesn't even require a dev version; the form matters once you
-open a dev cycle with `git bump` / `git dev-release`.)
+`X.Y.Z.devN`, which `npm version` rejects. The dev-release gate **requires** a
+`-dev` marker on `develop`: a dev build cut from a plain release version is
+indistinguishable from the real release in the filename and About box. Open the
+cycle with `git dev-release --open` right after each release.
 
 ## Everyday commands
 
