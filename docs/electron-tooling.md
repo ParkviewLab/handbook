@@ -102,6 +102,17 @@ implementation (`scripts/prepare-legal.mjs`, `src/main/index.js`).
   `LICENSES.chromium.html`** from `node_modules/electron/dist/`. electron-builder
   **deletes `LICENSES.chromium.html` from the macOS `.app`** (it only survives next to the
   binary on Win/Linux), so shipping our own copy gives one stable path on all three OSes.
+- **Pin `yauzl` so CI extracts Electron whole.** Node 24.16+/26.1+ regressed `extract-zip`'s
+  async unzip, so Electron's pinned `yauzl@2.x` leaves the prebuilt `dist/` **partially
+  extracted** on CI — a notice file randomly missing per run, so `npm run legal` fails. Add
+  `"overrides": { "yauzl": "^3.3.1" }` to `package.json` and commit the lockfile, so the first
+  `npm ci` extracts completely and deterministically on every runner
+  ([electron/electron#51619](https://github.com/electron/electron/issues/51619),
+  [nodejs/node#63487](https://github.com/nodejs/node/issues/63487); drop once `extract-zip`
+  ships a yauzl-3 release). `prepare-legal.mjs` also **asserts** both Electron notice files are
+  present and `LICENSES.chromium.html` is non-trivial, failing the build loudly instead of
+  silently shipping empty notices — don't reach for Electron's `install.js` as a fallback, its
+  `isInstalled()` short-circuits on the intact version marker and never re-extracts a partial dist.
 - devDeps **`generate-license-file`** → `legal/THIRD-PARTY-NOTICES.txt` (full texts) and
   **`license-checker-rseidelsohn`** → `legal/oss-licenses.json` (the structured list the
   viewer renders; a small cleanup script drops the app itself and strips absolute build
