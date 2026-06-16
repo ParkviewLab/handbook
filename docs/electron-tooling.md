@@ -89,6 +89,35 @@ locally with `npm run build:dist` (= `electron-vite build && electron-builder`).
 - Changelog automation (`cliff.toml` + `scripts/generate_changelog.py`) is the same
   language-agnostic pair as everywhere else.
 
+## License notices + in-app viewer
+
+A packaged Electron app bundles third-party code (Electron → Chromium/Node, plus the
+npm dependency tree) whose MIT/BSD/ISC notices must travel with the binary. Ship a small,
+**generated `legal/` bundle** and surface it in-app.
+[conception-space](https://github.com/ParkviewLab/conception-space) is the reference
+implementation (`scripts/prepare-legal.mjs`, `src/main/index.js`).
+
+- **`scripts/prepare-legal.mjs`** (committed) recreates a gitignored `legal/` and copies
+  the project `LICENSE` + `LICENSING.md` + `LICENSES/` **and Electron's own
+  `LICENSES.chromium.html`** from `node_modules/electron/dist/`. electron-builder
+  **deletes `LICENSES.chromium.html` from the macOS `.app`** (it only survives next to the
+  binary on Win/Linux), so shipping our own copy gives one stable path on all three OSes.
+- devDeps **`generate-license-file`** → `legal/THIRD-PARTY-NOTICES.txt` (full texts) and
+  **`license-checker-rseidelsohn`** → `legal/oss-licenses.json` (the structured list the
+  viewer renders; a small cleanup script drops the app itself and strips absolute build
+  paths).
+- npm scripts `legal:prepare` / `legal:notices` / `legal:list`, a combined `legal`, and
+  `build:dist` runs `npm run legal` before electron-builder. Add `legal/` to `.gitignore`.
+- **`electron-builder.yml`** `extraResources` copies `legal/` to `process.resourcesPath/legal`.
+- **CI** runs `npm run legal` after `npm ci`, before packaging (both electron workflows).
+- **In-app** — a `Help → Open Source Licenses` window reads the bundled files (styled to
+  match the app's own UI), plus a `Source code → GitHub` link in About. Make the **Help menu
+  cross-platform** — without it Windows/Linux have no About/licenses entry at all.
+
+All `legal/` files are generated build artifacts (gitignored); only the scripts are
+committed, covered by the `scripts/**` REUSE bucket. (An all-permissive dependency set
+needs no SBOM or CI license-gate; add those only if a copyleft/unknown dep ever ships.)
+
 ## Dev versions are semver
 
 Between releases `develop` carries a pre-release version (see
