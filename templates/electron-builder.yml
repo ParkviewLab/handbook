@@ -34,6 +34,14 @@ linux:
   category: Utility
   maintainer: Gary Frattarola <garyf@parkviewlab.ai>
 npmRebuild: false
+# Ship the generated license/notice bundle (run `npm run legal` first; CI does
+# this before packaging). electron-builder deletes LICENSES.chromium.html from the
+# macOS .app, so legal/ carries its own copy → one path on all OSes. See
+# electron-tooling.md → "License notices + in-app viewer".
+extraResources:
+  - from: legal
+    to: legal
+    filter: ['**/*']
 publish:
   provider: github
   owner: ParkviewLab
