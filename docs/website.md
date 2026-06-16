@@ -185,7 +185,9 @@ but discovers new repos so the list can't silently fall behind. The pattern is
   dev-tools, the websites themselves, internal tools) appear automatically in the
   summary **table** (name + current version + registry — low-risk facts pulled
   from PyPI/npm).
-- Rich descriptive **cards** render only for **curated** entries.
+- Rich descriptive **cards** render only for **curated** entries — each sourced from the
+  project's registry (PyPI/npm) or, for a desktop/installer product with no registry package,
+  from its **GitHub Releases** (version + per-OS download links; conception-space is the reference).
 
 So a newly-released project shows up on the next nightly build with its version,
 and a human upgrades it to a full card when ready. Fully-automatic listing is a
