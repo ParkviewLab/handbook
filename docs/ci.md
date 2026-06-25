@@ -113,6 +113,8 @@ The tag-driven publish pipeline: `gate` → `docker` + `pypi`/npm → `changelog
 Fully described in [`releases.md`](releases.md). Notes that belong to CI:
 
 - **Pin action versions exactly** (`astral-sh/setup-uv@v8.1.0`, not `@v8`).
+- **Keep actions on the Node 24 runtime.** GitHub removed Node 20 from its runners (force-upgraded to node24 on 2026-06-16; removed ~2026-09-16). Several actions only switched to node24 *several majors* up, so a naïve "one major up" can still land on node20. Verified node24 floors (lowest node24 version):
+  `actions/checkout@v6` · `astral-sh/setup-uv@v8.1.0` (≥v7) · `docker/setup-qemu-action@v4` · `docker/setup-buildx-action@v4` · `docker/login-action@v4` · `docker/metadata-action@v6` · `docker/build-push-action@v7` (**skip v6 — still node20**) · `actions/upload-artifact@v6` (skip v5) · `actions/download-artifact@v7` (skip v5/v6) · `actions/upload-pages-artifact@v5` (skip v4 — bundles a node20 upload-artifact) · `actions/deploy-pages@v5` · `actions/configure-pages@v6` · `actions/setup-python@v6` · `actions/cache@v5`. (All node24 majors need Actions Runner ≥ 2.327.1; GitHub-hosted runners satisfy this.)
 - **GHCR Docker tags always include `latest`:**
 
   ```yaml
