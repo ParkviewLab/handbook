@@ -63,7 +63,7 @@ jobs:
           # and APPLE_ID / APPLE_APP_SPECIFIC_PASSWORD / APPLE_TEAM_ID, and set
           # `mac.notarize: true` in electron-builder.yml.
           CSC_IDENTITY_AUTO_DISCOVERY: false
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: installers-${{ matrix.os }}
           if-no-files-found: error
@@ -87,7 +87,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Download all built installers
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
       - name: Install uv
