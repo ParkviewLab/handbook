@@ -106,6 +106,70 @@ custom domain holds.
 Generated pages and stamped dates are **build output, not source** — `.gitignore`
 them.
 
+## Custom domain & HTTPS
+
+The custom domain is the **apex** (`parkviewlab.ai`), set in **Pages settings** —
+the `CNAME` file in the published artifact holds it (see
+[Deploy](#deploy-github-pages-via-actions)). DNS lives at **Cloudflare**, and every
+record on the certificate path must be **DNS-only (grey-cloud)**: a proxied
+(orange-cloud) record hides the origin, so GitHub can't validate or renew its
+Let's Encrypt certificate.
+
+Two records, both DNS-only:
+
+- **Apex** — four `A` records to GitHub's Pages IPs
+  (`185.199.108.153`–`185.199.111.153`).
+- **`www`** — a `CNAME` to **`parkviewlab.github.io`**: the **org** Pages host, the
+  *same target for every ParkviewLab domain*. It is **not** `<domain>.github.io` —
+  there is no `zoestum` GitHub account; `zoestum.ai`'s repo lives under the
+  ParkviewLab org too. The repo's Settings → Pages page says it outright: "serve
+  your site from a domain other than `parkviewlab.github.io`."
+
+GitHub then issues a **single Let's Encrypt certificate covering both the apex and
+`www`**, and `www` 301-redirects to the bare apex.
+
+### The www-certificate gotcha
+
+Even with DNS correct, `https://www.<domain>` can keep failing with
+`SSL_ERROR_BAD_CERT_DOMAIN` — it's serving GitHub's `*.github.io` fallback cert,
+which has no `www` SAN — while the apex is fine. The Pages API shows it stuck:
+
+```bash
+gh api repos/ParkviewLab/<repo>/pages --jq '.https_certificate | {state, domains}'
+# stuck:  {"state":"dns_changed","domains":["<domain>"]}            ← apex only
+# fixed:  {"state":"approved","domains":["<domain>","www.<domain>"]}
+```
+
+> **The fix is to LOAD the repo's Settings → Pages page in a browser — not the REST
+> API.** GitHub re-evaluates whether `www` needs a certificate *every time that page
+> loads*; the API `cname` remove/re-add (`PUT .../pages`) does **not** re-derive
+> `www`, and leaves the cert stuck in `dns_changed` for hours. One page load flips it
+> to `approved` for both names within minutes; the live cert follows after CDN
+> propagation. *Then* tick **Enforce HTTPS** — only once `www` actually serves.
+
+So the two-step recovery when `www` is stuck is:
+
+1. Ensure `www` is `CNAME → parkviewlab.github.io`, DNS-only (fix it if it's pointed
+   at the apex or proxied).
+2. Open `https://github.com/ParkviewLab/<repo>/settings/pages` once. Don't churn the
+   page; leave Enforce HTTPS off until the certificate covers `www`.
+
+Verify on the wire — success is a `www` SAN:
+
+```bash
+echo | openssl s_client -connect www.<domain>:443 -servername www.<domain> 2>/dev/null \
+  | openssl x509 -noout -ext subjectAltName
+#   X509v3 Subject Alternative Name:
+#       DNS:<domain>, DNS:www.<domain>          ← both names
+```
+
+**Don't chase the usual red herrings.** For a DNS-only Pages domain they're inert:
+DNSSEC (check it's even enabled before touching it), CAA (the apex needs none; `www`
+inherits `github.io`'s, which already permits `letsencrypt.org`), Let's Encrypt
+rate-limits (they return errors — they don't silently hang), and re-enabling the
+Cloudflare proxy (that *breaks* GitHub's native cert and its renewal). The cause is
+almost always the `www` record shape plus the API-vs-UI re-derivation above.
+
 ## Versioning
 
 **None.** A website has no version its consumers depend on, and it's
