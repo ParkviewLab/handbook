@@ -124,7 +124,9 @@ Fully described in [`releases.md`](releases.md). Notes that belong to CI:
     type=raw,value=latest
   ```
 - **Trusted publishing (OIDC), no long-lived secrets** — PyPI
-  (`pypa/gh-action-pypi-publish`, `environment: pypi`) and npm.
+  (`pypa/gh-action-pypi-publish`, `environment: pypi`) and npm. Register the publisher at
+  the **org** level so the package is born org-owned — see
+  [Org-owned trusted publishers](#org-owned-trusted-publishers) below.
 - The `changelog` job needs `contents: write` (scoped to that job) and the
   org-level `ANTHROPIC_API_KEY`. It pulls the anthropic SDK just-in-time with
   `uv run --with anthropic …` so the workflow snippet stays identical in every
@@ -136,6 +138,9 @@ Fully described in [`releases.md`](releases.md). Notes that belong to CI:
   same `gate` + `changelog` shape, but the middle is a **macOS/Windows/Linux build matrix** (electron-builder)
   whose installers the `changelog` job attaches to the GitHub Release. **No GHCR image.** See
   [`electron-tooling.md`](electron-tooling.md).
+- **Pure CLI/library packages** (no container image, e.g. `cogrind-workshop`) drop the
+  `docker` job from `release.yml` — and from `dev-release.yml` if present — leaving
+  `gate` → `pypi`/npm → `changelog`. Trim the job from the template; no separate template.
 
 ## `dev-release.yml` — on-demand dev build (optional, code repos)
 
@@ -143,8 +148,13 @@ A **manually-triggered** (`workflow_dispatch`) pre-release publish, for exercisi
 the real release — run from `develop` (`gh workflow run dev-release.yml --ref develop`, or via
 `git dev-release`). It builds and publishes a **pre-release** — a GHCR **`:dev`** image (+
 `:X.Y.Z.devN`) and `X.Y.Z.devN` to **TestPyPI** — and creates **no `v*` tag**, so it never trips the
-`release.yml` gate; no changelog/CHANGELOG-commit. Needs a **TestPyPI trusted publisher**
-(`environment: testpypi`), set up like the PyPI one. See
+`release.yml` gate; no changelog/CHANGELOG-commit. Needs its **own TestPyPI trusted
+publisher**, which differs from the PyPI one in two fields: it authorizes the workflow
+**`dev-release.yml`** (not `release.yml`) and the environment **`testpypi`** (not `pypi`).
+**TestPyPI is a separate instance from pypi.org** — its own account and login, and an org
+must be requested there independently; until that org is approved the publisher is a plain
+**individual-account** pending publisher, which is fine for a throwaway sandbox. Create a
+matching `testpypi` GitHub environment (no protection rules). See
 [`releases.md`](releases.md#development-versioning).
 
 **Electron apps** use [`dev-release-electron.yml`](../templates/.github/workflows/dev-release-electron.yml) —
@@ -176,6 +186,30 @@ where the repo's own license requires keeping deps non-copyleft.
 `ANTHROPIC_API_KEY` is set at the **ParkviewLab org** level and inherited by every
 repo (used by the changelog job's Highlights call). A missing key degrades
 gracefully — the changelog gets a placeholder and the release still ships.
+
+## Org-owned trusted publishers
+
+A package should be owned by the **ParkviewLab PyPI org**, not by whoever's account
+happened to run the first publish. How you get there depends on whether the package
+exists yet:
+
+- **New package (not yet published) →** register a **pending** trusted publisher at the
+  **org** level before the first release: *ParkviewLab → Publishing* on PyPI, with owner
+  `ParkviewLab`, the repo name, workflow `release.yml`, and environment `pypi`. The first
+  publish then creates the project **born org-owned**, with no personal-account step to
+  undo. (Org-level pending publishers are a PyPI feature, added 2025-11.)
+- **Existing package (already published under a personal account) →** move it in from the
+  **org Projects page → "Transfer existing project"** (the drop-down of your personal
+  projects at the bottom of the org's Projects page). Do **not** confuse this with the
+  project-settings **"Transfer project"** control, which is org→org and makes you type the
+  project name. You must act as an org **Owner** for the transfer to take.
+
+**Trusted publishers survive the transfer — leave them untouched.** OIDC is attached to the
+*project* record and checks only the GitHub token claims (`repository_owner`, repo,
+`release.yml`, `environment`); it consults no PyPI account or org identity. Because every
+ParkviewLab repo already lives at `github.com/ParkviewLab/<repo>`, the org move changes no
+claim and releases keep working. Recreating an overlapping publisher is what causes a race —
+don't.
 
 ## Dependency management
 
