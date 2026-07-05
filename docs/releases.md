@@ -75,11 +75,19 @@ helpers' home).
 ```bash
 # in the <repo>-main worktree — the whole release runs from the CLI under one authorisation:
 git pull --ff-only                   # sync main
+git -C ../<repo>-develop pull --ff-only   # sync develop too — see the caution below
 git merge --no-ff develop            # promote develop→main; the merge commit is the release ledger entry
 git bump <patch|minor|major|release|X.Y.Z>   # edits the SoT file, commits "release v<new>"
 git release                          # annotated tag v<new>, derived from the SoT
 git push --follow-tags               # the tag push fires the release workflow
 ```
+
+> **Sync `develop` before you promote.** `git merge --no-ff develop` merges the *local*
+> `develop` worktree, not `origin/develop`. After a PR **squash-merges on GitHub**, that
+> local worktree is stale, so the merge quietly promotes and tags a commit that omits the
+> merged work. The `git -C ../<repo>-develop pull --ff-only` line above closes the gap;
+> skip it and you ship the wrong commit. (This is why the layout sets branch upstream
+> tracking at creation — see [`repo-layout.md`](repo-layout.md#creating-the-layout).)
 
 - **`git bump`** bumps the version in the source of truth (`pyproject.toml` /
   `package.json` / `VERSION.txt`, auto-detected), stages the change (+ lockfile if
@@ -154,6 +162,11 @@ single release authorisation covers it (see
 **Electron apps diverge:** no GHCR image — the middle is a macOS/Windows/Linux build
 matrix (electron-builder), and the `changelog` job attaches the OS installers to the
 GitHub Release. See [`electron-tooling.md`](electron-tooling.md).
+
+**Pure CLI/library packages diverge too:** a package that ships no container image (e.g.
+`cogrind-workshop`) drops the `docker` job entirely — from `release.yml` and, if present,
+`dev-release.yml` — leaving only `gate` → `publish` → `changelog`. Trim the job from the
+template; no separate template is needed.
 
 Reference implementations: deco-assaying's `release.yml` (Python/PyPI) and
 jonobones's `.github/workflows/release.yml` (Node/npm).
