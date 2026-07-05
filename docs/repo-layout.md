@@ -52,11 +52,20 @@ git -C repo_name.git fetch origin
 git -C repo_name.git config --unset core.bare   # prevent the worktreeConfig→bare leak (see below)
 git -C repo_name.git worktree add ../repo_name-main main
 git -C repo_name.git worktree add ../repo_name-develop develop
+git -C repo_name.git branch --set-upstream-to=origin/main main
+git -C repo_name.git branch --set-upstream-to=origin/develop develop
 ```
 
 The **fetch-refspec line is required**: `git clone --bare` does not configure
 remote-tracking, so without it a worktree's `git status` won't show ahead/behind and
 `git pull` won't track `origin`.
+
+The **two `--set-upstream-to` lines are required too**, and for a distinct reason: the
+refspec creates the remote-tracking refs (`origin/main`, `origin/develop`), but a bare
+clone leaves each local branch with no configured upstream. Without the upstream link,
+argument-less `git pull --ff-only` — used throughout the release and back-merge flow —
+fails with *"There is no tracking information for the current branch."* Set it once at
+creation and the release commands work with no per-invocation arguments.
 
 The **`--unset core.bare` line** hardens the repo against a config leak that would
 otherwise mark every worktree bare — see
