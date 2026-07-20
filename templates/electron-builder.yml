@@ -1,7 +1,8 @@
 # electron-builder — packages the electron-vite build (out/) into platform
 # installers: .dmg (macOS), NSIS .exe (Windows), .AppImage + .deb (Linux).
-# Run after `npm run build`. Unsigned by default — see the handbook's
-# electron-tooling.md. Set appId / productName / publish owner+repo for your app.
+# Run after `npm run build`. The macOS build signs + notarizes when the Apple secrets
+# are set, else unsigned (see the handbook's electron-tooling.md). Set appId /
+# productName / publish owner+repo for your app.
 appId: ai.parkviewlab.<repo>
 productName: <Product Name>
 artifactName: ${name}-${version}-${arch}.${ext}
@@ -18,8 +19,13 @@ files:
 mac:
   category: public.app-category.productivity
   target: dmg
-  # Unsigned for now; the release workflow sets CSC_IDENTITY_AUTO_DISCOVERY=false.
-  notarize: false
+  hardenedRuntime: true
+  # When the Apple secrets are present, release-electron.yml's macOS job signs with a
+  # Developer ID Application cert (CSC_LINK / CSC_KEY_PASSWORD) and notarizes via an App
+  # Store Connect API key (APPLE_API_KEY / _ID / _ISSUER); absent them the build is
+  # unsigned. Notarization activates from those env vars; electron-builder applies its
+  # default Electron entitlements under the hardened runtime, so no custom entitlements
+  # plist is needed.
 win:
   target: nsis
 nsis:
