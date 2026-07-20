@@ -52,13 +52,17 @@ Copy [`templates/electron-builder.yml`](../templates/electron-builder.yml); set
 Targets: **macOS** `dmg`, **Windows** `nsis`, **Linux** `AppImage` + `deb`. Build
 locally with `npm run build:dist` (= `electron-vite build && electron-builder`).
 
-- **Unsigned for now.** The release workflow sets `CSC_IDENTITY_AUTO_DISCOVERY=false`
-  and `electron-builder.yml` has `mac.notarize: false`, so builds are unsigned —
-  macOS Gatekeeper and Windows SmartScreen warn on first launch (document the
-  bypass in the README). **To enable signing later** (a small, well-scoped change):
-  add `CSC_LINK` / `CSC_KEY_PASSWORD` (mac + win) and `APPLE_ID` /
-  `APPLE_APP_SPECIFIC_PASSWORD` / `APPLE_TEAM_ID` secrets, drop the
-  `CSC_IDENTITY_AUTO_DISCOVERY` line, and set `mac.notarize: true`.
+- **macOS signing + notarization.** When the five Apple secrets are set, the release
+  workflow signs the macOS build with a **Developer ID Application** cert (`CSC_LINK` = the
+  base64-encoded `.p12`; `CSC_KEY_PASSWORD` = its export password) and **notarizes** it via an
+  **App Store Connect API key** (`APPLE_API_KEY_B64` = the base64-encoded `.p8`, which the
+  workflow decodes to a file and points `APPLE_API_KEY` at; plus `APPLE_API_KEY_ID` and
+  `APPLE_API_ISSUER`). `electron-builder.yml` sets `mac.hardenedRuntime: true`, and
+  notarization activates from those env vars — no `mac.notarize: true` needed. The signing env
+  is scoped to the macOS runner (`runner.os == 'macOS'`) so the creds never reach the Windows
+  job; **Windows and Linux stay unsigned** (SmartScreen warns on first launch — document the
+  bypass in the README). Keep the five secrets at repo or org level; absent them, macOS falls
+  back to an unsigned build (Gatekeeper warns).
 - **App icon** — drop a 1024×1024 `build/icon.png`; electron-builder derives the
   `.icns` / `.ico` / Linux icons. With none, the default Electron icon ships.
 - **macOS arch** — `macos-latest` is arm64, so the `.dmg` is Apple-Silicon-only;
@@ -102,17 +106,27 @@ implementation (`scripts/prepare-legal.mjs`, `src/main/index.js`).
   `LICENSES.chromium.html`** from `node_modules/electron/dist/`. electron-builder
   **deletes `LICENSES.chromium.html` from the macOS `.app`** (it only survives next to the
   binary on Win/Linux), so shipping our own copy gives one stable path on all three OSes.
-- **Pin `yauzl` so CI extracts Electron whole.** Node 24.16+/26.1+ regressed `extract-zip`'s
-  async unzip, so Electron's pinned `yauzl@2.x` leaves the prebuilt `dist/` **partially
-  extracted** on CI — a notice file randomly missing per run, so `npm run legal` fails. Add
-  `"overrides": { "yauzl": "^3.3.1" }` to `package.json` and commit the lockfile, so the first
-  `npm ci` extracts completely and deterministically on every runner
+- **Extract Electron's prebuilt before `npm run legal` (Electron 43).** Electron 43 ships no
+  npm install script, so `npm ci` does **not** unpack its prebuilt `dist/`. `npm run legal`
+  reads the Chromium notices straight from `dist/` on disk (the legal step only reads files; it
+  never runs Electron), so an unextracted `dist/` leaves the notices absent and the step fails.
+  Run **`node node_modules/electron/install.js`** right after `npm ci`, before `npm run legal`,
+  so `dist/` and its `LICENSES.chromium.html` exist. `install.js`'s `isInstalled()` returns
+  false whenever `dist/version` or `path.txt` is missing — exactly the post-`npm ci` state on
+  43 — so it downloads and extracts; it short-circuits only when that marker is already present,
+  so it cannot repair a *partial* extraction (a different, older failure mode; see the note
+  below). `prepare-legal.mjs` then **asserts** both Electron notice files are present and
+  `LICENSES.chromium.html` is non-trivial, so a missed extraction fails the build loudly instead
+  of silently shipping empty notices. Both electron workflows run the `install.js` step.
+- **Historical: the `yauzl` override (Electron ≤ 34, now inert).** On Electron 34, `npm ci`
+  **did** run Electron's `postinstall` → `install.js`, but a Node 24.16+/26.1+ `extract-zip`
+  regression left the pinned `yauzl@2.x` extracting `dist/` only **partially** (a notice file
+  missing per run, failing `npm run legal`); the fix was `"overrides": { "yauzl": "^3.3.1" }` in
+  `package.json`
   ([electron/electron#51619](https://github.com/electron/electron/issues/51619),
-  [nodejs/node#63487](https://github.com/nodejs/node/issues/63487); drop once `extract-zip`
-  ships a yauzl-3 release). `prepare-legal.mjs` also **asserts** both Electron notice files are
-  present and `LICENSES.chromium.html` is non-trivial, failing the build loudly instead of
-  silently shipping empty notices — don't reach for Electron's `install.js` as a fallback, its
-  `isInstalled()` short-circuits on the intact version marker and never re-extracts a partial dist.
+  [nodejs/node#63487](https://github.com/nodejs/node/issues/63487)). Electron 43's extraction
+  path no longer reaches that code, so the override is **inert**; the reference repo dropped it
+  (conception-space #24), and a new Electron-43 repo needs only the `install.js` step above.
 - devDeps **`generate-license-file`** → `legal/THIRD-PARTY-NOTICES.txt` (full texts) and
   **`license-checker-rseidelsohn`** → `legal/oss-licenses.json` (the structured list the
   viewer renders; a small cleanup script drops the app itself and strips absolute build
@@ -120,7 +134,8 @@ implementation (`scripts/prepare-legal.mjs`, `src/main/index.js`).
 - npm scripts `legal:prepare` / `legal:notices` / `legal:list`, a combined `legal`, and
   `build:dist` runs `npm run legal` before electron-builder. Add `legal/` to `.gitignore`.
 - **`electron-builder.yml`** `extraResources` copies `legal/` to `process.resourcesPath/legal`.
-- **CI** runs `npm run legal` after `npm ci`, before packaging (both electron workflows).
+- **CI** runs `node node_modules/electron/install.js` then `npm run legal` after `npm ci`,
+  before packaging (both electron workflows).
 - **In-app** — a `Help → Open Source Licenses` window reads the bundled files (styled to
   match the app's own UI), plus a `Source code → GitHub` link in About. Make the **Help menu
   cross-platform** — without it Windows/Linux have no About/licenses entry at all.
