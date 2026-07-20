@@ -145,8 +145,8 @@ the research and proposals build on.
   Node ≥24, `src/` → `dist/` via `tsc`.
 - Electron: electron-vite + electron-builder; per-OS installers to a GitHub
   Release (no GHCR); macOS signing + Apple notarization; a generated `legal/`
-  notices bundle + in-app viewer; a `yauzl` override fixing a Node-24
-  extract-zip bug; auto-update deferred.
+  notices bundle + in-app viewer; an `install.js` step completing Electron 43's
+  prebuilt extraction before the legal bundle; auto-update deferred.
 
 ### MCP server architecture
 - `mcp[cli]>=1.27` + FastAPI + uvicorn + starlette + pydantic; Streamable-HTTP
