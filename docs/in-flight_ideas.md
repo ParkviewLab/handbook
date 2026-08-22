@@ -80,8 +80,15 @@ as an ADR. [D1]
 
 ## Quality gates sized for a one-engineer org
 Coverage floors + a testing-trophy note; publint/attw before npm publish; a
-pinned `ty`; Electron Fuses + renderer-security tripwire; tightened MCP
-CORS/auth; the `/sse` to `/mcp` rename. [A9, A11-A18]
+pinned `ty`; Electron Fuses + renderer-security tripwire. [A9, A11-A15, A18]
+
+## MCP transport currency and security (conventions landed, rollout open)
+A16/A17 are recorded in `mcp-server-conventions.md`: the endpoint is `/mcp`,
+`POST`-only for a stateless server, with explicit `TransportSecuritySettings`,
+allowlist-scoped CORS, and an honest "Auth model" section. What remains is the
+per-repo migration, each its own breaking release: bronze-scribing first, then
+deco-assaying, smalt-mcp, flint-slating, and ebony-enriching when next touched.
+[A16, A17]
 
 ## Watch list (track, don't adopt yet)
 ty 1.0; TypeScript 7 / tsgo (RC); Node 26 LTS (Oct 2026); npm explicit-actions

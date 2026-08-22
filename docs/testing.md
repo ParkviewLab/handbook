@@ -36,11 +36,11 @@ download path, `integration` for end-to-end server tests.
 
 ## conftest patterns (MCP servers)
 
-The MCP `/sse` transport's `StreamableHTTPSessionManager` **hard-errors if
+The Streamable-HTTP transport's `StreamableHTTPSessionManager` **hard-errors if
 `run()` is called twice**, and the FastAPI lifespan calls `run()`. So:
 
 - **One session-scoped `mcp_client` `TestClient`** lives in `conftest.py`; every
-  test module that touches `/sse` reuses it (don't open a second `with
+  test module that touches the MCP endpoint reuses it (don't open a second `with
   TestClient(app)` per module).
 - **Set env vars before importing the server module.** `server.py` constructs its
   `App()`/config at import time, so the fixture sets `SMALT_DIR`,
