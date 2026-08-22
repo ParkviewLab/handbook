@@ -150,7 +150,8 @@ the research and proposals build on.
 
 ### MCP server architecture
 - `mcp[cli]>=1.27` + FastAPI + uvicorn + starlette + pydantic; Streamable-HTTP
-  mounted at `/sse` (+ optional stdio).
+  mounted at `/mcp`, `POST`-only for a stateless server, with explicit
+  `TransportSecuritySettings` (+ optional stdio).
 - Module layout: `config.py` (pure leaf), `__main__.py`, `server.py`,
   `tools.py`, `schema.py`.
 - `/health` + `/admin/version` endpoints; permission scopes as an `Enum`;
@@ -464,6 +465,8 @@ claims) de-duplicates into Part 4. The per-cluster headline gaps:
 - MCP: the mount path `/sse` is the deprecated-transport name (the spec and SDK
   use `/mcp`); wildcard CORS plus an all-interfaces bind is the DNS-rebinding
   shape; the shared-token auth is a pre-OAuth placeholder.
+  **Closed in the conventions** by A16/A17 below; the five servers still migrate
+  one at a time, bronze-scribing first.
 - Agent conventions: `AGENTS.md` and `CLAUDE.md` are byte-identical duplicates
   (should be an `@import`); there is no `settings.json` permission scoping, so
   the guardrails live only in advisory prose, not harness-enforced rules.
@@ -581,15 +584,27 @@ Node/Electron correctness and security:
 
 MCP currency and security:
 
-- A16 Rename the mount path `/sse → /mcp` across the server family as a
-  coordinated per-repo breaking release, preserving the raw-ASGI route with an
-  explanatory comment (P2/S, replace-bespoke: renames the route, keeps the
-  transport). [13]
-- A17 Tighten CORS to an allowlist (or drop it for non-browser servers), validate
-  the Origin header, default the bind to `127.0.0.1`, and add an honest "Auth
-  model" section naming the shared token a pre-OAuth, localhost-only placeholder
-  that must not be exposed publicly without a real OAuth 2.1 resource server
-  (P2/S, augment). [14]
+- A16 **Landed in the conventions.** Rename the mount path `/sse → /mcp` across the
+  server family as a coordinated per-repo breaking release, preserving the raw-ASGI
+  route with an explanatory comment (P2/S, replace-bespoke: renames the route, keeps
+  the transport). [13]
+  `mcp-server-conventions.md` now prescribes `/mcp` and explains why, including the
+  observed failure mode (a legacy client GETting `/sse` receives an open stream with
+  no `endpoint` event and hangs rather than failing) and the rule against keeping a
+  `/sse` alias. Also corrects the method list to `POST` for a stateless server.
+  **Per-repo rollout still open:** bronze-scribing is the first adopter;
+  deco-assaying, smalt-mcp, flint-slating, and ebony-enriching migrate when next
+  touched, each as its own breaking release.
+- A17 **Landed in the conventions.** Tighten CORS to an allowlist (or drop it for
+  non-browser servers), validate the Origin header, default the bind to
+  `127.0.0.1`, and add an honest "Auth model" section naming the shared token a
+  pre-OAuth, localhost-only placeholder that must not be exposed publicly without a
+  real OAuth 2.1 resource server (P2/S, augment). [14]
+  `mcp-server-conventions.md` now carries a "Transport security" subsection citing
+  ebony-enriching as the reference implementation, an allowlist-scoped
+  `CORSMiddleware`, and an "Auth model" section. One question is deliberately left
+  per-server: what an unset token means (smalt-mcp falls open; bronze-scribing is
+  adopting the opposite). **Per-repo rollout still open** as for A16.
 
 Testing, Python tooling, packaging, worktrees, merge safety:
 
