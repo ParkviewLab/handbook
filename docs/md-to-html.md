@@ -81,15 +81,13 @@ reading each serves.
    The reader sees "there are four; they are peers; they fit together" before
    reading any one of them. (MD: a numbered list, fine but linear.)
 2. **An umbrella paragraph above the grid** says why there are several intents
-   and how to hold them together: peers, mutually reinforcing, their tensions
-   design-revealing.
+   and how to hold them together: peers, mutually reinforcing.
 3. **Each intent gets a deep-dive section** below the grid, in document order.
    The grid has already shown them as peers, so the deep dives read as
    expansions of a constellation, not as a sequential argument.
 4. **A closing "how the four reinforce each other" section** shows the
-   dependencies between the intents as a small constellation diagram, then works
-   the tensions (the family against self-containment; automation against the
-   gate on the irreversible) to show why a tension is worth stating.
+   dependencies between the intents as a small constellation diagram, then
+   states the one point where two intents meet and what resolves it.
 5. **The axioms support all the intents.** They are not regrouped per intent;
    the claim is that the same axioms hold for every intent from a different
    angle, and the grid presents them together, each with its faded numeral.
@@ -106,8 +104,7 @@ reading each serves.
    them. Restraint is itself a design move: a visual that does not clarify is
    decoration to cut.
 2. **The brand, used with restraint.** The three brand colours carry identity;
-   the Bauhaus accents mark the four intents and the tensions and nothing
-   else; Michroma is embedded, the logo mark inlined; no JS, no animation.
+   the Bauhaus accents mark the four intents and nothing else; Michroma is embedded, the logo mark inlined; no JS, no animation.
 3. **Wording faithful to the Markdown**, sentence for sentence, so the twin can
    be checked against its source and re-authored from it when they drift.
 

@@ -21,8 +21,7 @@ exists), treated as authoritative even where it contradicts the README or the co
 Structure (from jonobones and conception-space):
 
 1. **Intent** — one to several **complementary intents**, presented as peers (not
-   one primary + the rest secondary). Two to four is the sweet spot. The tensions
-   *between* intents are design-revealing — surface them rather than hide them.
+   one primary + the rest secondary). Two to four is the sweet spot.
 2. **Axioms** — a numbered list of design principles derived from the intents.
    The same axioms support all the intents, from different angles.
 3. **Guiding questions** (optional) — the questions the design keeps answering.

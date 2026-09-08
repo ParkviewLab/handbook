@@ -14,8 +14,7 @@ go; the finished file carries only the SPDX header, the prose, and the footer.
 
 Guidance, in brief:
 - Two to four complementary intents, presented as peers. One clear intent
-  beats several muddled ones; do not force a second. The tensions between
-  intents are design-revealing, so state them rather than hide them.
+  beats several muddled ones; do not force a second.
 - Axioms are design principles derived from the intents. The same axioms
   support all the intents, from different angles; do not group them per intent.
 - Wording is the author's own. This document is read by people and by AI
@@ -49,8 +48,7 @@ answers do not fill it. This is the "why", not a feature list.]
 
 [Project] serves [N] complementary intents: facets of one purpose, presented
 as peers rather than as one primary and the rest secondary, and mutually
-reinforcing. The tensions between them, below, are where the design is
-decided.
+reinforcing.
 
 1. **[Intent 1, as a short name.]** [One paragraph stating it.]
 
@@ -74,11 +72,8 @@ the concrete choices already made in its service. One to three paragraphs.]
 ### How the intents reinforce each other
 
 [One paragraph on the dependencies: which intent makes which possible, and
-what accumulates when they hold together.]
-
-[One or more tensions, each worked: name the two intents that pull against
-each other, the case in which they do, and the resolution the design
-chooses and why. A tension left unresolved is a decision still to make.]
+what accumulates when they hold together. Where two intents meet at some
+point and the design has chosen between them, say so plainly there.]
 
 ## Axioms
 

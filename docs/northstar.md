@@ -15,8 +15,7 @@ left standing by accident.
 
 ParkviewLab engineering serves four complementary intents: facets of one
 purpose, presented as peers rather than as one primary and three secondary,
-and mutually reinforcing. The tensions between them, below, are where the
-conventions get decided.
+and mutually reinforcing.
 
 1. **One shape across many repos.**
    ParkviewLab is a *family* of repos, not a monorepo and not a pile of
@@ -121,15 +120,12 @@ others and describes itself. And automation (4) is possible only because the
 processes are written down (3): an agent can run a release exactly because the
 release flow is a page and a helper, not a memory.
 
-Two tensions are worth keeping in view. The "Many repos" intent (1) is
-usefully in tension with "Self-contained" intent (2). N repos means N copies of
-the conventions to keep honest. The resolution is *shared* sources (this
-handbook and `dev-tools`) so the convention has one home even when it lives in
-many repos. And "Use AI to automate" (4) pulls against the gate that axiom 4
-keeps on the irreversible: the more a process is automated, the more tempting
-it is to automate the merge, the tag, and the release too. The resolution is
-that those steps keep an explicit human hand, and an agent asks for it
-per action rather than inferring it.
+Intents 1 and 2 meet at one point: N repos means N copies of the conventions
+to keep honest. The resolution is *shared* sources (this handbook and
+`dev-tools`) so the convention has one home even when it lives in many repos.
+Intent 4 stops where axiom 4 begins: the mechanical steps are automated, and
+merging, tagging, and releasing keep an explicit human hand, asked for per
+action rather than inferred.
 
 ## Axioms
 

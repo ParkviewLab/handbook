@@ -85,12 +85,10 @@ svg .txt{font-family:var(--mono);font-size:9px;fill:var(--muted);letter-spacing:
 svg .txt.ink{fill:var(--ink);}
 svg .lead{stroke:var(--teal-deep);stroke-width:1.4;fill:none;}
 svg .lead.thin{stroke-width:1;}
-svg .tension{stroke:var(--red);stroke-width:1.4;stroke-dasharray:4 3;fill:none;}
+svg .gated{stroke:var(--red);stroke-width:1.4;stroke-dasharray:4 3;fill:none;}
 svg .gate{fill:var(--red);}
 svg .node{fill:var(--card);stroke:var(--teal-deep);stroke-width:2;}
-svg .node.ax{stroke:var(--red);}
 svg .numeral{font-family:'Michroma',var(--sans);font-size:12px;fill:var(--teal-deep);}
-svg .numeral.ax{fill:var(--red);font-size:9px;}
 svg .person{fill:none;stroke:var(--ink);stroke-width:1.6;}
 svg .agent{fill:var(--teal);}
 svg .agent2{fill:var(--teal-deep);}
@@ -176,8 +174,7 @@ footer.site{margin-top:64px;border-top:3px solid var(--ink);padding-top:20px;fon
   <div class="section-label">intents</div>
   <p class="umbrella">ParkviewLab engineering serves four complementary intents:
     facets of one purpose, presented as peers rather than as one primary and three
-    secondary, and mutually reinforcing. The tensions between them, below, are
-    where the conventions get decided.</p>
+    secondary, and mutually reinforcing.</p>
   <div class="intents">
     <div class="intent i1"><div class="num">1</div><h3>One shape across many repos</h3>
       <p>ParkviewLab is a <em>family</em> of repos, not a monorepo and not a pile
@@ -278,7 +275,7 @@ footer.site{margin-top:64px;border-top:3px solid var(--ink);padding-top:20px;fon
 
   <section class="dive d4">
     <h2><span class="n">4</span>Use AI to automate the processes</h2>
-    <div class="figure"><svg viewBox="0 0 432 116" role="img" aria-label="the mechanical steps automated, the irreversible ones gated"><rect class="box" x="12" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="40" y="64" text-anchor="middle">branch</text><line class="lead thin" x1="68" y1="60" x2="80" y2="60"/><rect class="box" x="80" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="108" y="64" text-anchor="middle">commit</text><line class="lead thin" x1="136" y1="60" x2="148" y2="60"/><rect class="box" x="148" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="176" y="64" text-anchor="middle">PR</text><line class="lead thin" x1="204" y1="60" x2="216" y2="60"/><rect class="box" x="216" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="244" y="64" text-anchor="middle">merge</text><line class="lead thin" x1="272" y1="60" x2="284" y2="60"/><rect class="gate" x="210" y="42" width="3" height="36"/><rect class="box" x="284" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="312" y="64" text-anchor="middle">tag</text><line class="lead thin" x1="340" y1="60" x2="352" y2="60"/><rect class="gate" x="278" y="42" width="3" height="36"/><rect class="box" x="352" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="380" y="64" text-anchor="middle">release</text><rect class="gate" x="346" y="42" width="3" height="36"/><path class="lead" d="M12,36 L12,30 L216,30 L216,36" /><text class="txt" x="14" y="22" text-anchor="start" style="font-size:8px;letter-spacing:.04em">automated: taught once, run the same way every time</text><path class="tension" d="M216,86 L216,92 L420,92 L420,86" /><text class="txt" x="318" y="108" text-anchor="middle" fill="var(--red)">irreversible: an explicit human hand</text></svg></div>
+    <div class="figure"><svg viewBox="0 0 432 116" role="img" aria-label="the mechanical steps automated, the irreversible ones gated"><rect class="box" x="12" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="40" y="64" text-anchor="middle">branch</text><line class="lead thin" x1="68" y1="60" x2="80" y2="60"/><rect class="box" x="80" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="108" y="64" text-anchor="middle">commit</text><line class="lead thin" x1="136" y1="60" x2="148" y2="60"/><rect class="box" x="148" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="176" y="64" text-anchor="middle">PR</text><line class="lead thin" x1="204" y1="60" x2="216" y2="60"/><rect class="box" x="216" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="244" y="64" text-anchor="middle">merge</text><line class="lead thin" x1="272" y1="60" x2="284" y2="60"/><rect class="gate" x="210" y="42" width="3" height="36"/><rect class="box" x="284" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="312" y="64" text-anchor="middle">tag</text><line class="lead thin" x1="340" y1="60" x2="352" y2="60"/><rect class="gate" x="278" y="42" width="3" height="36"/><rect class="box" x="352" y="46" width="56" height="28" rx="4"/><text class="txt ink" x="380" y="64" text-anchor="middle">release</text><rect class="gate" x="346" y="42" width="3" height="36"/><path class="lead" d="M12,36 L12,30 L216,30 L216,36" /><text class="txt" x="14" y="22" text-anchor="start" style="font-size:8px;letter-spacing:.04em">automated: taught once, run the same way every time</text><path class="gated" d="M216,86 L216,92 L420,92 L420,86" /><text class="txt" x="318" y="108" text-anchor="middle" fill="var(--red)">irreversible: an explicit human hand</text></svg></div>
     <div class="prose">
       <p>Any process with defined steps is a process an agent can be taught:
         creating a branch, committing, opening a pull request, bumping the
@@ -297,7 +294,7 @@ footer.site{margin-top:64px;border-top:3px solid var(--ink);padding-top:20px;fon
 
   <section class="dive" style="--ac:var(--red)">
     <h2>How the four reinforce each other</h2>
-    <div class="figure"><svg viewBox="0 0 360 230" role="img" aria-label="how the four intents reinforce each other"><line class="lead" x1="270.0" y1="52.0" x2="92.0" y2="52.0"/><polygon points="92.0,52.0 100.0,48.0 100.0,56.0" fill="var(--teal-deep)"/><line class="lead" x1="86.7" y1="63.0" x2="161.6" y2="112.0"/><polygon points="161.6,112.0 152.7,110.9 157.1,104.2" fill="var(--teal-deep)"/><line class="lead" x1="273.3" y1="63.0" x2="198.4" y2="112.0"/><polygon points="198.4,112.0 202.9,104.2 207.3,110.9" fill="var(--teal-deep)"/><line class="lead" x1="180.0" y1="144.0" x2="180.0" y2="176.0"/><polygon points="180.0,176.0 176.0,168.0 184.0,168.0" fill="var(--teal-deep)"/><line class="tension" x1="92" y1="52" x2="268" y2="52"/><text class="txt" x="180" y="22" text-anchor="middle" fill="var(--red)">tension: N copies to keep honest → shared sources</text><circle class="node ax" cx="330" cy="198" r="16"/><text class="numeral ax" x="330" y="196" text-anchor="middle">ax.</text><text class="numeral ax" x="330" y="205" text-anchor="middle">4</text><line class="tension" x1="200" y1="198" x2="312" y2="198"/><text class="txt" x="256" y="216" text-anchor="middle" fill="var(--red)">tension: the gate stays</text><circle class="node" cx="70" cy="52" r="18"/><text class="numeral" x="70" y="56" text-anchor="middle">1</text><text class="txt ink" x="70" y="84" text-anchor="middle">one shape</text><circle class="node" cx="290" cy="52" r="18"/><text class="numeral" x="290" y="56" text-anchor="middle">2</text><text class="txt ink" x="290" y="84" text-anchor="middle">self-contained</text><circle class="node" cx="180" cy="124" r="18"/><text class="numeral" x="180" y="128" text-anchor="middle">3</text><text class="txt ink" x="206" y="128" text-anchor="start">legible</text><circle class="node" cx="180" cy="198" r="18"/><text class="numeral" x="180" y="202" text-anchor="middle">4</text><text class="txt ink" x="180" y="230" text-anchor="middle">automate</text><text class="txt" x="150" y="112" text-anchor="end">makes possible</text></svg></div>
+    <div class="figure"><svg viewBox="0 0 360 230" role="img" aria-label="how the four intents reinforce each other"><line class="lead" x1="270.0" y1="52.0" x2="92.0" y2="52.0"/><polygon points="92.0,52.0 100.0,48.0 100.0,56.0" fill="var(--teal-deep)"/><line class="lead" x1="86.7" y1="63.0" x2="161.6" y2="112.0"/><polygon points="161.6,112.0 152.7,110.9 157.1,104.2" fill="var(--teal-deep)"/><line class="lead" x1="273.3" y1="63.0" x2="198.4" y2="112.0"/><polygon points="198.4,112.0 202.9,104.2 207.3,110.9" fill="var(--teal-deep)"/><line class="lead" x1="180.0" y1="144.0" x2="180.0" y2="176.0"/><polygon points="180.0,176.0 176.0,168.0 184.0,168.0" fill="var(--teal-deep)"/><circle class="node" cx="70" cy="52" r="18"/><text class="numeral" x="70" y="56" text-anchor="middle">1</text><text class="txt ink" x="70" y="84" text-anchor="middle">one shape</text><circle class="node" cx="290" cy="52" r="18"/><text class="numeral" x="290" y="56" text-anchor="middle">2</text><text class="txt ink" x="290" y="84" text-anchor="middle">self-contained</text><circle class="node" cx="180" cy="124" r="18"/><text class="numeral" x="180" y="128" text-anchor="middle">3</text><text class="txt ink" x="206" y="128" text-anchor="start">legible</text><circle class="node" cx="180" cy="198" r="18"/><text class="numeral" x="180" y="202" text-anchor="middle">4</text><text class="txt ink" x="180" y="230" text-anchor="middle">automate</text><text class="txt" x="150" y="112" text-anchor="end">makes possible</text></svg></div>
     <div class="prose">
       <p>Each intent makes another possible. One shape (1) is only worth having
         if each repo in the family is complete in itself (2); a family of
@@ -307,16 +304,12 @@ footer.site{margin-top:64px;border-top:3px solid var(--ink);padding-top:20px;fon
         is possible only because the processes are written down (3): an agent can
         run a release exactly because the release flow is a page and a helper, not
         a memory.</p>
-      <p>Two tensions are worth keeping in view. The "Many repos" intent (1) is
-        usefully in tension with "Self-contained" intent (2). N repos means N
-        copies of the conventions to keep honest. The resolution is <em>shared</em>
-        sources (this handbook and <code>dev-tools</code>) so the convention has
-        one home even when it lives in many repos. And "Use AI to automate" (4)
-        pulls against the gate that axiom 4 keeps on the irreversible: the more a
-        process is automated, the more tempting it is to automate the merge, the
-        tag, and the release too. The resolution is that those steps keep an
-        explicit human hand, and an agent asks for it per action rather than
-        inferring it.</p>
+      <p>Intents 1 and 2 meet at one point: N repos means N copies of the
+        conventions to keep honest. The resolution is <em>shared</em> sources (this
+        handbook and <code>dev-tools</code>) so the convention has one home even
+        when it lives in many repos. Intent 4 stops where axiom 4 begins: the
+        mechanical steps are automated, and merging, tagging, and releasing keep
+        an explicit human hand, asked for per action rather than inferred.</p>
     </div>
   </section>
 
