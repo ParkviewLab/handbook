@@ -30,6 +30,14 @@ Structure (from jonobones and conception-space):
 When intent surfaces a new principle during work, propose adding it to the
 northstar rather than acting on it silently.
 
+**The northstar leads.** Its authority over the code means an *unintended*
+disagreement between them is a defect in the code. An *intended* one is a change
+of intent, and a change of intent is made in the northstar first, in the same
+pull request as the code that follows it, so that no disagreement is left
+standing by accident. The same discipline applies to any document a repo names
+as an authority (a specification, a design doc): the PR that changes what it
+specifies amends it too.
+
 ## In-flight ideas
 
 `docs/in-flight_ideas.md` is the scratchpad for **ideas under consideration** —

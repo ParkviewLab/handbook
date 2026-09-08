@@ -14,7 +14,9 @@ describes how the work is expected to go.
 
 - **If the repo has a `docs/northstar.md`, read it before working.** It's the
   authoritative statement of intent; evaluate your work against it. (Not every repo
-  has one — it's the author's choice.)
+  has one — it's the author's choice.) If your change alters intent, amend the
+  northstar in the same PR; an unintended disagreement between it and the code is a
+  defect in the code (see `documentation.md`, "The northstar leads").
 - **Reference the handbook's `main`, not `develop`.** `main` is the released,
   stable conventions; `develop` is integration and may be ahead/in-flux. The
   `AGENTS.md`/`CLAUDE.md` pointer links resolve to `…/tree/main`; pin a `vX.Y.Z`
