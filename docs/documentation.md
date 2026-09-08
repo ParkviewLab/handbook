@@ -15,6 +15,7 @@ SPDX-License-Identifier: CC-BY-4.0
 ## The northstar
 
 A repo **may** have a `docs/northstar.md` — the author's choice, not a requirement.
+Start one from [`templates/northstar.md`](../templates/northstar.md).
 When present, it's the canonical statement of the project's **intent** (why it
 exists), treated as authoritative even where it contradicts the README or the code.
 Structure (from jonobones and conception-space):
@@ -73,7 +74,8 @@ There are two HTML tracks:
 
 - **Bespoke high-impact docs** (northstar, manifestos) — hand-authored layout
   using the brand tokens, with inline SVG where structure reads better seen than
-  listed. The bar is `~/.claude/exemplars/northstar/` and jonobones's
+  listed. The bar is this handbook's own [`northstar.html`](northstar.html)
+  (what to study in it is listed in [`md-to-html.md`](md-to-html.md)) and jonobones's
   `docs/northstar.html`.
 - **Other docs rendered to HTML** — also **AI-authored** from the MD (reworked
   for impact), *not* mechanically converted. See [`md-to-html.md`](md-to-html.md).

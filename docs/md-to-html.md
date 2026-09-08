@@ -67,5 +67,54 @@ actually carry meaning the prose can't; if not, skip it.
 - Read it against the Markdown — wording faithful, and it is *more* legible than
   the linear source, not just prettier.
 
-The exemplar to study first: `~/.claude/exemplars/northstar/` (a multi-intent
-northstar shown as a card grid + SVG panels + an axiom constellation).
+## The exemplar: this handbook's own northstar
+
+The exemplar to study first is in this repository: [`northstar.md`](northstar.md)
+beside [`northstar.html`](northstar.html), a multi-intent northstar and its
+designed twin. Open the two side by side and note these moves and the acts of
+reading each serves.
+
+**Multi-intent moves.**
+
+1. **The intents perceived at one glance.** A 2×2 grid of intent cards at the
+   top, each with a large faded numeral, the intent's name, and its paragraph.
+   The reader sees "there are four; they are peers; they fit together" before
+   reading any one of them. (MD: a numbered list, fine but linear.)
+2. **An umbrella paragraph above the grid** says why there are several intents
+   and how to hold them together: peers, mutually reinforcing, their tensions
+   design-revealing.
+3. **Each intent gets a deep-dive section** below the grid, in document order.
+   The grid has already shown them as peers, so the deep dives read as
+   expansions of a constellation, not as a sequential argument.
+4. **A closing "how the four reinforce each other" section** shows the
+   dependencies between the intents as a small constellation diagram, then works
+   the tensions (the family against self-containment; automation against the
+   gate on the irreversible) to show why a tension is worth stating.
+5. **The axioms support all the intents.** They are not regrouped per intent;
+   the claim is that the same axioms hold for every intent from a different
+   angle, and the grid presents them together, each with its faded numeral.
+6. **Guiding questions as a checklist**, at least one per intent, with hollow
+   squares and numbers, so a proposal is worked across all the intents.
+
+**Designed-HTML moves.**
+
+1. **A figure only where it earns its place.** Intent 1's contrast is *shown*
+   before it is read: a pile of unlike repos beside a row of like ones. Intent
+   4's flow shows the automated steps under one bracket and the gated ones
+   under another. Intent 2 gets a single "what is inside" figure and intent 3 a
+   single "one document, two readers" figure; nothing more was invented for
+   them. Restraint is itself a design move: a visual that does not clarify is
+   decoration to cut.
+2. **The brand, used with restraint.** The three brand colours carry identity;
+   the Bauhaus accents mark the four intents and the tensions and nothing
+   else; Michroma is embedded, the logo mark inlined; no JS, no animation.
+3. **Wording faithful to the Markdown**, sentence for sentence, so the twin can
+   be checked against its source and re-authored from it when they drift.
+
+**Siblings.** Once a repo has two flagship documents in this pattern, design
+them as siblings: the same palette, the same faces, the same component
+vocabulary (cards, rules, callouts), so a reader who has seen one recognises
+the other as the same project's.
+
+The Markdown blueprint for a new repo's northstar is
+[`templates/northstar.md`](../templates/northstar.md).
