@@ -9,7 +9,10 @@ ParkviewLab generates `CHANGELOG.md` and the GitHub Release notes
 **automatically** from commit history, using [Conventional
 Commits](https://www.conventionalcommits.org/) + [git-cliff](https://git-cliff.org/)
 + a one-paragraph LLM "Highlights" summary. This only works if commits/PR titles
-carry the right prefixes.
+carry the right prefixes. (`VERSION.txt` repos — docs repos, `dev-tools` — have no
+changelog job; their GitHub Release notes are GitHub's generated notes from the merged-PR
+titles since the previous tag, so the prefix on the PR title matters there too. See
+[`releases.md`](releases.md#what-the-release-workflow-does).)
 
 ## Conventional Commit prefixes
 

@@ -110,8 +110,9 @@ git push --follow-tags               # the tag push fires the release workflow
   handbook's v0.4.0 was a minor — it added the dual-license layout.)
 - **`VERSION.txt`-file repos** (no `pyproject`/`package.json`, e.g. this handbook):
   `git bump`/`git release` are **SoT-aware** — they detect `VERSION.txt` and bump /
-  tag from it just like a `pyproject` repo, so docs repos release with the same
-  tooling, no hand-editing.
+  tag from it just like a `pyproject` repo, so docs repos release with the same CLI
+  flow, no hand-editing. In CI they run `release-txt.yml`: gate → GitHub Release, with
+  no artifact and no `changelog` job (see [below](#what-the-release-workflow-does)).
 
 ### Version rules
 
@@ -168,13 +169,20 @@ GitHub Release. See [`electron-tooling.md`](electron-tooling.md).
 `dev-release.yml` — leaving only `gate` → `publish` → `changelog`. Trim the job from the
 template; no separate template is needed.
 
+**`VERSION.txt` repos diverge furthest:** [`release-txt.yml`](../templates/.github/workflows/release-txt.yml)
+is `gate` → `release` only. There is nothing to build or publish, and no `changelog` job — a docs
+repo has no Conventional-Commit signal to categorise — so the `release` job creates the GitHub
+Release with GitHub's generated notes (the merged-PR titles since the previous tag). For
+hand-written notes, edit the Release after the workflow has created it (`gh release edit v<new>
+--notes-file …`). This handbook runs the template verbatim as its own `release.yml`.
+
 Reference implementations: deco-assaying's `release.yml` (Python/PyPI) and
 jonobones's `.github/workflows/release.yml` (Node/npm).
 
 ## After the release: the back-merge cascade (mandatory)
 
 A release leaves `main` with commits `develop` doesn't have — the `release v<new>`
-bump **and** the workflow's `docs(changelog): v<new>` auto-commit. If you don't
+bump **and**, in code repos, the workflow's `docs(changelog): v<new>` auto-commit. If you don't
 bring them back to `develop`, the *next* `develop → main` promotion conflicts on
 the version line every single time.
 
@@ -182,13 +190,14 @@ So, after a release:
 
 1. **Wait for the whole workflow to go green** — including the `changelog` job
    (`gh run watch <id>`). The changelog commit lands *during* CI, after the tag
-   push.
-2. **Pull `main`** to pick up that auto-commit.
+   push. (`VERSION.txt` repos have no `changelog` job, so nothing lands on `main`
+   during CI; still wait for `release-txt.yml` to go green before cascading.)
+2. **Pull `main`** to pick up that auto-commit (a no-op for `VERSION.txt` repos).
 3. **Cascade down:** `main → develop`, then `develop → each open working branch`.
 
 ```bash
 # in the <repo>-main worktree, after `gh run watch` shows the whole workflow green:
-git pull --ff-only                                   # main picks up the changelog auto-commit
+git pull --ff-only                                   # main picks up the changelog auto-commit (code repos)
 git -C ../<repo>-develop merge main && git -C ../<repo>-develop push
 # repeat for each open working branch: git -C ../<repo>-<branch> merge develop
 ```
