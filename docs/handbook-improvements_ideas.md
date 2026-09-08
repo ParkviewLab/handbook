@@ -437,7 +437,7 @@ observations: `claude-style-policy` is a personal repo (single-trunk `main`, no
 license, outside the org and off the handbook shape), a candidate to bring into
 the family or generalize; and the review-hook/digest condensations are
 hand-maintained second sources the author already flags as drift-capable, the
-same one-source-of-truth tension the handbook is built around.
+same one-source-of-truth problem the handbook is built to remove.
 
 ### 3d — Methodology sweep (14 clusters), headline gaps
 

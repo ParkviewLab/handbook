@@ -64,4 +64,6 @@ never type it on a `git tag` line — use `git bump` / `git release` from
 
 If the repo has a `docs/northstar.md`, read it first; and follow the behavioural
 contract in the handbook's `ai-collaboration.md` (notably: merging/tagging/releasing
-need an explicit, per-release go-ahead).
+need an explicit, per-release go-ahead). The northstar leads: a change that alters
+intent amends it in the same PR, and an unintended disagreement between it and the
+code is a defect in the code.
