@@ -15,13 +15,13 @@ SPDX-License-Identifier: CC-BY-4.0
 ## The northstar
 
 A repo **may** have a `docs/northstar.md` — the author's choice, not a requirement.
+Start one from [`templates/northstar.md`](../templates/northstar.md).
 When present, it's the canonical statement of the project's **intent** (why it
 exists), treated as authoritative even where it contradicts the README or the code.
 Structure (from jonobones and conception-space):
 
 1. **Intent** — one to several **complementary intents**, presented as peers (not
-   one primary + the rest secondary). Two to four is the sweet spot. The tensions
-   *between* intents are design-revealing — surface them rather than hide them.
+   one primary + the rest secondary). Two to four is the sweet spot.
 2. **Axioms** — a numbered list of design principles derived from the intents.
    The same axioms support all the intents, from different angles.
 3. **Guiding questions** (optional) — the questions the design keeps answering.
@@ -29,6 +29,14 @@ Structure (from jonobones and conception-space):
 
 When intent surfaces a new principle during work, propose adding it to the
 northstar rather than acting on it silently.
+
+**The northstar leads.** Its authority over the code means an *unintended*
+disagreement between them is a defect in the code. An *intended* one is a change
+of intent, and a change of intent is made in the northstar first, in the same
+pull request as the code that follows it, so that no disagreement is left
+standing by accident. The same discipline applies to any document a repo names
+as an authority (a specification, a design doc): the PR that changes what it
+specifies amends it too.
 
 ## In-flight ideas
 
@@ -65,7 +73,8 @@ There are two HTML tracks:
 
 - **Bespoke high-impact docs** (northstar, manifestos) — hand-authored layout
   using the brand tokens, with inline SVG where structure reads better seen than
-  listed. The bar is `~/.claude/exemplars/northstar/` and jonobones's
+  listed. The bar is this handbook's own [`northstar.html`](northstar.html)
+  (what to study in it is listed in [`md-to-html.md`](md-to-html.md)) and jonobones's
   `docs/northstar.html`.
 - **Other docs rendered to HTML** — also **AI-authored** from the MD (reworked
   for impact), *not* mechanically converted. See [`md-to-html.md`](md-to-html.md).
