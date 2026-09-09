@@ -61,11 +61,11 @@ when a change is purely tests, CI, build plumbing, or a release bump.
 # from the develop worktree, branch off develop into a new sibling worktree:
 cd repo_name/repo_name-develop
 git worktree add ../repo_name-feature-foo -b feature-foo develop
+git push -u origin feature-foo    # the branch exists on the remote before any work is done on it
 cd ../repo_name-feature-foo
 uv sync                       # each worktree gets its own deps (or: npm ci)
 
-# …work, committing as you go; push after each commit (see ai-collaboration.md)…
-git push -u origin feature-foo
+# …work, committing as you go and pushing after each commit (see ai-collaboration.md)…
 
 # open a PR into develop. The USER merges it (see below). Then clean up:
 cd ../repo_name-develop

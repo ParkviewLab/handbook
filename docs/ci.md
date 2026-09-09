@@ -78,8 +78,8 @@ On `pull_request` to `develop`, fails if the version source-of-truth
 differs from the base — bumps belong at release on `main`. See
 [Version checks](#version-checks).
 
-Because the check is *unchanged-vs-base* (not a format check), it's fine for `develop` to sit at a
-`X.Y.Z.dev0` between releases (the post-release open-cycle — see
+Because the check is *unchanged-vs-base* (not a format check), it's fine for a code repo's `develop`
+to sit at a `X.Y.Z.dev0` between releases (the post-release open-cycle — see
 [`releases.md`](releases.md#development-versioning)); feature PRs that don't touch it still pass. A
 branch cut *before* the open-cycle fails this check until it merges `develop` — sync up.
 

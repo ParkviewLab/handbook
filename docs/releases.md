@@ -207,9 +207,9 @@ user is already at the keyboard; an auto-PR version was considered and declined)
 
 ## Development versioning
 
-Between releases `develop` should carry an **honest pre-release version**, and an engineer should be
-able to cut a **dev build** on demand — to exercise a candidate in real settings before the real
-release.
+Between releases a code repo's `develop` should carry an **honest pre-release version**, and an
+engineer should be able to cut a **dev build** on demand — to exercise a candidate in real settings
+before the real release.
 
 **1. The dev version names the *next* release, not the last one.** A dev suffix is a *pre-release* —
 it sorts **before** the version it's attached to:
@@ -222,9 +222,9 @@ So after shipping `0.3.0`, `develop` works toward `0.3.1.dev0` — above the las
 target. **Never** suffix a version you've already shipped: `0.3.0-dev` sorts *below* `0.3.0`, so
 pip/uv/Docker treat it as *older* than the release. Form: Python `X.Y.Z.devN` (PEP 440);
 **Node/Electron `X.Y.Z-devN`** (semver — `npm version` rejects the dotted PEP-440 form);
-`VERSION.txt` / Docker `X.Y.Z-dev` / a `:dev` tag.
+Docker `X.Y.Z-dev` / a `:dev` tag.
 
-**2. Open the next cycle at release time.** The
+**2. Open the next cycle at release time (code repos).** The
 [back-merge cascade](#after-the-release-the-back-merge-cascade-mandatory) also bumps `develop`'s SoT
 to the next-patch placeholder `X.Y.(Z+1).dev0` (a direct push — exempt from `version-guard.yml`, like
 the back-merge itself). Feature PRs leave it unchanged, so the guard still passes; `develop` now
@@ -245,5 +245,6 @@ image (+ `:X.Y.Z.devN`) and `X.Y.Z.devN` to **TestPyPI**. It creates **no `v*` t
 re-points off the last tag); `git bump release` → `0.3.1` (ship exactly the declared target, no
 re-point). Then `git release` + push the tag as above; the monotonic gate passes (`0.3.1 > 0.3.0`).
 
-**`VERSION.txt` / docs repos** carry the same honest `X.Y.Z-dev` on `develop` and finalize at release,
-but publish **no** dev artifacts (nothing to build) — the dev *build/publish* path is code-repo-only.
+**`VERSION.txt` / docs repos skip the open cycle.** Nothing reads a docs repo's version between
+releases (no app, no package, no dev build), so `develop` keeps the last released version until the
+next `git bump` on `main`; the dev *build/publish* path is code-repo-only.
