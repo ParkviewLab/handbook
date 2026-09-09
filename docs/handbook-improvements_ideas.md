@@ -125,7 +125,7 @@ the research and proposals build on.
 
 ### CI/CD
 - GitHub Actions: `reuse.yml` + `version-guard.yml` (every repo);
-  `test.yml`/`test-node`/`test-electron`; `release.yml`/`-node`/`-electron`;
+  `test.yml`/`test-node`/`test-electron`; `release.yml`/`-node`/`-electron`/`-txt`;
   `dev-release.yml`; `license-check.yml`.
 - Required status checks on `develop` with admin-bypass (so release direct-pushes
   aren't blocked).
