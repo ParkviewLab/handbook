@@ -36,8 +36,9 @@ describes how the work is expected to go.
 - **Never hand-type a version.** Use `git bump` / `git release`
   ([`releases.md`](releases.md)). Never edit the version field by hand or type a
   tag on the `git tag` line.
-- **Push after each commit** during implementation — keep the remote branch live;
-  don't batch pushes to the end.
+- **Push the branch when it is created, then after each commit** during
+  implementation — the remote branch exists before any work is done on it and is
+  never behind; don't batch pushes to the end.
 
 ### Shared-state writes need explicit authorization
 
