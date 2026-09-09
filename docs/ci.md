@@ -27,7 +27,7 @@ stays disabled until CI passes.
   requires it** [`license-check.yml`]
 
 (A docs repo like this handbook has no code, so it runs only `reuse` + `version
-guard`.)
+guard` on PRs — and `release-txt.yml` on a `v*` tag push; see below.)
 
 **Enforcement.** Add these as **required status checks** on `develop` (Settings →
 Branches, or `gh api`), and **let admins bypass** — the release flow's back-merge
@@ -69,7 +69,7 @@ gh api -X PATCH repos/<owner>/<repo> \
 
 Triggers on `pull_request`/`push` to `main` and `develop`; runs
 `uvx --from "reuse[charset-normalizer]" reuse lint`. Universal — code and docs
-repos alike (it's the handbook's main gate, since the handbook has no `test.yml`).
+repos alike (it's the handbook's PR gate, since the handbook has no `test.yml`).
 
 ## `version-guard.yml` — version SoT unchanged (every repo)
 
@@ -78,8 +78,8 @@ On `pull_request` to `develop`, fails if the version source-of-truth
 differs from the base — bumps belong at release on `main`. See
 [Version checks](#version-checks).
 
-Because the check is *unchanged-vs-base* (not a format check), it's fine for `develop` to sit at a
-`X.Y.Z.dev0` between releases (the post-release open-cycle — see
+Because the check is *unchanged-vs-base* (not a format check), it's fine for a code repo's `develop`
+to sit at a `X.Y.Z.dev0` between releases (the post-release open-cycle — see
 [`releases.md`](releases.md#development-versioning)); feature PRs that don't touch it still pass. A
 branch cut *before* the open-cycle fails this check until it merges `develop` — sync up.
 
@@ -142,6 +142,21 @@ Fully described in [`releases.md`](releases.md). Notes that belong to CI:
   `docker` job from `release.yml` — and from `dev-release.yml` if present — leaving
   `gate` → `pypi`/npm → `changelog`. Trim the job from the template; no separate template.
 
+## `release-txt.yml` — VERSION.txt repos, on `v*` tag push
+
+The release profile for repos whose version lives in `VERSION.txt` (docs repos like this
+handbook, and `dev-tools`): the same three-check `gate` (tag == `VERSION.txt`; tagged commit
+reachable from `origin/main`; version strictly greater than the previous `v*` tag) → a
+`release` job that creates the GitHub Release with `gh release create --verify-tag
+--generate-notes` (`contents: write` scoped to that job). Nothing else: there is no artifact
+to build or publish, and no `changelog` job — a docs repo has no Conventional-Commit signal
+to categorise, so the Release notes are GitHub's generated notes (the merged-PR titles since
+the previous tag), which is why the PR-title prefix still matters here. The job is idempotent:
+a re-run, or a Release already created by hand, finds it and exits 0. To add hand-written
+notes, edit the Release after the workflow has created it (`gh release edit v<new>
+--notes-file …`). The handbook runs the template verbatim as its own
+`.github/workflows/release.yml`, as it does `version-guard.yml`.
+
 ## `dev-release.yml` — on-demand dev build (optional, code repos)
 
 A **manually-triggered** (`workflow_dispatch`) pre-release publish, for exercising a candidate before
@@ -173,7 +188,8 @@ Two guards keep versioning honest (see [`releases.md`](releases.md#version-rules
 - **The release gate enforces a monotonic increase.** On top of the existing gate
   checks (tag == SoT version, tag reachable from `origin/main`), it rejects a tag
   whose version is not **strictly greater** than the previous tag — catching a
-  forgotten or backwards bump before anything publishes.
+  forgotten or backwards bump before anything publishes. Implemented as the gate's
+  third step in all four release templates (`release.yml`, `-node`, `-electron`, `-txt`).
 
 ## `license-check.yml` — copyleft guard
 

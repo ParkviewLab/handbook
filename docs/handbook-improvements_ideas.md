@@ -117,7 +117,7 @@ the research and proposals build on.
   version strictly greater than the last tag (monotonic).
 - A `version-guard.yml` check blocks version-file changes in `develop` PRs.
 - A mandatory, manual back-merge cascade (`main → develop → working branches`)
-  after each release, which also opens the next dev cycle.
+  after each release, which in code repos also opens the next dev cycle.
 - Development versioning: a dev pre-release names the *next* release
   (`X.Y.Z.devN` PEP 440 / `X.Y.Z-devN` semver); on-demand dev builds to
   TestPyPI + a GHCR `:dev` image, never per-merge.
@@ -125,7 +125,7 @@ the research and proposals build on.
 
 ### CI/CD
 - GitHub Actions: `reuse.yml` + `version-guard.yml` (every repo);
-  `test.yml`/`test-node`/`test-electron`; `release.yml`/`-node`/`-electron`;
+  `test.yml`/`test-node`/`test-electron`; `release.yml`/`-node`/`-electron`/`-txt`;
   `dev-release.yml`; `license-check.yml`.
 - Required status checks on `develop` with admin-bypass (so release direct-pushes
   aren't blocked).
@@ -858,8 +858,9 @@ human and AI tools to build:
   Instead, automate that cost (P2/S-M, preserve-bespoke + augment). A
   `git back-merge` dev-tool runs the whole post-release tail as one command from
   the `<repo>-main` worktree: pull `main`, merge it down to `develop`, push, open
-  the next dev cycle via the existing `git dev-release --open`, and fan `develop`
-  out to each open working worktree. A promotion staleness guard (a `git promote`
+  the next dev cycle via the existing `git dev-release --open` (code repos only:
+  `VERSION.txt` repos skip the open-cycle step), and fan `develop` out to each
+  open working worktree. A promotion staleness guard (a `git promote`
   command, or a check folded into the flow) fetches `origin` and refuses
   `git merge --no-ff develop` unless local `develop` equals `origin/develop`,
   closing the stale-local-`develop` footgun that CI cannot catch, since the wrong
