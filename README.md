@@ -65,6 +65,20 @@ Everything else is downstream of it.
   script; re-copy the affected template). This handbook is the single source of
   truth; if a repo disagrees with it, the handbook wins until updated.
 
+## Contributing
+
+This handbook is developed through the flow it prescribes. Work happens on a
+prefixed working branch (`doc-<topic>` for most changes) in an ephemeral
+worktree off `develop`, pushed when it is created and after each commit. A
+working branch is a proposal: it becomes a pull request into `develop`, titled
+with the Conventional Commit prefix, and a person reviews and squash-merges it.
+Releases are cut from `main` with the CLI flow in [releases.md](docs/releases.md);
+`main` is the released handbook, and what every repo's pointer files reference.
+A change of intent amends [docs/northstar.md](docs/northstar.md) in the same
+pull request ([documentation.md](docs/documentation.md), "The northstar leads").
+See [branching.md](docs/branching.md) and
+[ai-collaboration.md](docs/ai-collaboration.md).
+
 ## License
 
 Per-bucket (REUSE-compliant): docs are `CC-BY-4.0`, scripts/templates are
