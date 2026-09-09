@@ -75,7 +75,9 @@ convention. Each step links to the doc with the detail.
       `reuse.yml` + `version-guard.yml` (**every** repo), plus `test.yml`,
       `release.yml`, `license-check.yml`, and optional `dev-release.yml` (Python code
       repos; **Node** repos use `test-node.yml` + `release-node.yml`; **Electron** apps
-      use `test-electron.yml` + `release-electron.yml` + `dev-release-electron.yml` instead).
+      use `test-electron.yml` + `release-electron.yml` + `dev-release-electron.yml` instead;
+      **VERSION.txt/docs** repos use `release-txt.yml` alone — no `test.yml`,
+      `license-check.yml`, `dev-release.yml`, `cliff.toml`, or `generate_changelog.py`).
       Pin actions exactly; GHCR tags include `latest`. See [`ci.md`](ci.md).
 - [ ] **Branch protection on `develop`:** mark the workflow checks as **required
       status checks** (so the merge button waits for green); **let admins bypass**
@@ -118,6 +120,6 @@ convention. Each step links to the doc with the detail.
 ## 8. First release
 
 - [ ] `git bump` → `git release` → `git push --follow-tags` (from `main`).
-- [ ] `gh run watch` until the whole workflow (incl. `changelog`) is green.
+- [ ] `gh run watch` until the whole workflow (incl. `changelog`, where the profile has one) is green.
 - [ ] Back-merge cascade `main → develop → working branches`. See
       [`releases.md`](releases.md).
