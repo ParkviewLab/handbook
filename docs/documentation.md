@@ -12,6 +12,12 @@ SPDX-License-Identifier: CC-BY-4.0
   `in-flight_ideas.md`, design docs, language references, and the HTML siblings of
   any of these.
 
+## Line feeds in markdown
+
+Markdown prose is never hard-wrapped. A line feed appears only where a break is meant: between paragraphs, list items, headings, table rows, and lines of code. A prose paragraph, a list item, or a blockquote paragraph is one line, and the viewer or editor wraps it; insert a line feed where you want a break, never to make a long line wrap.
+
+The reason is editability. A hard-wrapped paragraph cannot be edited by hand without managing the line feeds, and re-flowing it produces the very diff the wrapping was meant to avoid. The rule applies to every markdown file in a repo, `templates/` included; the handbook's own files follow it.
+
 ## The northstar
 
 A repo **may** have a `docs/northstar.md` — the author's choice, not a requirement.

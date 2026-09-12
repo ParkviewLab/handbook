@@ -103,7 +103,7 @@ tagging, and releasing write to shared state and need explicit authorization.**
 - **No unprompted planning or action.** Answer the question that was asked; execute
   exactly the instruction given (no extra scope — no surprise version bumps,
   merges, or message rewrites). When uncertain what's next, ask.
-- **Write cleanly.** No mixed metaphors, no clichés that mash images together.
+- **Write cleanly.** No mixed metaphors, no clichés that mash images together. No hard-wrapped prose: one line per paragraph or list item, with line feeds only where a break is meant (see [`documentation.md`](documentation.md#line-feeds-in-markdown)).
 
 ## The pointer files
 
