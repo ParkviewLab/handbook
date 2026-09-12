@@ -193,14 +193,24 @@ So, after a release:
    push. (`VERSION.txt` repos have no `changelog` job, so nothing lands on `main`
    during CI; still wait for `release-txt.yml` to go green before cascading.)
 2. **Pull `main`** to pick up that auto-commit (a no-op for `VERSION.txt` repos).
-3. **Cascade down:** `main → develop`, then `develop → each open working branch`.
+3. **Cascade down:** `main → develop` as a merge commit (`--no-ff`), then
+   `develop → each open working branch`.
 
 ```bash
 # in the <repo>-main worktree, after `gh run watch` shows the whole workflow green:
 git pull --ff-only                                   # main picks up the changelog auto-commit (code repos)
-git -C ../<repo>-develop merge main && git -C ../<repo>-develop push
+git -C ../<repo>-develop pull --ff-only              # a PR may have landed while CI ran
+git -C ../<repo>-develop merge --no-ff main -m "Back-merge: main → develop after $(git describe --tags --abbrev=0)" \
+  && git -C ../<repo>-develop push
 # repeat for each open working branch: git -C ../<repo>-<branch> merge develop
 ```
+
+`--no-ff` is deliberate. A fast-forward would move `develop` onto `main`'s tip and
+replace `develop`'s first-parent history with `main`'s release ledger; the merge commit
+keeps `develop`'s first-parent chain as the per-feature ledger
+[`branching.md`](branching.md#tracking-when-a-feature-was-added) describes (one squash
+commit per feature, one back-merge per release). `-m` keeps the editor closed; when
+`develop` already equals `main`, git reports "Already up to date" and creates nothing.
 
 The cascade is **manual on purpose** (a small number of commands at a moment the
 user is already at the keyboard; an auto-PR version was considered and declined).
