@@ -857,7 +857,8 @@ human and AI tools to build:
 
   Instead, automate that cost (P2/S-M, preserve-bespoke + augment). A
   `git back-merge` dev-tool runs the whole post-release tail as one command from
-  the `<repo>-main` worktree: pull `main`, merge it down to `develop`, push, open
+  the `<repo>-main` worktree: pull `main`, merge it down to `develop` with `--no-ff`
+  (so `develop`'s first-parent history stays the per-feature ledger), push, open
   the next dev cycle via the existing `git dev-release --open` (code repos only:
   `VERSION.txt` repos skip the open-cycle step), and fan `develop` out to each
   open working worktree. A promotion staleness guard (a `git promote`

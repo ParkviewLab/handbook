@@ -89,7 +89,12 @@ git branch -d feature-foo
 The two merge strategies above yield a dated history at three granularities:
 
 - **Per feature** — `git log --first-parent develop` is one line per squash
-  commit (one per feature), each with its merge date.
+  commit (one per feature) plus one back-merge commit per release, each with its
+  date. This holds because the cascade merges `main` into `develop` with `--no-ff`
+  (see [`releases.md`](releases.md#after-the-release-the-back-merge-cascade-mandatory));
+  a fast-forward would replace the chain with `main`'s. In this handbook the cascade
+  fast-forwarded from v0.8.5 to v0.14.0, so the chain below v0.14.0 is `main`'s
+  release ledger; the per-feature ledger resumes at v0.15.0.
 - **Per release** — `git log --first-parent main` is one line per release merge
   commit.
 - **Per release, with contents** — annotated, dated tags (`git tag --list 'v*'`)
