@@ -64,6 +64,27 @@ gh api -X PATCH repos/<owner>/<repo> \
   not the PR button. That needs `main` to accept direct pushes; don't add a
   PR-required ruleset to `main` without rethinking this (you'd have to re-enable
   merge commits for that path). See [`releases.md`](releases.md).
+- **`main` is protected against force pushes and deletions, nothing more.** No required
+  checks, reviews, or restrictions on `main`: the release flow (and, in code repos, the
+  `changelog` job) push to it directly, and the release gate covers the promotion. The two
+  blocks bind admins as well, which is the point: `main` is the release ledger and is never
+  rewritten. `develop`'s rule already blocks both. Apply it with the call below;
+  `required_linear_history` must stay `false` (the promotion is a merge commit), and adding
+  a required check to `main` later would block the release push (see the previous point).
+
+```bash
+gh api --method PUT repos/<owner>/<repo>/branches/main/protection --input - <<'EOF'
+{
+  "required_status_checks": null,
+  "enforce_admins": false,
+  "required_pull_request_reviews": null,
+  "restrictions": null,
+  "required_linear_history": false,
+  "allow_force_pushes": false,
+  "allow_deletions": false
+}
+EOF
+```
 
 ## `reuse.yml` — REUSE/SPDX (every repo)
 

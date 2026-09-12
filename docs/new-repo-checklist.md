@@ -83,6 +83,9 @@ convention. Each step links to the doc with the detail.
       status checks** (so the merge button waits for green); **let admins bypass**
       so the release back-merge/promotion (direct pushes) aren't blocked. See
       [`ci.md`](ci.md#required-checks-before-merge).
+- [ ] **Branch protection on `main`:** block force pushes and deletions, nothing else
+      (no required checks or reviews: the release flow pushes directly). See
+      [`ci.md`](ci.md#repo-merge-settings).
 - [ ] Confirm the org `ANTHROPIC_API_KEY` secret is inherited.
 - [ ] Configure PyPI (and npm, if applicable) **trusted publishers** — plus a
       **TestPyPI** trusted publisher if the repo adopts `dev-release.yml`.
