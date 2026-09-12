@@ -107,7 +107,7 @@ convention. Each step links to the doc with the detail.
 - [ ] Optionally an AI-authored `docs/northstar.html` per
       [`md-to-html.md`](md-to-html.md).
 - [ ] `docs/in-flight_ideas.md` started.
-- [ ] `CONTRIBUTING.md` from [`templates/CONTRIBUTING.md`](../templates/CONTRIBUTING.md).
+- [ ] `docs/CONTRIBUTING.md` from [`templates/CONTRIBUTING.md`](../templates/CONTRIBUTING.md).
 - [ ] Visible copyright footer on published/standalone docs (HTML footers, root
       README, northstar) — bottom of file, consistent with the SPDX header. See
       [`documentation.md`](documentation.md#copyright-footers).
