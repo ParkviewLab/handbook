@@ -5,15 +5,11 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # ParkviewLab handbook
 
-The engineering handbook for the **[ParkviewLab](https://github.com/ParkviewLab)**
-GitHub org — the conventions, procedures, and methods we use when building
-software here. It is written for **human and AI developers alike**.
+The engineering handbook for the **[ParkviewLab](https://github.com/ParkviewLab)** GitHub org — the conventions, procedures, and methods we use when building software here. It is written for **human and AI developers alike**.
 
 > 📌 **Use the released conventions on [`main`](https://github.com/ParkviewLab/handbook/tree/main)** (or a [`vX.Y.Z`](https://github.com/ParkviewLab/handbook/tags) tag). This default view is **`develop`** — the integration branch, which may be ahead of the last release. Current version: [`VERSION.txt`](VERSION.txt).
 
-Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed
-[`docs/northstar.html`](docs/northstar.html)) — *why* we build the way we do.
-Everything else is downstream of it.
+Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/northstar.html`](docs/northstar.html)) — *why* we build the way we do. Everything else is downstream of it.
 
 ## The docs
 
@@ -41,15 +37,9 @@ Everything else is downstream of it.
 
 ## Templates & tooling
 
-- **[`templates/`](templates/)** — copy-paste sources kept identical across repos:
-  `cliff.toml`, `pyproject.toml.template`/`package.json.template`, `electron-builder.yml`, `CONTRIBUTING.md`, the
-  `.github/workflows/`, `generate_changelog.py`, the `LICENSING.md`/`REUSE.toml`
-  templates, the `AGENTS.md`/`CLAUDE.md` pointer templates, and the
-  [`md-to-html/`](templates/md-to-html/) default HTML scaffold.
-- **[`brand/`](brand/)** — canonical logos (all rights reserved) + the Michroma
-  font (`OFL-1.1`); see [licensing.md](docs/licensing.md).
-- **[`scripts/sync-agent-files.sh`](scripts/sync-agent-files.sh)** — writes the
-  `AGENTS.md` + `CLAUDE.md` pointer files into every repo from the templates:
+- **[`templates/`](templates/)** — copy-paste sources kept identical across repos: `cliff.toml`, `pyproject.toml.template`/`package.json.template`, `electron-builder.yml`, `CONTRIBUTING.md`, the `.github/workflows/`, `generate_changelog.py`, the `LICENSING.md`/`REUSE.toml` templates, the `AGENTS.md`/`CLAUDE.md` pointer templates, and the [`md-to-html/`](templates/md-to-html/) default HTML scaffold.
+- **[`brand/`](brand/)** — canonical logos (all rights reserved) + the Michroma font (`OFL-1.1`); see [licensing.md](docs/licensing.md).
+- **[`scripts/sync-agent-files.sh`](scripts/sync-agent-files.sh)** — writes the `AGENTS.md` + `CLAUDE.md` pointer files into every repo from the templates:
 
   ```bash
   scripts/sync-agent-files.sh --dry-run   # preview
@@ -59,32 +49,16 @@ Everything else is downstream of it.
 ## How to use this handbook
 
 - **Starting a repo?** Follow [new-repo-checklist.md](docs/new-repo-checklist.md).
-- **An AI dev?** Read [ai-collaboration.md](docs/ai-collaboration.md) and the
-  repo's `docs/northstar.md`.
-- **Changing a convention?** Change it here first, then propagate (re-run the sync
-  script; re-copy the affected template). This handbook is the single source of
-  truth; if a repo disagrees with it, the handbook wins until updated.
+- **An AI dev?** Read [ai-collaboration.md](docs/ai-collaboration.md) and the repo's `docs/northstar.md`.
+- **Changing a convention?** Change it here first, then propagate (re-run the sync script; re-copy the affected template). This handbook is the single source of truth; if a repo disagrees with it, the handbook wins until updated.
 
 ## Contributing
 
-This handbook is developed through the flow it prescribes. Work happens on a
-prefixed working branch (`doc-<topic>` for most changes) in an ephemeral
-worktree off `develop`, pushed when it is created and after each commit. A
-working branch is a proposal: it becomes a pull request into `develop`, titled
-with the Conventional Commit prefix, and a person reviews and squash-merges it.
-Releases are cut from `main` with the CLI flow in [releases.md](docs/releases.md);
-`main` is the released handbook, and what every repo's pointer files reference.
-A change of intent amends [docs/northstar.md](docs/northstar.md) in the same
-pull request ([documentation.md](docs/documentation.md), "The northstar leads").
-See [branching.md](docs/branching.md) and
-[ai-collaboration.md](docs/ai-collaboration.md).
+This handbook is developed through the flow it prescribes. Work happens on a prefixed working branch (`doc-<topic>` for most changes) in an ephemeral worktree off `develop`, pushed when it is created and after each commit. A working branch is a proposal: it becomes a pull request into `develop`, titled with the Conventional Commit prefix, and a person reviews and squash-merges it. Releases are cut from `main` with the CLI flow in [releases.md](docs/releases.md); `main` is the released handbook, and what every repo's pointer files reference. A change of intent amends [docs/northstar.md](docs/northstar.md) in the same pull request ([documentation.md](docs/documentation.md), "The northstar leads"). See [branching.md](docs/branching.md) and [ai-collaboration.md](docs/ai-collaboration.md).
 
 ## License
 
-Per-bucket (REUSE-compliant): docs are `CC-BY-4.0`, scripts/templates are
-`AGPL-3.0-or-later`, brand logos are all rights reserved, and the bundled font
-is `OFL-1.1`. See [docs/licensing.md](docs/licensing.md) and
-[`LICENSING.md`](LICENSING.md).
+Per-bucket (REUSE-compliant): docs are `CC-BY-4.0`, scripts/templates are `AGPL-3.0-or-later`, brand logos are all rights reserved, and the bundled font is `OFL-1.1`. See [docs/licensing.md](docs/licensing.md) and [`LICENSING.md`](LICENSING.md).
 
 ---
 <sub>© 2026 Gary Frattarola · Licensed under [CC-BY-4.0](LICENSES/CC-BY-4.0.txt) · part of the ParkviewLab handbook</sub>
