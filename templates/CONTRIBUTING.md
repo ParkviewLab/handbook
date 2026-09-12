@@ -1,28 +1,18 @@
 # Contributing
 
-> Template — copy to a new repo as **`docs/CONTRIBUTING.md`** (this is the path
-> every `cliff.toml` references). Replace `<repo>` as needed. The authoritative,
-> org-wide version of all of this is the
-> [ParkviewLab handbook](https://github.com/ParkviewLab/handbook).
+> Template — copy to a new repo as **`docs/CONTRIBUTING.md`** (this is the path every `cliff.toml` references). Replace `<repo>` as needed. The authoritative, org-wide version of all of this is the [ParkviewLab handbook](https://github.com/ParkviewLab/handbook).
 
 This repo follows the ParkviewLab conventions. The essentials:
 
 ## Branch & PR flow
 
-- Branch off **`develop`** into an ephemeral worktree named with a prefix:
-  `feature-`, `bug-`/`fix-`, `doc-`, `test-`, `ops-`, `ci-`, `build-`, `release-`
-  (hyphen, not slash). See the handbook's `branching.md`.
-- Open a PR into **`develop`**. The repo is **squash-only**, so the merge button
-  can only squash; **merging is the maintainer's action.**
-- Releases are cut from **`main`** via the CLI (`git merge --no-ff develop`, then
-  bump + tag) — not a PR. See the handbook's `releases.md`.
+- Branch off **`develop`** into an ephemeral worktree named with a prefix: `feature-`, `bug-`/`fix-`, `doc-`, `test-`, `ops-`, `ci-`, `build-`, `release-` (hyphen, not slash). See the handbook's `branching.md`.
+- Open a PR into **`develop`**. The repo is **squash-only**, so the merge button can only squash; **merging is the maintainer's action.**
+- Releases are cut from **`main`** via the CLI (`git merge --no-ff develop`, then bump + tag) — not a PR. See the handbook's `releases.md`.
 
 ## Commit / PR-title convention (this is what the changelog reads)
 
-Because PRs are squash-merged, **the PR title becomes the commit subject**, and
-the changelog is generated from it (via [git-cliff](https://git-cliff.org/) +
-`cliff.toml`). Prefix every PR title with a [Conventional
-Commit](https://www.conventionalcommits.org/) type:
+Because PRs are squash-merged, **the PR title becomes the commit subject**, and the changelog is generated from it (via [git-cliff](https://git-cliff.org/) + `cliff.toml`). Prefix every PR title with a [Conventional Commit](https://www.conventionalcommits.org/) type:
 
 | Prefix | CHANGELOG section | Notes |
 |---|---|---|
@@ -34,8 +24,7 @@ Commit](https://www.conventionalcommits.org/) type:
 | `test:` | Tests | |
 | `chore:` / `ci:` / `build:` / `style:` | _(dropped)_ | stays in git history, not surfaced |
 
-A PR title without a recognised prefix is **silently dropped** from the
-changelog. So: prefix it.
+A PR title without a recognised prefix is **silently dropped** from the changelog. So: prefix it.
 
 ## Local checks before opening a PR
 
@@ -50,20 +39,12 @@ uv run pytest -m "not network and not docling" -q
 uvx --from "reuse[charset-normalizer]" reuse lint
 ```
 
-A PR **can't be merged until the required checks pass** (lint, format, types,
-tests, REUSE, the version guard — see the handbook's `ci.md`). Push after each
-commit. See also `python-tooling.md` and `testing.md`.
+A PR **can't be merged until the required checks pass** (lint, format, types, tests, REUSE, the version guard — see the handbook's `ci.md`). Push after each commit. See also `python-tooling.md` and `testing.md`.
 
 ## Versioning
 
-The version lives in **`pyproject.toml` only**; never hard-code it elsewhere, and
-never type it on a `git tag` line — use `git bump` / `git release` from
-[`dev-tools`](https://github.com/ParkviewLab/dev-tools). See `releases.md`.
+The version lives in **`pyproject.toml` only**; never hard-code it elsewhere, and never type it on a `git tag` line — use `git bump` / `git release` from [`dev-tools`](https://github.com/ParkviewLab/dev-tools). See `releases.md`.
 
 ## AI contributors
 
-If the repo has a `docs/northstar.md`, read it first; and follow the behavioural
-contract in the handbook's `ai-collaboration.md` (notably: merging/tagging/releasing
-need an explicit, per-release go-ahead). The northstar leads: a change that alters
-intent amends it in the same PR, and an unintended disagreement between it and the
-code is a defect in the code.
+If the repo has a `docs/northstar.md`, read it first; and follow the behavioural contract in the handbook's `ai-collaboration.md` (notably: merging/tagging/releasing need an explicit, per-release go-ahead). The northstar leads: a change that alters intent amends it in the same PR, and an unintended disagreement between it and the code is a defect in the code.

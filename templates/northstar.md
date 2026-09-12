@@ -26,30 +26,19 @@ Guidance, in brief:
 
 # [Project]: northstar
 
-This northstar is the canonical statement of [Project]'s purpose. It is here
-to guide every design decision and feature proposal, and each is weighed
-against it. Where it and any other document disagree, this one is the
-authority and the other is the thing to fix; where it and the code disagree,
-the code is wrong. A change of intent is therefore made here first, in the
-same pull request as the code that follows it, so that no disagreement is ever
-left standing by accident.
+This northstar is the canonical statement of [Project]'s purpose. It is here to guide every design decision and feature proposal, and each is weighed against it. Where it and any other document disagree, this one is the authority and the other is the thing to fix; where it and the code disagree, the code is wrong. A change of intent is therefore made here first, in the same pull request as the code that follows it, so that no disagreement is ever left standing by accident.
 
 ## What it is
 
-[One paragraph: what the project is, in plain terms, for a reader who has
-never seen it. Name the things it is made of and the one or two facts a
-newcomer must hold to read the rest.]
+[One paragraph: what the project is, in plain terms, for a reader who has never seen it. Name the things it is made of and the one or two facts a newcomer must hold to read the rest.]
 
 ## Why it exists
 
-[One or two paragraphs: the gap in the world this fills, and why the existing
-answers do not fill it. This is the "why", not a feature list.]
+[One or two paragraphs: the gap in the world this fills, and why the existing answers do not fill it. This is the "why", not a feature list.]
 
 ## Intents
 
-[Project] serves [N] complementary intents: facets of one purpose, presented
-as peers rather than as one primary and the rest secondary, and mutually
-reinforcing.
+[Project] serves [N] complementary intents: facets of one purpose, presented as peers rather than as one primary and the rest secondary, and mutually reinforcing.
 
 1. **[Intent 1, as a short name.]** [One paragraph stating it.]
 
@@ -59,8 +48,7 @@ reinforcing.
 
 ### 1. [Intent 1]
 
-[The deep dive: what this intent asks of the design, what it rules out, and
-the concrete choices already made in its service. One to three paragraphs.]
+[The deep dive: what this intent asks of the design, what it rules out, and the concrete choices already made in its service. One to three paragraphs.]
 
 ### 2. [Intent 2]
 
@@ -72,16 +60,13 @@ the concrete choices already made in its service. One to three paragraphs.]
 
 ### How the intents reinforce each other
 
-[One paragraph on the dependencies: which intent makes which possible, and
-what accumulates when they hold together. Where two intents meet at some
-point and the design has chosen between them, say so plainly there.]
+[One paragraph on the dependencies: which intent makes which possible, and what accumulates when they hold together. Where two intents meet at some point and the design has chosen between them, say so plainly there.]
 
 ## Axioms
 
 The same axioms support all the intents, from different angles.
 
-1. **[Axiom 1, as a short imperative or claim.]** [One to three sentences:
-   the principle and the consequence it has in practice.]
+1. **[Axiom 1, as a short imperative or claim.]** [One to three sentences: the principle and the consequence it has in practice.]
 
 2. **[Axiom 2.]** [...]
 
@@ -91,8 +76,7 @@ The same axioms support all the intents, from different angles.
 
 When making a decision, these are the questions to keep answering:
 
-- [A question a proposal must answer well to belong; one per intent at
-  least.]
+- [A question a proposal must answer well to belong; one per intent at least.]
 - [...]
 
 ## What [Project] is not
