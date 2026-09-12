@@ -68,8 +68,8 @@ locked dependencies, so a build is reproducible; one source of truth for its
 version, from which the runtime version, the tag, and the changelog all
 derive; tag-driven releases that run from the repo's own CI; and its
 documentation in `docs/`, a first-class artifact with the same standing as
-the code, starting with this kind of file. The pointer files at the root
-(`AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`) say where the conventions are
+the code, starting with this kind of file. The pointer files (`AGENTS.md` and
+`CLAUDE.md` at the root, `docs/CONTRIBUTING.md`) say where the conventions are
 without restating them.
 
 "Self-describing" is the test: could a new developer, human or AI, clone this

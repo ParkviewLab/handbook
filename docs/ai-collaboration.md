@@ -78,7 +78,8 @@ tagging, and releasing write to shared state and need explicit authorization.**
 - **Never change the version in feature work** — the version SoT is bumped only at
   release, on `main` (CI rejects a `develop` PR that touches it).
 - After a release, run the **back-merge cascade** ([`releases.md`](releases.md)).
-- Never force-push `main`/`develop`; never bypass the release gate.
+- Never force-push `main`/`develop` (GitHub blocks force pushes and deletions on both);
+  never bypass the release gate.
 
 ## Communication norms
 
