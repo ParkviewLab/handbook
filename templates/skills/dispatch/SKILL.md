@@ -38,10 +38,10 @@ For each repo, in order:
 3. Start the worker from inside that worktree. Pass the model and effort explicitly: a definition named with `--agent` sets the session's model but not its effort.
 
    ```bash
-   claude --bg --name <repo>-<prefix>-<topic> --agent coder --model fable --effort high --permission-mode auto --add-dir <org root>/handbook/handbook-main "<brief>"
+   claude --add-dir <org root>/handbook/handbook-main --bg --name <repo>-<prefix>-<topic> --agent coder --model fable --effort high --permission-mode auto "<brief>"
    ```
 
-   The brief states the task, the librarian's rules, and the stopping rule: local checks green, commit and push after each commit, never touch the version file, never merge, do not open the PR, and finish with a report that proposes the PR title (with its Conventional Commit prefix) and body.
+   `--add-dir` takes a list of directories, so it comes first; a brief placed after it is read as a directory. The brief states the task, the librarian's rules, and the stopping rule: local checks green, commit and push after each commit, never touch the version file, never merge, do not open the PR, and finish with a report that proposes the PR title (with its Conventional Commit prefix) and body.
 4. Subscribe once to the worker's idle notice (SendMessage to its name with `notify_when_idle: true` and no message), then move on. Do not poll.
 5. On the notice, verify independently: `git -C <worktree> log origin/<branch> --oneline`, the checks (`checks-runner`, or the worker's report against `gh run list`), `git diff develop -- <version file>` empty, no merge into a trunk. Read the worker's transcript with `claude logs <id>` if the notice is not enough, or send it a question by name.
 6. Open the pull request into `develop` yourself, with the prefixed title: `gh pr create --base develop --title "<prefix>: ..." --body "..."`. Give the user the link. Merging is the user's.

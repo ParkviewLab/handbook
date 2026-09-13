@@ -36,10 +36,10 @@ The lifecycle of one dispatched task:
 3. **The worker**, started from inside that worktree:
 
    ```bash
-   claude --bg --name <repo>-<prefix>-<topic> --agent coder --model fable --effort high --permission-mode auto --add-dir <org root>/handbook/handbook-main "<brief>"
+   claude --add-dir <org root>/handbook/handbook-main --bg --name <repo>-<prefix>-<topic> --agent coder --model fable --effort high --permission-mode auto "<brief>"
    ```
 
-   The name equals the worktree name, so the session list is self-identifying the way the on-disk layout is. `--add-dir` lets the worker read the released handbook. Pass the model and effort: a definition named with `--agent` sets the session's model but not its effort. The brief states the task, the librarian's rules, and the stopping rule: local checks green, commit and push after each commit, never touch the version file, never merge, do not open the PR, finish with a report that proposes the PR title (with its Conventional Commit prefix) and body.
+   The name equals the worktree name, so the session list is self-identifying the way the on-disk layout is. `--add-dir` lets the worker read the released handbook; it takes a list of directories, so it must not be the last flag before the brief, or the brief is read as a directory. Pass the model and effort: a definition named with `--agent` sets the session's model but not its effort. The brief states the task, the librarian's rules, and the stopping rule: local checks green, commit and push after each commit, never touch the version file, never merge, do not open the PR, finish with a report that proposes the PR title (with its Conventional Commit prefix) and body.
 4. **The wait.** The coordinator subscribes once to the worker's idle notice and moves on; it neither polls nor waits.
 5. **Verification.** On the notice the coordinator checks the branch is pushed, the checks are green, the version file is untouched, and nothing was merged; it reads the worker's transcript (`claude logs <id>`) or asks it by name when the notice is not enough.
 6. **The pull request**, opened by the coordinator into `develop` with the prefixed title; the user gets the link. Merging is the user's.
