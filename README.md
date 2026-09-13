@@ -33,11 +33,13 @@ Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/
 | [brand.md](docs/brand.md) | Palette, fonts, logos, voice |
 | [ci.md](docs/ci.md) | The three workflows, org secrets, action pinning, `dev-tools` |
 | [ai-collaboration.md](docs/ai-collaboration.md) | The behavioural contract for AI devs |
+| [agents.md](docs/agents.md) | The agent definitions (ten subagents with model and effort), the rule that chose them, user-level installation |
+| [parallel-work.md](docs/parallel-work.md) | Parallel work from one session: subagents, one background session per repo, agent teams; the dispatch lifecycle |
 | [new-repo-checklist.md](docs/new-repo-checklist.md) | The master bootstrap checklist |
 
 ## Templates & tooling
 
-- **[`templates/`](templates/)** — copy-paste sources kept identical across repos: `cliff.toml`, `pyproject.toml.template`/`package.json.template`, `electron-builder.yml`, `CONTRIBUTING.md`, the `.github/workflows/`, `generate_changelog.py`, the `LICENSING.md`/`REUSE.toml` templates, the `AGENTS.md`/`CLAUDE.md` pointer templates, and the [`md-to-html/`](templates/md-to-html/) default HTML scaffold.
+- **[`templates/`](templates/)** — copy-paste sources kept identical across repos: `cliff.toml`, `pyproject.toml.template`/`package.json.template`, `electron-builder.yml`, `CONTRIBUTING.md`, the `.github/workflows/`, `generate_changelog.py`, the `LICENSING.md`/`REUSE.toml` templates, the `AGENTS.md`/`CLAUDE.md` pointer templates, the [`md-to-html/`](templates/md-to-html/) default HTML scaffold, the [`agents/`](templates/agents/) agent definitions, and the [`skills/`](templates/skills/) dispatch skill.
 - **[`brand/`](brand/)** — canonical logos (all rights reserved) + the Michroma font (`OFL-1.1`); see [licensing.md](docs/licensing.md).
 - **[`scripts/sync-agent-files.sh`](scripts/sync-agent-files.sh)** — writes the `AGENTS.md` + `CLAUDE.md` pointer files into every repo from the templates:
 
@@ -45,11 +47,17 @@ Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/
   scripts/sync-agent-files.sh --dry-run   # preview
   scripts/sync-agent-files.sh             # apply across the org
   ```
+- **[`scripts/install-agents.sh`](scripts/install-agents.sh)** — links `templates/agents/*.md` and `templates/skills/<name>/` into `~/.claude/agents/` and `~/.claude/skills/`, from the released handbook by default:
+
+  ```bash
+  scripts/install-agents.sh --dry-run   # preview
+  scripts/install-agents.sh             # link into ~/.claude/agents and ~/.claude/skills
+  ```
 
 ## How to use this handbook
 
 - **Starting a repo?** Follow [new-repo-checklist.md](docs/new-repo-checklist.md).
-- **An AI dev?** Read [ai-collaboration.md](docs/ai-collaboration.md) and the repo's `docs/northstar.md`.
+- **An AI dev?** Read [ai-collaboration.md](docs/ai-collaboration.md) and the repo's `docs/northstar.md`; then [agents.md](docs/agents.md) (the agent set) and [parallel-work.md](docs/parallel-work.md) (working in parallel).
 - **Changing a convention?** Change it here first, then propagate (re-run the sync script; re-copy the affected template). This handbook is the single source of truth; if a repo disagrees with it, the handbook wins until updated.
 
 ## Contributing
