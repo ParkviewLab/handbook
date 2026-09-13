@@ -13,7 +13,7 @@ An agent is not a way to save tokens. Its uses are these: it keeps the main sess
 
 ## The model and effort rule
 
-Model and effort are chosen for speed with very high quality, not for cost:
+Model and effort are chosen for speed and accuracy, not for cost:
 
 - **Fable** wherever the output depends on judgement or on reading a large corpus accurately.
 - **Effort by the cost of an error:** `max` for a deliverable (the HTML twin) and for alignment verdicts; `high` for reports that a person or the calling session will check anyway; `medium` or `low` where the task is reading or running.
@@ -50,7 +50,7 @@ Exploration, planning, and correctness review stay with Claude Code's built-in a
 
 ## Using them
 
-From a session, delegate by name with the Agent tool and give the agent the absolute path of the worktree it works in; run independent agents in the same turn. From the command line, a whole session can run as one definition: `claude --agent coder` sets the session's tools and model from the definition, but **not its effort**, so pass `--effort` explicitly (verified on v2.1.270). As teammates in an agent team, a definition's `tools` and `model` apply, its body is appended to the teammate's default prompt, its `skills` are not preloaded, and its effort is the lead's; see [`parallel-work.md`](parallel-work.md).
+From a session, delegate by name with the Agent tool and give the agent the absolute path of the worktree it works in; run independent agents in the same turn. From the command line, a whole session can run as one definition: `claude --agent coder` sets the session's tools and model from the definition, but **not its effort**, so pass `--effort` explicitly (verified on v2.1.270). For a subagent dispatched with the Agent tool, the definition's effort applies (documented; not measured here). As teammates in an agent team the definitions serve as roles, with the differences [`parallel-work.md`](parallel-work.md) states.
 
 ## Installation
 
@@ -64,6 +64,3 @@ The installer links to the **released** handbook (the sibling `handbook-main` wo
 ## Changing the set
 
 Edit the template, open a PR into `develop`, release; the change reaches every machine with the next `git pull` of `main`. A new agent needs a row in the table above and, if it writes, a statement of what it writes. The model and effort of an agent change only for a reason this page can state.
-
----
-<sub>© 2026 Gary Frattarola · Licensed under [CC-BY-4.0](../LICENSES/CC-BY-4.0.txt) · part of the ParkviewLab handbook</sub>

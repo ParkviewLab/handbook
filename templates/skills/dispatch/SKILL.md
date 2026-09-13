@@ -26,22 +26,14 @@ Dispatch with the Agent tool by definition name (`handbook-librarian`, `docs-rev
 For each repo, in order:
 
 1. Rules: run `handbook-librarian` for the task and keep its brief for the worker's prompt.
-2. Worktree, the handbook's way, with the branch on the remote before any work:
-
-   ```bash
-   git -C <repo>.git fetch origin
-   git -C <repo>.git push origin develop:refs/heads/<prefix>-<topic>
-   git -C <repo>.git worktree add --track -b <prefix>-<topic> ../<repo>-<prefix>-<topic> origin/<prefix>-<topic>
-   cd ../<repo>-<prefix>-<topic> && uv sync   # or npm ci; nothing for a docs repo
-   ```
-
+2. Worktree, the handbook's way: follow the working-branch lifecycle in `docs/branching.md` exactly (a `<repo>-<prefix>-<topic>` sibling worktree off `develop`, the branch pushed to the remote at creation before any work, dependencies synced). The sequence lives on that page, and in a `dev-tools` helper where one exists; do not restate it.
 3. Start the worker from inside that worktree. Pass the model and effort explicitly: a definition named with `--agent` sets the session's model but not its effort.
 
    ```bash
    claude --add-dir <org root>/handbook/handbook-main --bg --name <repo>-<prefix>-<topic> --agent coder --model fable --effort high --permission-mode auto "<brief>"
    ```
 
-   `--add-dir` takes a list of directories, so it comes first; a brief placed after it is read as a directory. The brief states the task, the librarian's rules, and the stopping rule: local checks green, commit and push after each commit, never touch the version file, never merge, do not open the PR, and finish with a report that proposes the PR title (with its Conventional Commit prefix) and body.
+   `--add-dir` takes a list of directories, so it comes first; a brief placed after it is read as a directory. The brief states the task, the librarian's rules, and the stopping rule: local checks green, push after each commit, never touch the version file, never merge, do not open the PR, and finish with a report that proposes the PR title (with its Conventional Commit prefix) and body.
 4. Subscribe once to the worker's idle notice (SendMessage to its name with `notify_when_idle: true` and no message), then move on. Do not poll.
 5. On the notice, verify independently: `git -C <worktree> log origin/<branch> --oneline`, the checks (`checks-runner`, or the worker's report against `gh run list`), `git diff develop -- <version file>` empty, no merge into a trunk. Read the worker's transcript with `claude logs <id>` if the notice is not enough, or send it a question by name.
 6. Open the pull request into `develop` yourself, with the prefixed title: `gh pr create --base develop --title "<prefix>: ..." --body "..."`. Give the user the link. Merging is the user's.
@@ -53,7 +45,7 @@ A worker that hits a permission prompt waits until the user attaches (`claude at
 
 Enable teams for that session or repo only, never in user settings: a `.claude/settings.json` in the repo worktree with `{"env": {"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"}}`, or `--settings '{"env":{"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS":"1"}}'` on the command line. While enabled, every subagent spawned with a name launches as a teammate.
 
-Run the team as the documentation prescribes: break the work into tasks on the shared task list (five or six per teammate), spawn three to five teammates by the Agent tool with a `name` each, give each its full context in its spawn prompt (no history carries over), assign disjoint files, use the agent definitions as teammate roles, wait for the teammates rather than doing their work, and monitor and steer. Teammates run in the lead's directory, take the lead's effort, end with the lead's session, cannot be resumed, and cannot spawn background subagents; permission prompts bubble to the lead. Remove the setting when the team's work is done.
+Run the team as the documentation prescribes: break the work into tasks on the shared task list (five or six per teammate), spawn three to five teammates by the Agent tool with a `name` each, give each its full context in its spawn prompt (no history carries over), assign disjoint files, use the agent definitions as teammate roles, wait for the teammates rather than doing their work, and monitor and steer. Teammates run in the lead's directory, take the lead's effort, end with the lead's session, cannot be resumed, and cannot spawn background subagents; permission prompts go to the lead. Remove the setting when the team's work is done.
 
 ## 5. In every mode
 

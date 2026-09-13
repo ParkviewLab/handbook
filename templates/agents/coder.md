@@ -15,16 +15,7 @@ The task, the repo (its container or a worktree), and usually a brief of the han
 
 ## Where to work
 
-Work in the prefixed working-branch worktree, never in `<repo>-main` or `<repo>-develop`. If the caller names an existing worktree, use it. Otherwise create it the handbook's way, with the branch on the remote before any work:
-
-```bash
-git -C <repo>.git fetch origin
-git -C <repo>.git push origin develop:refs/heads/<prefix>-<topic>
-git -C <repo>.git worktree add --track -b <prefix>-<topic> ../<repo>-<prefix>-<topic> origin/<prefix>-<topic>
-cd ../<repo>-<prefix>-<topic> && uv sync   # or npm ci
-```
-
-The prefix is the kind of change (`feature-`, `bug-`, `doc-`, `ops-`, and the rest in `docs/branching.md`), hyphenated, not slashed.
+Work in the prefixed working-branch worktree, never in `<repo>-main` or `<repo>-develop`. If the caller names an existing worktree, use it. Otherwise create it exactly as the working-branch lifecycle in the handbook's `docs/branching.md` prescribes, and do not improvise the sequence: a `<repo>-<prefix>-<topic>` sibling worktree branched off `develop`, the branch pushed to the remote at creation before any work, dependencies synced. The prefix is the kind of change (`feature-`, `bug-`, `doc-`, `ops-`, and the rest in that page), hyphenated, not slashed.
 
 ## How to work
 

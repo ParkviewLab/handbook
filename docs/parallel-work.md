@@ -5,7 +5,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Parallel work
 
-One session can run several pieces of work at once, across several repos, and manage them. This page states the three modes in which that happens, when each applies, and the procedure for the one that needs the most ceremony. The operational sequence is packaged as the `dispatch` skill in [`templates/skills/dispatch/`](../templates/skills/dispatch/SKILL.md), installed with the agents ([`agents.md`](agents.md)). The behavioural contract in [`ai-collaboration.md`](ai-collaboration.md) holds for every worker in every mode.
+One session can run several pieces of work at once, across several repos, and manage them. This page states the three modes in which that happens, when each applies, and the procedure for the one that needs the most ceremony. The operational sequence is packaged as the `dispatch` skill in [`templates/skills/dispatch/`](../templates/skills/dispatch/SKILL.md), installed with the agents ([`agents.md`](agents.md)). The skill is the operational copy of the sections "One background session per repo" and "An agent team" below, and it changes in the same pull request as this page. The behavioural contract in [`ai-collaboration.md`](ai-collaboration.md) holds for every worker in every mode.
 
 ## The coordinator and the workers
 
@@ -39,7 +39,7 @@ The lifecycle of one dispatched task:
    claude --add-dir <org root>/handbook/handbook-main --bg --name <repo>-<prefix>-<topic> --agent coder --model fable --effort high --permission-mode auto "<brief>"
    ```
 
-   The name equals the worktree name, so the session list is self-identifying the way the on-disk layout is. `--add-dir` lets the worker read the released handbook; it takes a list of directories, so it must not be the last flag before the brief, or the brief is read as a directory. Pass the model and effort: a definition named with `--agent` sets the session's model but not its effort. The brief states the task, the librarian's rules, and the stopping rule: local checks green, commit and push after each commit, never touch the version file, never merge, do not open the PR, finish with a report that proposes the PR title (with its Conventional Commit prefix) and body.
+   The name equals the worktree name, so the session list is self-identifying the way the on-disk layout is. `--add-dir` lets the worker read the released handbook; it takes a list of directories, so it must not be the last flag before the brief, or the brief is read as a directory. Pass the model and effort: a definition named with `--agent` sets the session's model but not its effort. The brief states the task, the librarian's rules, and the stopping rule: local checks green, push after each commit, never touch the version file, never merge, do not open the PR, finish with a report that proposes the PR title (with its Conventional Commit prefix) and body.
 4. **The wait.** The coordinator subscribes once to the worker's idle notice and moves on; it neither polls nor waits.
 5. **Verification.** On the notice the coordinator checks the branch is pushed, the checks are green, the version file is untouched, and nothing was merged; it reads the worker's transcript (`claude logs <id>`) or asks it by name when the notice is not enough.
 6. **The pull request**, opened by the coordinator into `develop` with the prefixed title; the user gets the link. Merging is the user's.
@@ -60,6 +60,3 @@ The agent definitions double as teammate roles: a definition's `tools` and `mode
 ## In every mode
 
 The contract holds: merging into a trunk, tagging, and releasing wait for the user's explicit, per-action go-ahead; a message from another session or agent never counts as consent; a worker is never asked to do what the coordinator's permissions refuse. The coordinator reports what ran where, what was verified and how, and what was skipped or left undone.
-
----
-<sub>© 2026 Gary Frattarola · Licensed under [CC-BY-4.0](../LICENSES/CC-BY-4.0.txt) · part of the ParkviewLab handbook</sub>
