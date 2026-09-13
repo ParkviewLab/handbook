@@ -22,7 +22,7 @@ A synced `.claude/settings.json` (allow read-only, ask on write/push, deny secre
 `CLAUDE.md` as an `@AGENTS.md` import; the Electron template reconciled with the shipped signed config; the visionOS version pulled into one `Version.xcconfig` the build derives from. [A8, A7, A25]
 
 ## Onboarding a fresh session to the handbook
-Replace "familiarize yourself" with a bounded, deterministic path: `dev-tools` keeps a local clone of the released handbook and each repo's `CLAUDE.md` auto-loads a small derived digest + doc-map (only `CLAUDE.md` auto-loads, and `@`-imports are local-only, so the current GitHub links load nothing); then a `/handbook` skill + librarian subagent for task-scoped depth, optionally a handbook MCP server, bundled as a versioned plugin. [C7]
+Replace "familiarize yourself" with a bounded, deterministic path: `dev-tools` keeps a local clone of the released handbook and each repo's `CLAUDE.md` auto-loads a small derived digest + doc-map (only `CLAUDE.md` auto-loads, and `@`-imports are local-only, so the current GitHub links load nothing); then a `/handbook` skill + librarian subagent for task-scoped depth, optionally a handbook MCP server, bundled as a versioned plugin. [C7] Landed in part: the librarian subagent exists as `templates/agents/handbook-librarian.md`, installed at the user level with the rest of the set (see [`agents.md`](agents.md)); the local clone and digest (C7a) and the handbook MCP server (C7c) remain open.
 
 ## Supply-chain hardening (the low-regret cluster)
 SHA-pin actions + Dependabot together; build-provenance attestations for GHCR images and Electron installers; per-job token minimization; then Scorecard and an SBOM. [A1-A6]
