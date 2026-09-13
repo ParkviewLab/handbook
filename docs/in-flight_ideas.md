@@ -12,6 +12,9 @@ SPDX-License-Identifier: CC-BY-4.0
 ## The environment improves itself (a possible fifth northstar intent)
 Should the northstar name, as a peer intent, that both human and AI developers can raise, debate, and land improvements to the shared tools and processes through a defined low-friction loop, and that the friction they hit becomes the backlog? [B1, P1]
 
+## Many agents under one hand (a possible facet of intent 4)
+The northstar speaks of "an agent" in the singular. `parallel-work.md` now describes one session coordinating several workers across several repos, under the same contract, with the human hand asked for per action and never supplied by another agent or session. Is that a facet of purpose that intent 4 should name (with the rule that a step whose outcome must be identical every time is scripted, whilst a step that needs judgement is delegated to an agent), or is it mechanism only? Raised by the northstar review of the agent set, 2026-09-13.
+
 ## A proposal (RFC) lifecycle both humans and AIs can drive
 Evolve this file from a flat scratchpad into a backlog with explicit states (raised → discussion → decided → recorded/dropped): humans enter via a GitHub issue template, agents via a propose-improvement skill, into one backlog, with a periodic triage that promotes a proven direction into `future-goals.md`. [B2, P1]
 
@@ -22,7 +25,7 @@ A synced `.claude/settings.json` (allow read-only, ask on write/push, deny secre
 `CLAUDE.md` as an `@AGENTS.md` import; the Electron template reconciled with the shipped signed config; the visionOS version pulled into one `Version.xcconfig` the build derives from. [A8, A7, A25]
 
 ## Onboarding a fresh session to the handbook
-Replace "familiarize yourself" with a bounded, deterministic path: `dev-tools` keeps a local clone of the released handbook and each repo's `CLAUDE.md` auto-loads a small derived digest + doc-map (only `CLAUDE.md` auto-loads, and `@`-imports are local-only, so the current GitHub links load nothing); then a `/handbook` skill + librarian subagent for task-scoped depth, optionally a handbook MCP server, bundled as a versioned plugin. [C7]
+Replace "familiarize yourself" with a bounded, deterministic path: `dev-tools` keeps a local clone of the released handbook and each repo's `CLAUDE.md` auto-loads a small derived digest + doc-map (only `CLAUDE.md` auto-loads, and `@`-imports are local-only, so the current GitHub links load nothing); then a `/handbook` skill + librarian subagent for task-scoped depth, optionally a handbook MCP server, bundled as a versioned plugin. [C7] Landed in part: the librarian subagent exists as `templates/agents/handbook-librarian.md`, installed at the user level with the rest of the set (see [`agents.md`](agents.md)); the local clone and digest (C7a), the handbook MCP server (C7c), and the plugin channel that would version the bundle with the handbook remain open; until then the installer's symlinks from released `main` carry the same versioning.
 
 ## Supply-chain hardening (the low-regret cluster)
 SHA-pin actions + Dependabot together; build-provenance attestations for GHCR images and Electron installers; per-job token minimization; then Scorecard and an SBOM. [A1-A6]
