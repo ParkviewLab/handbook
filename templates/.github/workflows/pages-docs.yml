@@ -1,0 +1,64 @@
+name: Deploy the site
+
+# Publishes https://parkviewlab.github.io/<repo>/ from main — released content only,
+# so what the site says is what the newest release ships. scripts/build_pages_site.py
+# (per-repo: the index carries the repo's own styling) assembles the whole site into a
+# directory and this workflow uploads it: the generated index, any hand-built pages
+# under site/, and docs/ byte-identical to the repository under /docs/. Nothing
+# generated is committed, and there is no Jekyll or other build system in the path.
+#
+# main advances only at a release, so a release is what redeploys the site, and the
+# build pins every GitHub link to the newest v* tag reachable from HEAD. Note what the
+# build must NOT do: it takes whatever v* tag is reachable, so a run that somehow
+# started before the tag landed would stamp the PREVIOUS release and publish
+# successfully; it fails only when no v* tag exists at all. That leniency is
+# deliberate, since a later manual run sits on the changelog commit rather than on the
+# tagged one; if a deployment ever does stamp a stale version, re-run this workflow by
+# hand once the tag is in place.
+#
+# Two settings, once per repo: the Pages source is GitHub Actions
+# (gh api -X PUT repos/ParkviewLab/<repo>/pages -f build_type=workflow), and the
+# github-pages environment's deployment branch policy allows main and nothing else.
+#
+# See the handbook's docs-site.md.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; let an in-flight publish finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main             # always publish the released state, never develop
+          fetch-depth: 0        # tags — the build reads the newest release from them
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Build the site
+        run: python3 scripts/build_pages_site.py --out "${{ runner.temp }}/site"
+
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ${{ runner.temp }}/site
+      - id: deployment
+        uses: actions/deploy-pages@v5
