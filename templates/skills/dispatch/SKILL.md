@@ -37,7 +37,7 @@ For each repo, in order:
 4. Subscribe once to the worker's idle notice (SendMessage to its name with `notify_when_idle: true` and no message), then move on. Do not poll.
 5. On the notice, verify independently: `git -C <worktree> log origin/<branch> --oneline`, the checks (`checks-runner`, or the worker's report against `gh run list`), `git diff develop -- <version file>` empty, no merge into a trunk. Read the worker's transcript with `claude logs <id>` if the notice is not enough, or send it a question by name.
 6. Open the pull request into `develop` yourself, with the prefixed title: `gh pr create --base develop --title "<prefix>: ..." --body "..."`. Give the user the link. Merging is the user's.
-7. After the user's merge, ask whether to cut a release, as the contract requires. Then clean up: `git -C <repo>.git worktree remove ../<repo>-<prefix>-<topic>`, `git -C <repo>.git branch -d <prefix>-<topic>`, and `claude rm <id>` for the worker.
+7. After the user's merge, ask whether to cut a release, as the contract requires. Then close the branch lifecycle as `docs/branching.md` ("After the merge") prescribes — fast-forward the trunk worktree, then verify by tree and remove the worktree and branch, since `git branch -d` refuses after a squash merge — and `claude rm <id>` for the worker.
 
 A worker that hits a permission prompt waits until the user attaches (`claude attach <id>` in a terminal; `claude agents` lists working, needs-input, and completed sessions). Never ask a worker to do what this session's permissions refuse.
 
