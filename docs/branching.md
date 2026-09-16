@@ -47,10 +47,8 @@ uv sync                       # each worktree gets its own deps (or: npm ci)
 
 # …work, committing as you go and pushing after each commit (see ai-collaboration.md)…
 
-# open a PR into develop. The USER merges it (see below). Then clean up:
-cd ../repo_name-develop
-git worktree remove ../repo_name-feature-foo
-git branch -d feature-foo
+# open a PR into develop. The USER merges it (see "Who merges").
+# Then sync the trunk worktree and clean up — see "After the merge" below.
 ```
 
 - Working branches **squash-merge** into `develop`: each PR collapses to a single commit whose subject is the PR title (the `feat:`/`fix:`/… prefix `git-cliff` parses). That one dated commit is the record of *when the feature landed*; the branch's individual commits stay viewable on the PR. (A squash always creates a fresh commit, so `--no-ff` doesn't apply here.)
@@ -71,6 +69,40 @@ The repo is configured **squash-only** (merge-commit and rebase merges are disab
 
 - **Feature PR → `develop`:** opened by anyone (including AI devs); a **human reviews and squash-merges** it (the merge button, or `gh pr merge <n> --squash`) once the **required checks are green** — branch protection keeps the button disabled until they pass (see [`ci.md`](ci.md#required-checks-before-merge)). Merged branches auto-delete. A broad directive ("fix all that", "finish it") authorises the *work*, not the merge.
 - **`develop → main`:** done from the CLI as part of a **release**, not a reviewed PR. A single release authorisation ("do the release") covers the whole flow — including the `git merge --no-ff develop` promotion — with no second approval. See [`ai-collaboration.md`](ai-collaboration.md) and [`releases.md`](releases.md).
+
+## After the merge
+
+The merge is the user's; the two steps that close the lifecycle belong to whoever opened the PR — in parallel work, the coordinator ([`parallel-work.md`](parallel-work.md)). Do them as soon as the merge is confirmed, alongside the release prompt ([`ai-collaboration.md`](ai-collaboration.md)).
+
+### Sync the trunk worktree
+
+**After any merge into a trunk, fast-forward that trunk's worktree** — from the container dir:
+
+```bash
+git -C <repo>-develop pull --ff-only
+```
+
+There is no reason for a trunk worktree to sit out of sync when it can be kept in sync: whoever next opens the machine, with a session running or not, should find it already prepared. Pulls are fast-forward only (above), so this either applies cleanly or tells you something is wrong.
+
+The release flow already syncs both trunks before promoting, for a sharper reason — a stale local `develop` promotes and tags a commit that omits the merged work (see [`releases.md`](releases.md#cutting-a-release)). This rule generalises the habit beyond release time; it doesn't replace that step.
+
+### Remove the worktree and delete the branch
+
+Do this when no further work on that branch is expected; **keep the worktree when it is**. Leaving one isn't free: each worktree carries its own installed dependencies (`uv sync` / `npm ci`) — the pensa-grex worktree that prompted this rule held 241 MB of `node_modules`.
+
+> **A squash merge defeats the obvious test.** The squash is a *fresh* commit, so the branch tip is never an ancestor of the trunk: `git branch -d` refuses, and any "is it merged?" ancestry check reads false even though the work has landed. **Verify by tree, not by ancestry** — identical trees mean the work is in.
+
+```bash
+# from the container dir, after the merge:
+git -C <repo>.git diff --stat origin/develop origin/<prefix>-<topic>   # no output = trees identical = the work landed
+git -C <repo>.git worktree remove ../<repo>-<prefix>-<topic>
+git -C <repo>.git worktree prune
+git -C <repo>.git branch -D <prefix>-<topic>
+git -C <repo>.git push origin --delete <prefix>-<topic>                # only if the remote ref still exists
+```
+
+- **`-D`, not `-d`**, for the reason above: `-d`'s merged-check can't see a squash.
+- Repos are configured to **delete the branch on merge** ([`ci.md`](ci.md#repo-merge-settings)), so the last line is usually a no-op: the remote ref is already gone and the local `origin/<prefix>-<topic>` is merely stale — `git fetch --prune` clears it. Run the tree check *before* pruning, since prune removes the ref it compares against.
 
 ## AI devs
 
