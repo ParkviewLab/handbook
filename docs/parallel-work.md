@@ -43,7 +43,7 @@ The lifecycle of one dispatched task:
 4. **The wait.** The coordinator subscribes once to the worker's idle notice and moves on; it neither polls nor waits.
 5. **Verification.** On the notice the coordinator checks the branch is pushed, the checks are green, the version file is untouched, and nothing was merged; it reads the worker's transcript (`claude logs <id>`) or asks it by name when the notice is not enough.
 6. **The pull request**, opened by the coordinator into `develop` with the prefixed title; the user gets the link. Merging is the user's.
-7. **After the merge**, the coordinator asks whether to cut a release, as the contract requires; then it removes the worktree, deletes the branch, and removes the worker (`claude rm <id>`).
+7. **After the merge**, the coordinator asks whether to cut a release, as the contract requires; then it closes the branch lifecycle as [`branching.md`](branching.md#after-the-merge) prescribes — fast-forward the trunk worktree, then remove the working worktree and delete the branch — and removes the worker (`claude rm <id>`).
 
 **What stays with the user.** A worker's permission prompt waits until the user attaches (`claude attach <id>` in a terminal; `claude agents` sorts sessions into working, needs input, and completed); a message from the coordinator never answers one, changes a worker's configuration, or authorizes a merge. Auto mode in the workers keeps the prompts rare.
 
