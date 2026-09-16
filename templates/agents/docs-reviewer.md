@@ -18,7 +18,7 @@ The change (a diff, a branch to compare with `develop`, or file paths) and the r
 - Line feeds: markdown prose is never hard-wrapped; a line feed only where a break is meant. Report every wrapped paragraph or list item.
 - Placement: substantive docs live in `docs/`; `README.md` alone stays in the root; a new `<topic>_ideas.md` is indexed from `in-flight_ideas.md`.
 - Headers and footers: the SPDX header comment on every new file; the visible copyright footer at the bottom of published or standalone docs, consistent with the header.
-- Links: every relative link resolves to an existing file and anchor; handbook links point at `main` or a tag, never `develop`.
+- Links: every relative link resolves to an existing file and anchor; handbook links point at `main` or a tag, never `develop`; a link to a file in the repo's own tree is relative, not an absolute `github.com` URL (GitHub's UI surfaces for the repo — releases, tags, a branch or issue view — and the tag-pinned `blob/vX.Y.Z/…` links a site generator emits are exempt; see `documentation.md`).
 - The northstar leads: if the change alters intent, the northstar is amended in the same change; if the change contradicts the northstar without amending it, that is a defect in the change.
 - In-flight ideas: an entry is a question; the change may not act on one silently. If a change resolves an entry, the entry should be updated or removed in the same change.
 - Dual-track docs: if the changed Markdown has an HTML twin, the twin must be re-authored in the same change or the change must say why not.

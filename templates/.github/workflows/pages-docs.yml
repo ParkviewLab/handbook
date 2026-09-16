@@ -1,26 +1,15 @@
 name: Deploy the site
 
-# Publishes https://parkviewlab.github.io/<repo>/ from main — released content only,
-# so what the site says is what the newest release ships. scripts/build_pages_site.py
-# (per-repo: the index carries the repo's own styling) assembles the whole site into a
-# directory and this workflow uploads it: the generated index, any hand-built pages
-# under site/, and docs/ byte-identical to the repository under /docs/. Nothing
-# generated is committed, and there is no Jekyll or other build system in the path.
+# Publishes https://parkviewlab.github.io/<repo>/ from main, so the site shows the
+# newest RELEASED documentation: the generated index, any hand-built pages under
+# site/, and docs/ byte-identical under /docs/. Nothing generated is committed.
 #
-# main advances only at a release, so a release is what redeploys the site, and the
-# build pins every GitHub link to the newest v* tag reachable from HEAD. Note what the
-# build must NOT do: it takes whatever v* tag is reachable, so a run that somehow
-# started before the tag landed would stamp the PREVIOUS release and publish
-# successfully; it fails only when no v* tag exists at all. That leniency is
-# deliberate, since a later manual run sits on the changelog commit rather than on the
-# tagged one; if a deployment ever does stamp a stale version, re-run this workflow by
-# hand once the tag is in place.
-#
-# Two settings, once per repo: the Pages source is GitHub Actions
-# (gh api -X PUT repos/ParkviewLab/<repo>/pages -f build_type=workflow), and the
+# The build step fails until the adopting repo writes its own
+# scripts/build_pages_site.py to the contract in the handbook's docs-site.md (that
+# script is per-repo: the index carries the repo's own styling). Two repository
+# settings go with it, once each: the Pages source is the Actions workflow, and the
 # github-pages environment's deployment branch policy allows main and nothing else.
-#
-# See the handbook's docs-site.md.
+# Both, and the tag rules the build must follow, are in docs-site.md.
 
 on:
   push:
