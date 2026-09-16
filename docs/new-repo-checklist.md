@@ -57,6 +57,7 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 - [ ] Optionally an AI-authored `docs/northstar.html` per [`md-to-html.md`](md-to-html.md).
 - [ ] `docs/in-flight_ideas.md` started.
 - [ ] `docs/CONTRIBUTING.md` from [`templates/CONTRIBUTING.md`](../templates/CONTRIBUTING.md).
+- [ ] _(optional, public repos)_ Publish `docs/` as a site at `parkviewlab.github.io/<repo>/`: `pages-docs.yml`, a `scripts/build_pages_site.py` to the documented CLI contract, Pages source = Actions, and the `github-pages` environment restricted to `main`. Record the new `site/**` tree's licensing in `REUSE.toml` (the `reuse` check fails otherwise), and author `docs/northstar.html` — without it the index opens with a Markdown link the browser shows as source text. See [`docs-site.md`](docs-site.md).
 - [ ] Visible copyright footer on published/standalone docs (HTML footers, root README, northstar) — bottom of file, consistent with the SPDX header. See [`documentation.md`](documentation.md#copyright-footers).
 
 ## 7. AI pointers

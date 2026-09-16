@@ -7,6 +7,8 @@ SPDX-License-Identifier: CC-BY-4.0
 
 A **website repo** is a static site we publish to the internet — plain HTML/CSS (no framework), self-hosted brand, served by **GitHub Pages** on a custom domain. `parkviewlab.ai` and `zoestum.ai` are the examples; `parkviewlab.ai` is the **reference implementation** of everything below.
 
+> Not to be confused with a **documentation site** — a `docs/` directory published from an ordinary code repo's `main` at `parkviewlab.github.io/<repo>/`. That repo keeps `main`/`develop`, tags, and releases; only the deploy is shared. See [`docs-site.md`](docs-site.md).
+
 It is a deliberately **lighter** profile than the Python-package one. A package shipped to PyPI can't be unpublished and has many consumers, so its release ceremony (version bumps, tags, the gate, the back-merge cascade) buys real safety. A website is the opposite: **instantly re-deployable** — a bad change is reverted and live again in seconds. So the website profile keeps the conventions that pay for themselves and **drops the release ceremony that doesn't**. The goal is that updating and publishing the site is *easy*.
 
 ## What carries over, what's dropped
@@ -64,10 +66,11 @@ ParkviewLab/
 
 Website repos deploy through a **GitHub Actions Pages workflow**, *not* the legacy "serve a branch" mode. The Actions path lets the deploy **build** (refresh any generated pages, stamp the "last updated" dates) and publishes the result **without committing generated artifacts to git**.
 
-Set the Pages source to GitHub Actions:
+Set the Pages source to GitHub Actions — `POST` creates the site where Pages has never been enabled, `PUT` updates an existing one (`POST` answers 409 if it exists):
 
 ```bash
-gh api -X PUT repos/ParkviewLab/<repo>/pages -f build_type=workflow
+gh api -X POST repos/ParkviewLab/<repo>/pages -f build_type=workflow
+gh api -X PUT  repos/ParkviewLab/<repo>/pages -f build_type=workflow
 ```
 
 The deploy workflow ([`templates/.github/workflows/pages-deploy.yml`](../templates/.github/workflows/pages-deploy.yml)) triggers on **push to `live`** (publish), a **nightly `schedule`** (so generated pages pick up changes — e.g. new project releases — without a site edit), and **`workflow_dispatch`** (manual). It checks out `live` with full history (`fetch-depth: 0`, needed for the git dates), runs the build + stamp steps, assembles the site files, then `actions/upload-pages-artifact` → `actions/deploy-pages`. Keep the `CNAME` file in the published artifact so the custom domain holds.

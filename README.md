@@ -24,6 +24,7 @@ Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/
 | [node-tooling.md](docs/node-tooling.md) | npm + TypeScript + ESLint + Vitest, the `package.json` shape |
 | [electron-tooling.md](docs/electron-tooling.md) | electron-vite + electron-builder, cross-platform desktop installers |
 | [mcp-server-conventions.md](docs/mcp-server-conventions.md) | The shared Python MCP server architecture |
+| [docs-site.md](docs/docs-site.md) | Publishing a repo's own `docs/` as a GitHub Pages site from `main` |
 | [website.md](docs/website.md) | Website repos: `live`/`staging`, Pages-via-Actions deploy, custom-domain HTTPS, page footers — the lighter profile |
 | [testing.md](docs/testing.md) | pytest markers/tiers, conftest patterns, visual verification |
 | [packaging-and-deployment.md](docs/packaging-and-deployment.md) | Dockerfile, compose, the "five ways to run it" README |

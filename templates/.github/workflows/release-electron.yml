@@ -78,6 +78,12 @@ jobs:
         run: |
           echo "${{ secrets.APPLE_API_KEY_B64 }}" | base64 --decode > "$RUNNER_TEMP/AuthKey.p8"
           echo "APPLE_API_KEY=$RUNNER_TEMP/AuthKey.p8" >> "$GITHUB_ENV"
+      # electron-builder must be pinned to 26.16.1 or newer in package.json: earlier
+      # versions pass the certificate password to `security set-key-partition-list`,
+      # which wants the temporary keychain's own password, and current macos-latest
+      # images reject it ("SecKeychainUnlock: … passphrase … not correct"). See the
+      # handbook's electron-tooling.md -> "macOS signing needs electron-builder 26.16.1
+      # or newer".
       - name: Package installers
         run: npx electron-builder --publish never
         env:

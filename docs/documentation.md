@@ -58,6 +58,23 @@ There are two HTML tracks:
 
 Both tracks follow the discipline: one self-contained file, no build step, no network, responsive, faithful to the MD wording. The brand (palette + Michroma) is in [`brand.md`](brand.md); the starting scaffold is [`templates/md-to-html/default.html`](../templates/md-to-html/default.html). A project may override with its own scaffold.
 
+## Links between a repo's own documents
+
+**A link to a file in the repo's own tree is relative** — to the `.html` twin where one exists, otherwise to the `.md` — and never an absolute `https://github.com/ParkviewLab/<repo>/blob/…` URL to the same repo.
+
+The reason is that the same file is read in several places. A relative link resolves in the working tree, in GitHub's blob view, and on a published documentation site alike; an absolute one always lands on whatever `main` (or the pinned ref) holds, so an author clicking through from their working copy reads a *different version* of the document than the one they are editing, and a reader of the site is taken off it.
+
+Two things are outside the rule:
+
+- **GitHub's own UI surfaces** for the repo — the releases page, the tags list, a branch or tree view, an issue or pull request. There is no file in the tree to point at, so these are absolute (this handbook's README links to `tree/main` and to `tags` that way).
+- **Tag-pinned links a site generator emits** (`blob/vX.Y.Z/docs/<file>.md`), which must be absolute because the published site cannot render Markdown. See [`docs-site.md`](docs-site.md#markdown-links).
+
+Links to *other* repos are absolute, of course; the rule is about self-links.
+
+## Publishing `docs/` as a site
+
+A public repo may publish its own `docs/` at `https://parkviewlab.github.io/<repo>/`, built from `main` so the site always shows the newest **released** documentation. How that works — the generated index, the build script's contract and guarantees, and what it costs to correct a document after a release — is [`docs-site.md`](docs-site.md).
+
 ## Copyright footers
 
 Every file carries its SPDX header at the top (compliance — see [`licensing.md`](licensing.md#copyright-statements-spdx-header-vs-visible-footer)). **Published/standalone docs** also carry a *human-visible* copyright statement, so a reader of the rendered page sees it:
