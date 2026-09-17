@@ -31,6 +31,7 @@ The cost is explicit, and worth stating before adopting it:
 
 - **A docs-only change goes public through a release.** Merging it into `develop` does not publish it.
 - **For a desktop app with an update check, an urgent doc fix is not cheap** — it costs a rebuild of every installer and an update notice to installed copies. Weigh that before treating the site as the only home for a correction; GitHub's rendered view of `develop` is always available in the meantime.
+- **Whatever `main` holds is published, stale or not.** A pre-release sentence ("no image has been published yet"), an open question that was answered, or a work plan left in a design document ships as the release's documentation. The release preflight therefore includes the currency check ([`agents.md`](agents.md)), and a stale statement is fixed on `develop` before the promotion rather than corrected by a second release ([`documentation.md`](documentation.md#documents-and-records)).
 
 ### Enabling it on a repo
 

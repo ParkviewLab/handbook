@@ -16,7 +16,7 @@ An agent is not a way to save tokens. Its uses are these: it keeps the main sess
 Model and effort are chosen for speed and accuracy, not for cost:
 
 - **Fable** wherever the output depends on judgement or on reading a large corpus accurately.
-- **Effort by the cost of an error:** `max` for a deliverable (the HTML twin) and for alignment verdicts; `high` for reports that a person or the calling session will check anyway; `medium` or `low` where the task is reading or running.
+- **Effort by the cost of an error:** `max` for a deliverable (the HTML twin) and for a judgement the session cannot re-derive by reading the files (alignment, currency); `high` for reports that a person or the calling session will check anyway; `medium` or `low` where the task is reading or running.
 - **Sonnet** only for a mechanical, well-specified task where the faster model should give the same answer: a sentence-by-sentence comparison, a specified edit, running the checks.
 - Haiku is used nowhere; Opus has no role while Fable is available.
 
@@ -33,17 +33,20 @@ Model and effort are chosen for speed and accuracy, not for cost:
 | `html-author` | fable | max | one file | Authors the designed HTML twin from the scaffold and verifies the discipline |
 | `html-drift-checker` | sonnet | high | no | Compares a Markdown doc with its twin and reports drift, Markdown canonical |
 | `docs-reviewer` | fable | high | no | Reviews a docs change against the writing and documentation rules |
+| `docs-currency-checker` | fable | max | no | Verifies that documents are current: claims against the code by execution where the stack allows it, tense and open questions against the repo's state, text against the decisions supplied and against each other |
 | `coder` | fable | high | the branch | Implements a bounded task the handbook's way; pushes; opens no PR, merges nothing |
 | `mechanical-coder` | sonnet | medium | the branch | Applies a fully specified, machine-verifiable change and runs the named check |
 | `checks-runner` | sonnet | low | no | Runs the repo's local checks and reports only the failures |
 
 Exploration, planning, and correctness review stay with Claude Code's built-in agents and commands (`Explore`, `Plan`, `/code-review`); the set covers what the handbook adds.
 
+Four of the reviewers read documents, and no one of them is enough alone. `docs-reviewer` checks form and rules; `html-drift-checker` checks a Markdown document against its twin; `northstar-reviewer` checks intent; `docs-currency-checker` checks whether what a document says is what the code does and what was decided. A document can pass the first three and still describe a route that was renamed, a question that was answered, or a build phase that ended. It distinguishes a record (a changelog, a dated decision log), which may describe the past, from a current-state document, which may not ([`documentation.md`](documentation.md#documents-and-records)), and it takes from the session the decisions made in conversation, because those are invisible in the repo until someone writes them down.
+
 ## Design rules
 
 - **Only the author and the coders write**, and only to their target file or branch. Everything that touches shared state (pushing to a trunk, merging, tagging, releasing, the back-merge cascade) stays in the session, under the user's authorization, per [`ai-collaboration.md`](ai-collaboration.md). An agent may not do what the session's permissions would refuse.
 - **Deterministic sequences are not agents.** Creating the prefixed worktree, `git bump`, `git release`, the cascade: a language model adds nondeterminism to a mechanical sequence, so those live in `dev-tools` and in skills.
-- **Reviewers are dispatched together.** A docs PR gets `docs-reviewer`, `northstar-reviewer`, and `html-drift-checker` in one turn, in parallel; that is where the speed comes from.
+- **Reviewers are dispatched together.** A docs PR gets `docs-reviewer`, `northstar-reviewer`, `html-drift-checker`, and `docs-currency-checker` in one turn, in parallel; a release gets `release-preflight` and `docs-currency-checker` together. That is where the speed comes from.
 - **Each agent locates the released handbook itself:** `$PARKVIEWLAB_HANDBOOK` if set, otherwise `handbook/handbook-main` under the org root found by walking up from the working directory. A subagent starts with only its own prompt and the `CLAUDE.md` hierarchy, not the calling session's context.
 - **No agent memory.** A documented deviation belongs in the repo's docs (axiom 3), not in an agent's private store.
 - **An agent's report is a claim.** The session verifies it against the files before acting on it.
