@@ -5,7 +5,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Agents
 
-ParkviewLab keeps a small set of Claude Code **agent definitions**: subagents a session delegates to, and, when [agent teams](parallel-work.md#an-agent-team) are on, teammate roles. Each is a Markdown file with YAML frontmatter (name, description, model, effort, tools) and a body that is the agent's whole system prompt. The set lives in [`templates/agents/`](../templates/agents/) and is installed at the **user level** (`~/.claude/agents/`) by [`scripts/install-agents.sh`](../scripts/install-agents.sh), so every session on a machine can use it whatever directory it starts in. This page records what the set is and the rules that chose it.
+ParkviewLab keeps a small set of Claude Code **agent definitions**: subagents a session delegates to, and, when [agent teams](parallel-work.md#an-agent-team) are on, teammate roles. Each is a Markdown file with YAML frontmatter (name, description, model, effort, tools) and a body that is the agent's whole system prompt. The set lives in [`templates/agents/`](../templates/agents/) and is installed at the **user level** (`~/.claude/agents/`) by [`scripts/install-agents.sh`](../scripts/install-agents.sh), so every session on a machine can use it whatever directory it starts in. This page records what the set is and the rules that chose it; its sibling [`agents-why.md`](agents-why.md) records why, with the evidence, the alternatives set aside, and the dated rulings.
 
 ## Why agents here
 
