@@ -34,6 +34,7 @@ Model and effort are chosen for speed and accuracy, not for cost:
 | `html-drift-checker` | sonnet | high | no | Compares a Markdown doc with its twin and reports drift, Markdown canonical |
 | `docs-reviewer` | fable | high | no | Reviews a docs change against the writing and documentation rules |
 | `docs-currency-checker` | fable | max | no | Verifies that documents are current: claims against the code by execution where the stack allows it, tense and open questions against the repo's state, text against the decisions supplied and against each other |
+| `bookstack-librarian` | fable | high | the wiki | Sole writer to the org's wiki; keeps the Library Catalog and the Discovered Tangents register; answers questions with citations |
 | `coder` | fable | high | the branch | Implements a bounded task the handbook's way; pushes; opens no PR, merges nothing |
 | `mechanical-coder` | sonnet | medium | the branch | Applies a fully specified, machine-verifiable change and runs the named check |
 | `checks-runner` | sonnet | low | no | Runs the repo's local checks and reports only the failures |
@@ -42,13 +43,16 @@ Exploration, planning, and correctness review stay with Claude Code's built-in a
 
 Four of the reviewers read documents, and no one of them is enough alone. `docs-reviewer` checks form and rules; `html-drift-checker` checks a Markdown document against its twin; `northstar-reviewer` checks intent; `docs-currency-checker` checks whether what a document says is what the code does and what was decided. A document can pass the first three and still describe a route that was renamed, a question that was answered, or a build phase that ended. It distinguishes a record (a changelog, a dated decision log), which may describe the past, from a current-state document, which may not ([`documentation.md`](documentation.md#documents-and-records)), and it takes from the session the decisions made in conversation, because those are invisible in the repo until someone writes them down.
 
+The wiki is a writer of a different kind. `bookstack-librarian` is the org's wiki's only writer: a session that wants a page created, changed or deleted dispatches it with the content, and it resolves the target, chooses the edit method and orders the calls. It also keeps the wiki's two registers, the Library Catalog (one entry per book, classified by subject, form and status, the terms growing only on the user's ruling) and Discovered Tangents (one page per idea set aside whilst working on something else, [`documentation.md`](documentation.md#discovered-tangents)). The monopoly rests on this page rather than on a hook, and it holds because the other definitions cannot reach the wiki at all (an explicit `tools:` list withholds every MCP tool) and because the librarian opens every invocation by reconciling the catalog against the book list, so a direct write by a session is caught and repaired at the next dispatch rather than lost. A session with a reason to write directly says so and asks.
+
 ## Design rules
 
-- **Only the author and the coders write**, and only to their target file or branch. Everything that touches shared state (pushing to a trunk, merging, tagging, releasing, the back-merge cascade) stays in the session, under the user's authorization, per [`ai-collaboration.md`](ai-collaboration.md). An agent may not do what the session's permissions would refuse.
+- **Only the author, the coders, and the librarian write**, and each only to its own target: the HTML twin's file, the working branch, the wiki. Everything that touches shared state (pushing to a trunk, merging, tagging, releasing, the back-merge cascade) stays in the session, under the user's authorization, per [`ai-collaboration.md`](ai-collaboration.md). An agent may not do what the session's permissions would refuse.
 - **Deterministic sequences are not agents.** Creating the prefixed worktree, `git bump`, `git release`, the cascade: a language model adds nondeterminism to a mechanical sequence, so those live in `dev-tools` and in skills.
 - **Reviewers are dispatched together.** A docs PR gets `docs-reviewer`, `northstar-reviewer`, `html-drift-checker`, and `docs-currency-checker` in one turn, in parallel; a release gets `release-preflight` and `docs-currency-checker` together. That is where the speed comes from.
 - **Each agent locates the released handbook itself:** `$PARKVIEWLAB_HANDBOOK` if set, otherwise `handbook/handbook-main` under the org root found by walking up from the working directory. A subagent starts with only its own prompt and the `CLAUDE.md` hierarchy, not the calling session's context.
-- **No agent memory.** A documented deviation belongs in the repo's docs (axiom 3), not in an agent's private store.
+- **No agent memory.** A documented deviation belongs in the repo's docs (axiom 3), not in an agent's private store. A register an agent keeps in a store the user reads (the wiki's catalog, the tangent register) is a document, not memory: it is visible, citable and editable by anyone, which is what axiom 3 asks for.
+- **MCP tools are named one by one.** An explicit `tools:` list withholds every MCP tool, so a definition that needs one names it in full (`mcp__<server>__<tool>`), never by a whole-server pattern: the list is the tools the agent must have and no others, and for a writer that list is the boundary of what it can do (verified on v2.1.273).
 - **An agent's report is a claim.** The session verifies it against the files before acting on it.
 
 ## Using them
@@ -66,4 +70,4 @@ The installer links to the **released** handbook (the sibling `handbook-main` wo
 
 ## Changing the set
 
-Edit the template, open a PR into `develop`, release; the change reaches every machine with the next `git pull` of `main`. A new agent needs a row in the table above and, if it writes, a statement of what it writes. The model and effort of an agent change only for a reason this page can state.
+Edit the template, open a PR into `develop`, release; the change reaches every machine with the next `git pull` of `main`. A new agent needs a row in the table above and, if it writes, a statement of what it writes. A new skill is a directory `templates/skills/<name>/` holding a `SKILL.md`, which the same installer links into `~/.claude/skills/`; where a skill is the operational copy of a page here, the two change in the same pull request. The model and effort of an agent change only for a reason this page can state.

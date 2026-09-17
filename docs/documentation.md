@@ -35,6 +35,12 @@ When intent surfaces a new principle during work, propose adding it to the north
 
 > Some repos have an ad-hoc `humans_notes.md` (e.g. deco-assaying). Normalise these into `in-flight_ideas.md` when you touch them.
 
+## Discovered tangents
+
+Work turns up work. An idea discovered whilst doing something else (a fix belonging to another repo, a convention worth adopting, debt worth paying, a direction for a project not yet started) is either done then or set aside, and the ones set aside are recorded in the org's wiki, in a register named Discovered Tangents, one page per idea with its origin, its date, why it was set aside and what it would take. The register sits outside the repos on purpose: a pull request in a foreign repo for one paragraph costs more than the idea is worth at the moment of discovery, and an idea belonging to no repo yet has no file to go in.
+
+Recording is authorised standing and interrupts nothing; saying so is required, in one line naming the idea and its page, because the register is read to decide when and how to act. The register is the inbox, `docs/in-flight_ideas.md` is the repo's considered list, and an idea moves from the one to the other by an ordinary `doc-` pull request when the project is next worked and the idea is ripe. Ripeness is the user's call, proposed and not assumed. The procedure is the `tangent` skill; the register's shape and its tags are in [`agents.md`](agents.md), in the librarian's definition.
+
 ## Documents and records
 
 A repo's Markdown is of two kinds, and the kind decides what may describe the past. A **record** does, and keeps doing so: `CHANGELOG.md`, a decision log (`docs/decisions.md`, or a dated "Decided" section). Everything else is a **current-state document** (the README, the northstar, a guide, a runbook, a contract, a design or architecture document) and describes the software and the project as they are now: no planning tense, no open question (those live in `in-flight_ideas.md`), no build history, no list of what remains, no deadline. A stated trigger for a future change ("when a second repo adopts this, the script moves to `dev-tools`") is direction, not a plan left behind, and stays until the trigger has occurred. A document declares its kind by its title or its opening line; one that does not is current-state. `in-flight_ideas.md` and the `<topic>_ideas.md` notebooks are outside both kinds: they are the home of open questions, and are checked only for entries the repo or the session has since answered.
