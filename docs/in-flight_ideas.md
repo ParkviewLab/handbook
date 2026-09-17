@@ -53,3 +53,6 @@ A16/A17 are recorded in `mcp-server-conventions.md`: the endpoint is `/mcp`, `PO
 
 ## Watch list (track, don't adopt yet)
 ty 1.0; TypeScript 7 / tsgo (RC); Node 26 LTS (Oct 2026); npm explicit-actions publisher requirement (May 2026); SPDX 3.x tooling; distroless base images; a generated docs site past ~30 docs; a DCO before the first outside contribution.
+
+## The pilot's switch to the shared build script
+Whether `pensa-grex` switches at its next release or sooner: its `scripts/build_pages_site.py` becomes dev-tools' `build-pages-site`, its Googie page moves into `site/shell.html`, its workflow takes the template's shape (a checkout of `dev-tools` at the pinned tag), and its README's site link moves onto the `Documentation:` line under the title. Raised 2026-09-17 when the script moved to `dev-tools` with `paper-boxing` as the second adopter; until it lands, the pilot runs its own copy, which the equivalence test in dev-tools shows builds an identical site.
