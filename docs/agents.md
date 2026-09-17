@@ -33,14 +33,14 @@ Model and effort are chosen for speed and accuracy, not for cost:
 | `html-author` | fable | max | one file | Authors the designed HTML twin from the scaffold and verifies the discipline |
 | `html-drift-checker` | sonnet | high | no | Compares a Markdown doc with its twin and reports drift, Markdown canonical |
 | `docs-reviewer` | fable | high | no | Reviews a docs change against the writing and documentation rules |
-| `docs-currency-checker` | fable | max | no | Verifies that documents are current: claims against the code by execution, tense and open questions against the repo's state, text against the decisions supplied and against each other |
+| `docs-currency-checker` | fable | max | no | Verifies that documents are current: claims against the code by execution where the stack allows it, tense and open questions against the repo's state, text against the decisions supplied and against each other |
 | `coder` | fable | high | the branch | Implements a bounded task the handbook's way; pushes; opens no PR, merges nothing |
 | `mechanical-coder` | sonnet | medium | the branch | Applies a fully specified, machine-verifiable change and runs the named check |
 | `checks-runner` | sonnet | low | no | Runs the repo's local checks and reports only the failures |
 
 Exploration, planning, and correctness review stay with Claude Code's built-in agents and commands (`Explore`, `Plan`, `/code-review`); the set covers what the handbook adds.
 
-Four of the reviewers read documents, and no one of them is enough alone. `docs-reviewer` checks form and rules; `html-drift-checker` checks a Markdown document against its twin; `northstar-reviewer` checks intent; `docs-currency-checker` checks the truth, whether what a document says is what the code does and what was decided. A document can pass the first three and still describe a route that was renamed, a question that was answered, or a build phase that ended. It distinguishes a record (a changelog, a dated decision log), which may describe the past, from a current-state document, which may not ([`documentation.md`](documentation.md#documents-and-records)), and it takes from the session the decisions made in conversation, because those are invisible in the repo until someone writes them down.
+Four of the reviewers read documents, and no one of them is enough alone. `docs-reviewer` checks form and rules; `html-drift-checker` checks a Markdown document against its twin; `northstar-reviewer` checks intent; `docs-currency-checker` checks whether what a document says is what the code does and what was decided. A document can pass the first three and still describe a route that was renamed, a question that was answered, or a build phase that ended. It distinguishes a record (a changelog, a dated decision log), which may describe the past, from a current-state document, which may not ([`documentation.md`](documentation.md#documents-and-records)), and it takes from the session the decisions made in conversation, because those are invisible in the repo until someone writes them down.
 
 ## Design rules
 
