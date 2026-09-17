@@ -25,7 +25,7 @@ Verified by experiment that day, not taken from documentation: `claude --agent <
 
 ## 2026-09-14: no steward for the proposal life cycle
 
-The cycle by which a proposal is opened, ruled upon, built and retired is a fixed sequence of hand-offs, and the rule that deterministic sequences are not agents applies to it. It is a skill run by the coordinating session, with the librarian as its hands on the wiki and a coder as its hands in the repo. Its only judgement, whether a proposal is ripe, superseded or in conflict with a northstar, is the kind of fresh-context report a reviewer already gives; a reviewer of that kind is the agent to add if the shelf grows long, not a steward writing to both the wiki and a repo, which the writers rule forbids.
+The cycle by which a proposal is opened, ruled upon, built and retired is a fixed sequence of hand-offs, and the design rule that deterministic sequences are not agents applies to it. The ruling was therefore about form: should the cycle ever be automated, it is a skill run by the coordinating session, which dispatches the librarian for the wiki writes and a coder for the repo writes, and not a steward agent. No such skill exists. The cycle's only judgement, whether a proposal is ripe, superseded or in conflict with a northstar, is the kind of fresh-context report a reviewer already gives; a reviewer of that kind is the agent to add if the shelf grows long, not a steward writing to both the wiki and a repo, which the design rule on which agents write forbids.
 
 ## 2026-09-17: a fourth document reviewer
 
@@ -47,6 +47,8 @@ The catalog classifies a book on three facets, subject, form and status, rather 
 
 Axiom 3 of the northstar was amended in the same change. It named two homes for what matters, the handbook or a repo's `docs` directory, and the register is neither. The axiom now admits it as an inbox, with the promotion path that returns an idea to its repo by pull request, and states that the wiki is never the only home of anything a repo's reader needs. The alternative, leaving the axiom alone and calling the register an exception, was rejected: an axiom that quietly admits exceptions is not one.
 
+The writers rule was amended in the same change, from two writers to three. It had read that only the author and the coders write, each to its own target; the librarian is a third writer whose target is neither a file nor a branch but the wiki, and the rule now names three writers and three kinds of target. The amendment was made rather than treated as an exception, for the reason that follows in the next paragraph about axiom 3: a rule that quietly admits exceptions is not one.
+
 The behavioural contract gained a bullet in the same change, because a standing authorisation to record an entry without asking would otherwise have contradicted its rule against unprompted action. Such an authorisation is per kind of act, covers no other act, and is always reported in one line, an unmentioned record not existing for its reader.
 
 ## 2026-09-17: how a definition's tools list treats MCP tools
@@ -55,7 +57,7 @@ The rule as first written claimed that an MCP tool can be named only in full and
 
 Naming each tool in full is therefore the choice here and not a necessity. The reason is that the list is then the exact boundary of what the agent can do, and for a writer a pattern would grant every write the server has, including the ones added after the definition was written.
 
-One further observation from the same day, recorded for whoever meets it: installing a new definition mid-session made the new skill available to the running session at once, whilst the new agent could not be dispatched for some minutes, after which it worked with no restart. The delay has not been characterised, so nothing here depends on it.
+One further observation from the same day, recorded for whoever meets it: installing a new definition mid-session made the new skill available to the running session at once, whilst the new agent could not be dispatched for some minutes, after which it worked with no restart and no further action.
 
 ## Decision record
 
@@ -64,10 +66,11 @@ One further observation from the same day, recorded for whoever meets it: instal
 | 2026-09-13 | The model and effort rule | Fable for judgement, Sonnet only for mechanical and verifiable work, Haiku nowhere, effort by the cost of an error |
 | 2026-09-13 | How to choose between the two coders | By whether the change is fully specified and automatically verifiable, not by predicted difficulty |
 | 2026-09-13 | Which agents may write | Only the author and the coders, each to its own target |
-| 2026-09-14 | A steward agent for the proposal life cycle | No; a skill, with the librarian and a coder as its hands |
+| 2026-09-14 | A steward agent for the proposal life cycle | No; should the cycle be automated it is a skill run by the coordinating session, dispatching the librarian and a coder |
 | 2026-09-17 | A fourth document reviewer | Added, at `max` effort, because currency needs the code and not another document |
 | 2026-09-17 | A separate agent to record tangents | No; the session composes the entry and the librarian files it |
 | 2026-09-17 | Enforcing the wiki's write monopoly | Documentation alone; the guard hook declined, its "ask" form left available on evidence |
+| 2026-09-17 | A third writer, the wiki's librarian | Admitted, to the wiki only, by amending the writers rule rather than by exception |
 | 2026-09-17 | How the catalog classifies a book | Three facets, subject, form and status, with a heading per project; the vocabulary grows by proposal then ruling |
 | 2026-09-17 | Axiom 3 and a register outside every repo | Amended to admit the register as an inbox, with the promotion path, and never as a sole home |
 | 2026-09-17 | Naming MCP tools in a definition | Each in full, as a choice; whole-server patterns work but would grant a writer every write, including later ones |

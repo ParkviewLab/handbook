@@ -70,4 +70,4 @@ The installer links to the **released** handbook (the sibling `handbook-main` wo
 
 ## Changing the set
 
-Edit the template, open a PR into `develop`, release; the change reaches every machine with the next `git pull` of `main`. A new agent needs a row in the table above and, if it writes, a statement of what it writes. A new skill is a directory `templates/skills/<name>/` holding a `SKILL.md`, which the same installer links into `~/.claude/skills/`; where a skill is the operational copy of a page here, the two change in the same pull request. The model and effort of an agent change only for a reason this page can state.
+Edit the template, open a PR into `develop`, release; the change reaches every machine with the next `git pull` of `main`. A new agent needs a row in the table above and, if it writes, a statement of what it writes. A new skill is a directory `templates/skills/<name>/` holding a `SKILL.md`, which the same installer links into `~/.claude/skills/`; where a skill is the operational copy of a page here, the two change in the same pull request. The model and effort of an agent change only for a reason recorded in [`agents-why.md`](agents-why.md).
