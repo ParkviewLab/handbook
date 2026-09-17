@@ -15,14 +15,14 @@ Recording an entry needs no approval, and you do not interrupt the work to ask f
 
 1. Decide that it belongs here. It does if it is work that should be done and is not being done now. It does not if you can simply do it as part of the current task, if it is a defect in the change you are making (fix it), if it is a preference about how to work (that is a memory), or if the target repo's `docs/in-flight_ideas.md` already states it: read that file first when the idea concerns a repo you have open.
 2. Compose the entry. Only this session knows the substance, so this part is not delegable: the idea in one paragraph in the words used when it arose, its origin (the repo, and the branch, pull request or task), the date, why it was set aside, and, where you can give one, what it would take in agent wall-clock hours with the waits named.
-3. Dispatch `bookstack-librarian` with that entry and the target repo, and let it file the page, check for a near-duplicate and tag it. If this session cannot dispatch the librarian because it started before the definition was installed, write the page yourself through the wiki's tools in the shape the definition prescribes, and say in your line to the user that you did.
+3. Dispatch `bookstack-librarian` with that entry and the target repo, and let it file the page, check for a near-duplicate and tag it. If this session cannot dispatch the librarian because it started before the definition was installed, write the page yourself through the wiki's tools in the shape the definition prescribes: the standing authorisation to record covers that one write, and the line to the user says it was made directly.
 4. Tell the user, as above.
 
 Several tangents found in one stretch of work are filed in one dispatch, as several entries, not one page with a list: a page per idea is what lets an idea be promoted, dropped or finished on its own.
 
 ## List the open ones
 
-At the start of work on a repo, and whenever asked, dispatch the librarian for the open entries whose `target` tag is that repo, and give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in the register is acted upon silently.
+At the start of work on a repo, and whenever asked, dispatch the wiki librarian for the open entries whose `target` tag is that repo, and give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in the register is acted upon silently.
 
 ## Promote one
 
