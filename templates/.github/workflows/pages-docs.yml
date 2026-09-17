@@ -5,7 +5,7 @@ name: Deploy the site
 # site/, and docs/ byte-identical under /docs/. Nothing generated is committed.
 #
 # The site is assembled by dev-tools' build-pages-site (the handbook's docs-site.md),
-# checked out beside this repository at a released tag; a repo with its own page shell
+# checked out into dev-tools/ inside this checkout at a released tag; a repo with its own page shell
 # appends --shell site/shell.html to the build step. Two repository settings go with
 # it, once each: the Pages source is the Actions workflow, and the github-pages
 # environment's deployment branch policy allows main and nothing else. Both, and the
