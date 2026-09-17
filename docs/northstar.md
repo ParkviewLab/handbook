@@ -47,7 +47,7 @@ The rule of placement is that anything that applies to more than one repo lives 
 
 Each intent makes another possible. One shape (1) is only worth having if each repo in the family is complete in itself (2); a family of half-described repos would share a layout and nothing else. Legibility (3) follows from both: a reader, of either kind, understands a repo quickly because it looks like the others and describes itself. And automation (4) is possible only because the processes are written down (3): an agent can run a release exactly because the release flow is a page and a helper, not a memory.
 
-Intents 1 and 2 meet at one point: N repos means N copies of the conventions to keep honest. The resolution is *shared* sources (this handbook and `dev-tools`) so the convention has one home even when it lives in many repos. Intent 4 stops where axiom 4 begins: the mechanical steps are automated, and merging, tagging, and releasing keep an explicit human hand, asked for per action rather than inferred.
+Intents 1 and 2 meet at one point: N repos means N copies of the conventions to keep honest. The resolution is *shared* sources (this handbook and `dev-tools`) so the convention has one home even when it lives in many repos. The org's wiki is a third shared source, holding the org's registers and what belongs to no repo; a convention never lives there. Intent 4 stops where axiom 4 begins: the mechanical steps are automated, and merging, tagging, and releasing keep an explicit human hand, asked for per action rather than inferred.
 
 ## Axioms
 
@@ -57,7 +57,7 @@ The same axioms support all four intents, from different angles.
 
 2. **Convention over configuration.** Same layout, tooling, and release flow in every repo. A new repo should be boring. Deviations are documented, not improvised.
 
-3. **Write it down.** If a practice matters, if a concept should be explained, it's in the handbook — or in a repo's `docs` directory. Like `northstar.md` or `in-flight_ideas.md` — not just in a head or a chat log. Read `docs/documentation.md` in this repo for further explanation.
+3. **Write it down.** If a practice matters, if a concept should be explained, it's in the handbook — or in a repo's `docs` directory. Like `northstar.md` or `in-flight_ideas.md` — not just in a head or a chat log. An idea found whilst working elsewhere, or one that belongs to no repo yet, goes to the org's wiki register as an inbox, and reaches that repo's `in-flight_ideas.md` by pull request when the repo is next worked; the wiki is never the only home of anything a repo's reader needs. Read `docs/documentation.md` in this repo for further explanation.
 
 4. **Automate the mechanical; gate the irreversible.** Changelogs and releases are scripted and verified by a CI gate — *and* merging to a shared trunk, tagging, and releasing still require an explicit human hand.
 

@@ -19,7 +19,7 @@ Sequential work, same-file edits, and work with many dependencies stay in one se
 
 ## 2. Subagents
 
-Dispatch with the Agent tool by definition name (`handbook-librarian`, `docs-reviewer`, `northstar-reviewer`, `html-drift-checker`, `docs-currency-checker`, `convention-auditor`, `release-preflight`, `checks-runner`, `mechanical-coder`, `coder`, `html-author`; see `docs/agents.md`). Give each the absolute path of the worktree it works in. Dispatch independent agents together in one turn so they run in parallel; a docs PR gets the docs reviewer, the northstar reviewer, the drift checker, and the currency checker at once, and a release gets `release-preflight` and the currency checker together. Give the currency checker the decisions made in conversation since the last release; they are not in the repo. Verify a subagent's claims against the files before acting on them.
+Dispatch with the Agent tool by definition name (`handbook-librarian`, `docs-reviewer`, `northstar-reviewer`, `html-drift-checker`, `docs-currency-checker`, `convention-auditor`, `release-preflight`, `checks-runner`, `mechanical-coder`, `coder`, `html-author`, `bookstack-librarian`; see `docs/agents.md`). Give each the absolute path of the worktree it works in. Dispatch independent agents together in one turn so they run in parallel; a docs PR gets the docs reviewer, the northstar reviewer, the drift checker, and the currency checker at once, and a release gets `release-preflight` and the currency checker together. Give the currency checker the decisions made in conversation since the last release; they are not in the repo. Verify a subagent's claims against the files before acting on them.
 
 ## 3. One background session per repo
 
