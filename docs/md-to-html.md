@@ -15,7 +15,7 @@ For high-impact documents — the northstar, manifestos, key onboarding or value
 
 ## The method
 
-1. **Read the whole Markdown first.** Find its *shape* — the parts that are a set perceived at a glance (peers, a constellation), a contrast (this vs that), a process (a flow), a hierarchy. Those are the candidates for visual treatment.
+1. **Read the whole Markdown first.** It must be current before it is given a twin: the session runs `docs-currency-checker` over it first ([`documentation.md`](documentation.md#documents-and-records)), since drift the twin inherits is authored twice. Find its *shape* — the parts that are a set perceived at a glance (peers, a constellation), a contrast (this vs that), a process (a flow), a hierarchy. Those are the candidates for visual treatment.
 2. **Start from the scaffold.** Copy `default.html` next to the source (`docs/foo.md` → `docs/foo.html`). It already has the brand palette, the embedded Michroma, the logo mark, and example patterns.
 3. **Rework layout, keep wording.** Move structure into the visual channel:
    - a set of peers → a card grid (the reader sees "there are N; they're equal");

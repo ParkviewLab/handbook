@@ -37,7 +37,7 @@ Copier (`copier update` + per-repo answers + drift detection) to carry a handboo
 A `swift-tooling.md` + `visionos-tooling.md` pair with `vos-gspheres` as the reference: pinned macOS runner, Swift Testing + swift-format + SPM, the testable-core split, the `.xcconfig` version SoT, and a fastlane-to-TestFlight release path (the one justified long-lived-secret deviation). [A24-A26]
 
 ## Decision hygiene
-An ADR log (Nygard), a Diátaxis map, docs-link lint, and short considered-and-declined notes (release-please, Biome, Backstage, Harden-Runner) with revisit triggers. [B3, B5]
+An ADR log (Nygard), a Diátaxis map, docs-link lint, and short considered-and-declined notes (release-please, Biome, Backstage, Harden-Runner) with revisit triggers. [B3, B5] Landed in part on 2026-09-17: `docs/decisions.md` as a single dated file and the impersonal entry form (`documentation.md`, "Documents and records"); B3's per-decision directory remains the option for a repo whose log outgrows one file; the Nygard template, the Diátaxis map, the link lint and the declined notes remain open.
 
 ## A future-goals.md doc convention
 A third sibling to `northstar.md` and `in-flight_ideas.md` for decided-but-unbuilt direction, distinct from the timeless northstar and from undecided in-flight questions. Unlike in-flight ideas, future goals are meant to shape present design (build forward-compatibly toward them); document it in `documentation.md` and seed the handbook's own with the LLM-Wiki convergence. [B7]

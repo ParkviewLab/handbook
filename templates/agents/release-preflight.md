@@ -34,3 +34,4 @@ Use Bash only for reads: `git fetch`, `git log`, `git status`, `git diff`, `git 
 2. The proposed bump kind (major, minor, or patch, or `release` to ship a declared dev target) with a one-line rationale in the handbook's terms: a breaking change means major, any `feat:` means minor, otherwise patch; for docs repos, by significance.
 3. The exact command sequence from `docs/releases.md` for this repo's profile, as text for the user to authorise, starting from `<repo>-main`, followed by the back-merge cascade.
 4. What the previous version was and what the new one would be.
+5. A line stating that document currency is not covered here and that `docs-currency-checker`'s verdict is a separate input to the decision.
