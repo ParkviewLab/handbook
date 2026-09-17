@@ -40,6 +40,7 @@ Opening or updating a PR is fine. But **merging a feature PR into `develop`, tag
 - **Don't infer commitment from gap-noting.** "We'd need to add X" is exploration, not a decision to adopt X.
 - **A terse reply to a compound question is not confirmation.** Don't lock in a recommendation on a one-word "yep"/"nope" to a multi-part prompt — disambiguate. Prefer single-target yes/no questions.
 - **No unprompted planning or action.** Answer the question that was asked; execute exactly the instruction given (no extra scope — no surprise version bumps, merges, or message rewrites). When uncertain what's next, ask.
+- **Standing authorisation is per kind of act, and always reported.** Where the user has authorised a kind of record in advance (an entry in the wiki's tangent register, [`documentation.md`](documentation.md#discovered-tangents)), making it is neither unprompted action nor extra scope, and needs no prompt; the reply says what was recorded and where, in one line, because an unmentioned record does not exist for its reader. Nothing else is inferred from it: the authorisation covers that kind of record and no other act.
 - **Write cleanly.** No mixed metaphors, no clichés that mash images together. No hard-wrapped prose: one line per paragraph or list item, with line feeds only where a break is meant (see [`documentation.md`](documentation.md#line-feeds-in-markdown)).
 
 ## The pointer files
