@@ -53,7 +53,7 @@ A design document written before the code is the common case of a document that 
 
 ParkviewLab READMEs (especially the MCP servers) share a structure:
 
-1. Title + one-line description (what it does, what it feeds).
+1. Title + one-line description (what it does, what it feeds), then, for a repo that publishes its `docs/` as a site, one line on its own: `Documentation: https://parkviewlab.github.io/<repo>/` (the newest release's documentation). The line is added only once the address answers ([`docs-site.md`](docs-site.md#enabling-it-on-a-repo)).
 2. Status (version, surface completeness, related repos).
 3. **"Five ways to run it"** table — see [`packaging-and-deployment.md`](packaging-and-deployment.md).
 4. Endpoints.

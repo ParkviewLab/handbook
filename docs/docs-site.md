@@ -35,7 +35,7 @@ The cost is explicit, and worth stating before adopting it:
 
 ### Enabling it on a repo
 
-Three steps, once per repo:
+Four steps, once per repo:
 
 ```bash
 # 1. Pages builds from the Actions workflow, not from a served branch.
@@ -47,10 +47,15 @@ gh api -X PUT  repos/ParkviewLab/<repo>/pages -f build_type=workflow
 # 2. The github-pages environment may deploy from main and nothing else
 #    (Settings → Environments → github-pages → deployment branches: main).
 
-# 3. Add the workflow and the build script (below), and release.
+# 3. Add the workflow (the template below) and site/intro.html, and release.
+
+# 4. After the release that first publishes the site: the README line (below),
+#    in its own pull request. Never in the pull request that adds the workflow.
 ```
 
-The workflow template is [`templates/.github/workflows/pages-docs.yml`](../templates/.github/workflows/pages-docs.yml).
+The workflow template is [`templates/.github/workflows/pages-docs.yml`](../templates/.github/workflows/pages-docs.yml); it checks out `dev-tools` at a released tag beside the repository and runs the shared build script, so the adopting repo commits no script of its own.
+
+**The README line.** A first-time visitor lands on the repository, not on the site, so the README says where the documentation is, on its own line directly under the title and the one-line description, per [`documentation.md`](documentation.md#readme-shape): `Documentation: https://parkviewlab.github.io/<repo>/`. It goes in only once the address answers, in a pull request merged after the release that first publishes the site, because a README is public the moment its pull request merges whilst the site appears only with the release ([below](#a-readme-that-links-to-addresses-the-release-has-not-published-yet)). `convention-auditor` reports a publishing repo whose README lacks the line, and a line whose address does not answer.
 
 ## The generated index
 
@@ -87,30 +92,37 @@ It matters more on a published site. The same document is then readable in three
 
 ## The build script
 
-The script is **per-repo**, because the index carries the repo's own styling — `pensa-grex`'s is its Googie theme, and there is no useful common version to copy yet. The handbook therefore specifies the script's *contract* and *guarantees*, not its code, and ships only the workflow.
+The script is shared: `build-pages-site` in [`ParkviewLab/dev-tools`](https://github.com/ParkviewLab/dev-tools) (its README documents the command). It was written per-repo for the pilot, because the index carried `pensa-grex`'s Googie styling and there was no second adopter; when `paper-boxing` became the second, the mechanics (the folder scan, twin pairing, grouping, tag resolution, the stamp, and the link check) moved to `dev-tools` and the page shell became the one per-repo part. Two hand-written implementations of the same mechanics is the duplication axiom 1 exists to prevent.
 
-**When a second repo adopts this, that changes.** Two hand-written implementations of the same mechanics is the duplication axiom 1 exists to prevent, so the mechanics — the folder scan, twin pairing, grouping, tag resolution, and the link check — move to `dev-tools` at that point, leaving only the page shell (the styling and the introduction) per-repo.
+The **page shell** is the styling around the generated index: fonts, palette, top bar, hero and footer. A repo passes its own with `--shell site/shell.html`, an HTML file with named placeholders the script substitutes (the placeholder set is in the command's docstring and the dev-tools README); without one, a built-in shell in the ParkviewLab brand is used. `pensa-grex` keeps its Googie shell as `site/shell.html`; a repo with no styling of its own passes nothing. The introduction stays `site/intro.html`, and `site/` itself is optional: a repo with neither publishes its `docs/` alone under the default shell.
 
 ### The CLI contract
 
 The shipped workflow hard-codes it, so it is fixed:
 
 ```bash
-python3 scripts/build_pages_site.py --out DIR [--tag vX.Y.Z]
+python3 dev-tools/scripts/build-pages-site --out DIR [--tag vX.Y.Z] [--shell FILE] [--repo DIR]
 ```
 
-- **The path is `scripts/build_pages_site.py`.**
 - **`--out DIR` is required** — the directory the whole site is assembled into, new or empty.
 - **`--tag vX.Y.Z` is optional**, for a local trial run; the build otherwise resolves the tag itself (below).
+- **`--shell FILE` is optional**, the repo's page shell; absent, the brand default.
+- **`--repo DIR` is optional**, the repository to build; absent, the current directory, which is where the workflow runs. The `dev-tools` checkout in a subfolder is not read.
 
-The workflow's build step is exactly:
+The workflow checks `dev-tools` out at a **released tag** beside the repository, and its build step is exactly:
 
 ```yaml
+- uses: actions/checkout@v6
+  with:
+    repository: ParkviewLab/dev-tools
+    ref: v1.1.0           # the build script's release; bump deliberately
+    path: dev-tools
+
 - name: Build the site
-  run: python3 scripts/build_pages_site.py --out "${{ runner.temp }}/site"
+  run: python3 dev-tools/scripts/build-pages-site --out "${{ runner.temp }}/site"
 ```
 
-Run that same command locally before pushing, and open the result with `python3 -m http.server`.
+A repo with a shell appends `--shell site/shell.html`. The tag is pinned so that a change to the script never reaches a site unreviewed; bumping it is a one-line change in the adopting repo. Run the same command locally before pushing (`build-pages-site` is on `PATH` once dev-tools' `install.sh` has run) and open the result with `python3 -m http.server`.
 
 ### What it must guarantee
 
