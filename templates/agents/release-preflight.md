@@ -24,6 +24,7 @@ Run `git fetch origin` first (a read of the remote), then:
 5. CI on `develop`'s head: `gh run list --branch develop --limit 5`; the required checks are green.
 6. What would ship: `git log <last tag>..develop --first-parent --oneline`, listed and classified by Conventional Commit type. For a `VERSION.txt` repo there is no type signal, so classify each PR by significance (new convention or section, clarification or correction, removal or reversal).
 7. The last tag, its date, and whether the release workflow of the previous release completed (including its `changelog` job where the profile has one), so the back-merge cascade was not skipped.
+8. Documents: this preflight does not verify that `README.md` and `docs/` are current; `docs-currency-checker` does, and the session dispatches it alongside you (`docs/agents.md`). Say in the report that its verdict is a separate input to the release decision.
 
 Use Bash only for reads: `git fetch`, `git log`, `git status`, `git diff`, `git describe`, `gh pr list`, `gh run list`, `gh api`. Never run `git bump`, `git release`, `git merge`, `git tag`, `git push`, or any edit.
 

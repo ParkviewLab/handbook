@@ -35,6 +35,14 @@ When intent surfaces a new principle during work, propose adding it to the north
 
 > Some repos have an ad-hoc `humans_notes.md` (e.g. deco-assaying). Normalise these into `in-flight_ideas.md` when you touch them.
 
+## Documents and records
+
+A repo's Markdown is of two kinds, and the kind decides what may describe the past. A **record** does, and keeps doing so: `CHANGELOG.md`, a decision log (`docs/decisions.md`, or a dated "Decided" section), a why file, a dated entry in `in-flight_ideas.md`. Everything else is a **current-state document** (the README, the northstar, a guide, a runbook, a contract, a design or architecture document) and describes the software and the project as they are now: no planning tense, no open question (those live in `in-flight_ideas.md`), no build history, no list of what remains, no deadline. A document declares its kind by its title or its opening line; one that does not is current-state.
+
+Two rules follow. A decision is recorded impersonally: the date, the decision, and the reason, never the person ("decided on 2026-09-17: nginx's own listing for a folder without an index, because a bare list of files is what one wants before an index exists"); the git history and the pull request hold who. And a document is checked for currency before it is published: before a docs PR, before a release (a release publishes `main`'s documents, on the docs site where there is one, [`docs-site.md`](docs-site.md)), and before an HTML twin is authored from it, the session dispatches `docs-currency-checker` ([`agents.md`](agents.md)). It verifies each checkable claim against the code by execution, finds planning tense and answered questions, compares the documents with each other, and takes from the session the decisions made in conversation, since those are invisible in the repo until written down. Its report is a claim the session verifies; its verdict says whether the documents are publishable.
+
+A design document written before the code is the common case of a document that goes stale. Once the code exists, the document is rewritten in the present tense from the code, its dated decisions move to the decision log, and its work plan goes: git and the pull requests are that record.
+
 ## README shape
 
 ParkviewLab READMEs (especially the MCP servers) share a structure:
