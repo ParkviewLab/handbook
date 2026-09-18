@@ -1,6 +1,6 @@
 ---
 name: dispatch
-description: Dispatch work to agents under the ParkviewLab handbook's dispatch rule, and coordinate parallel work across repos from one session. Plans first when a task is not fully specified; chooses the structure by the shape of the work (a subagent, a workflow, one background session per repo, or an agent team); chooses and states each dispatch's model and effort by its step, never Fable without the user's yes; sizes the brief; and for a background session prepares the handbook worktree, starts the worker with the right flags, subscribes to its idle notice, verifies its result, opens the pull request, and cleans up. Use before dispatching any agent, workflow, worker session or agent team, and when the user asks to run several tasks at once or to work on several repos in parallel.
+description: Dispatch work to agents under the ParkviewLab handbook's dispatch rule, and coordinate parallel work across repos from one session. Plans first when a task is not fully specified; chooses the structure by the shape of the work (a subagent, a workflow, one background session per repo, or an agent team); chooses and states each dispatch's model and effort by its step, never Fable without the user's yes; sizes the brief; and for a background session prepares the working worktree the handbook's way, starts the worker with the right flags, subscribes to its idle notice, verifies its result, opens the pull request, and cleans up. Use before dispatching any agent, workflow, worker session or agent team, and when the user asks to run several tasks at once or to work on several repos in parallel.
 ---
 
 # Dispatch
@@ -19,7 +19,7 @@ This skill is the operational sequence for dispatching work. The rule it applies
 | A subagent | One bounded task: a lookup, a review, an audit, a check, an implementation with a clear brief |
 | A workflow | Several stages that fan out and must be verified: reviews from several lenses with every finding verified, one change at many sites with each site checked, a plan's independent steps executed and then checked |
 | One background session per repo | Long, independent work the user may watch or steer: an implementation that runs under the repo's own configuration for as long as it needs and owns its pull request |
-| An agent team, inside one session on one repo | Workers that must talk to each other |
+| An agent team inside one session on one repo | Workers that must talk to each other: pieces of one change whose owners must confer, or competing hypotheses tested against each other | Teammate-to-teammate messaging and the shared task list exist only here |
 
 A workflow is not the default. Sequential work, same-file edits, and work with many dependencies stay in one worker. Whatever the structure, keep ultracode's thoroughness where the risk calls for it: verification by a fresh agent, and review from more than one lens.
 
