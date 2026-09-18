@@ -19,7 +19,7 @@ This skill is the operational sequence for dispatching work. The rule it applies
 | A subagent | One bounded task: a lookup, a review, an audit, a check, an implementation with a clear brief |
 | A workflow | Several stages that fan out and must be verified: reviews from several lenses with every finding verified, one change at many sites with each site checked, a plan's independent steps executed and then checked |
 | One background session per repo | Long, independent work the user may watch or steer: an implementation that runs under the repo's own configuration for as long as it needs and owns its pull request |
-| An agent team inside one session on one repo | Workers that must talk to each other: pieces of one change whose owners must confer, or competing hypotheses tested against each other | Teammate-to-teammate messaging and the shared task list exist only here |
+| An agent team inside one session on one repo | Workers that must talk to each other: pieces of one change whose owners must confer, or competing hypotheses tested against each other |
 
 A workflow is not the default. Sequential work, same-file edits, and work with many dependencies stay in one worker. Whatever the structure, keep ultracode's thoroughness where the risk calls for it: verification by a fresh agent, and review from more than one lens.
 
