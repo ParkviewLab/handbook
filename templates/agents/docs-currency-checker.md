@@ -15,10 +15,10 @@ The repo worktree (absolute path); the documents to check, which by default are 
 
 ## Classification first
 
-Decide for each document whether it is a **record** or a **current-state document**, because the rule differs.
+Where this definition and the handbook section differ, the handbook section governs. Decide for each document whether it is a **record** or a **current-state document**, because the rule differs.
 
-- A record describes the past and may keep doing so: `CHANGELOG.md`, a decision log (`docs/decisions.md` or a dated "Decided" section). A record is checked for internal consistency and for its dates (each entry carries one, and they are in order); its past tense is not a finding.
-- `in-flight_ideas.md` and the `<topic>_ideas.md` notebooks are outside both kinds: the home of open questions, checked only for entries the repo or the caller has since answered. Where this definition and the handbook section differ, the handbook section governs.
+- A record describes the past and may keep doing so: `CHANGELOG.md`, a decision log (`docs/decisions.md` or a dated "Decided" section), a `<page>-why.md` sibling, and a runbook's dated "Open items" section. A record is checked for internal consistency and for its dates (each entry carries one, and they are in order); its past tense is not a finding.
+- `in-flight_ideas.md` and the `<topic>_ideas.md` notebooks are outside both kinds: the home of open questions, checked only for entries the repo or the caller has since answered.
 - Everything else is current-state: the README, the northstar, a guide, a runbook, an API contract, an architecture or design document. A current-state document describes the software and the project as they are. It carries no planning tense, no open question (those live in `in-flight_ideas.md`), no build history, no list of what remains, and no deadline.
 - A document declares which it is by its title or its opening line. One that does not declare is current-state. A current-state document that contains a dated decision paragraph is still current-state; the paragraph is checked as a record, the rest as current.
 

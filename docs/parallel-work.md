@@ -28,7 +28,7 @@ What a separate session gives a worker, and a subagent or teammate does not: the
 
 ## Subagents
 
-Delegate with the Agent tool by definition name and give the agent the absolute path of the worktree it works in. Dispatch independent agents in the same turn so they run in parallel. The call can name the model but not the effort, which is the definition's ([`agents.md`](agents.md#using-them)); that is why the coder at Opus and `max` is its own definition, `coder-max`, and a lookup at `low` is `searcher`. A subagent starts with its own prompt and the `CLAUDE.md` hierarchy, not the coordinator's history; its result is a claim the coordinator verifies against the files. Subagents cannot address each other by a name given in a prompt; a sibling's address must be relayed by the coordinator.
+Delegate with the Agent tool by definition name and give the agent the absolute path of the worktree it works in. Dispatch independent agents in the same turn so they run in parallel. The call can name the model but not the effort, which is the definition's ([`agents.md`](agents.md#using-them)); that is why the coder at Opus and `max` is its own definition, `coder-max`, and a lookup at `low` is `searcher`. A subagent starts with its own prompt and the `CLAUDE.md` hierarchy, not the coordinator's history; its result is a claim the coordinator verifies against the files. No definition in the set holds `SendMessage`, so a subagent cannot message a sibling; what one needs from another is relayed by the coordinator.
 
 ## A workflow
 
