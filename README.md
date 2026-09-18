@@ -35,6 +35,7 @@ Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/
 | [ci.md](docs/ci.md) | The three workflows, org secrets, action pinning, `dev-tools` |
 | [ai-collaboration.md](docs/ai-collaboration.md) | The behavioural contract for AI devs |
 | [agents.md](docs/agents.md) | The agent definitions (twelve subagents with model and effort), the rule that chose them, user-level installation |
+| [agents-why.md](docs/agents-why.md) | Why the set is as it is: the evidence, the alternatives set aside, and the dated rulings |
 | [parallel-work.md](docs/parallel-work.md) | Parallel work from one session: subagents, one background session per repo, agent teams; the dispatch lifecycle |
 | [new-repo-checklist.md](docs/new-repo-checklist.md) | The master bootstrap checklist |
 

@@ -5,9 +5,9 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Documentation sites
 
-A public repo may publish **its own `docs/`** as a small website at `https://parkviewlab.github.io/<repo>/`, built and deployed by GitHub Actions on every push to `main`. `pensa-grex` is the **reference implementation** of everything below; its site is at <https://parkviewlab.github.io/pensa-grex/>.
+A public repo may publish **its own `docs/`** as a small website at `https://parkviewlab.github.io/<repo>/`, built and deployed by GitHub Actions on every push to `main`. `pensa-grex` is the **pilot** and the reference for the published shape (the address, `main` only, the two failure modes); its site is at <https://parkviewlab.github.io/pensa-grex/>.
 
-This is **not** a [website repo](website.md). A website repo *is* a site (`parkviewlab.ai`), with `live`/`staging` trunks, a custom domain, and no release ceremony. A documentation site is one facility of an ordinary two-trunk code repo, which keeps its `main`/`develop`, its tags, and its release flow unchanged. It adds a workflow, a build script, and two repository settings.
+This is **not** a [website repo](website.md). A website repo *is* a site (`parkviewlab.ai`), with `live`/`staging` trunks, a custom domain, and no release ceremony. A documentation site is one facility of an ordinary two-trunk code repo, which keeps its `main`/`develop`, its tags, and its release flow unchanged. It adds a workflow, two repository settings and, optionally, an introduction and a page shell under `site/`.
 
 ## The address and the shape
 
@@ -17,7 +17,7 @@ The site has three parts, all served from `https://parkviewlab.github.io/<repo>/
 - **`/docs/` — the repo's `docs/` directory, byte-identical** to what the repository holds, plus a generated `index.html` in each subfolder that holds documents (see below).
 - **Any hand-built extra pages**, each in its own folder. `pensa-grex` has a themed download page at `/downloads/`, sharing `/assets/` with the index.
 
-The hand-built pages and their assets live under `site/` in the repo (`site/intro.html`, `site/downloads/index.html`, `site/assets/`); `docs/` stays exactly what it is for a reader of the repository.
+The hand-built pages and their assets live under `site/` in the repo (`site/intro.html`, a `site/shell.html` where the repo has styling of its own, `site/downloads/index.html`, `site/assets/`), and `site/` as a whole is optional; `docs/` stays exactly what it is for a reader of the repository.
 
 ## Published from `main` only
 
@@ -35,7 +35,7 @@ The cost is explicit, and worth stating before adopting it:
 
 ### Enabling it on a repo
 
-Three steps, once per repo:
+Four steps, once per repo:
 
 ```bash
 # 1. Pages builds from the Actions workflow, not from a served branch.
@@ -47,14 +47,19 @@ gh api -X PUT  repos/ParkviewLab/<repo>/pages -f build_type=workflow
 # 2. The github-pages environment may deploy from main and nothing else
 #    (Settings → Environments → github-pages → deployment branches: main).
 
-# 3. Add the workflow and the build script (below), and release.
+# 3. Add the workflow (the template below) and, for an introduction, site/intro.html; release.
+
+# 4. After the release that first publishes the site: the README line (below),
+#    in its own pull request. Never in the pull request that adds the workflow.
 ```
 
-The workflow template is [`templates/.github/workflows/pages-docs.yml`](../templates/.github/workflows/pages-docs.yml).
+The workflow template is [`templates/.github/workflows/pages-docs.yml`](../templates/.github/workflows/pages-docs.yml); it checks out `dev-tools` at a released tag into `dev-tools/`, a subfolder of the checkout, and runs the shared build script, so the adopting repo commits no script of its own.
+
+**The README line.** A first-time visitor lands on the repository, not on the site, so the README says where the documentation is, on its own line directly under the title and the one-line description, per [`documentation.md`](documentation.md#readme-shape): `Documentation: https://parkviewlab.github.io/<repo>/`. It goes in after the release that first publishes the site, in its own pull request ([below](#a-readme-that-links-to-addresses-the-release-has-not-published-yet)). `convention-auditor` reports a publishing repo whose README lacks the line, and a line whose address does not answer.
 
 ## The generated index
 
-**One committed fragment, everything else derived.** The hand-written introduction is a fragment of HTML (`site/intro.html` — paragraphs, no `<html>`/`<head>`/`<body>`); the rest of the index is read off the documents themselves at build time:
+**One committed fragment, everything else derived.** The hand-written introduction, where the repo has one, is a fragment of HTML (`site/intro.html` — paragraphs, no `<html>`/`<head>`/`<body>`); the rest of the index is read off the documents themselves at build time:
 
 - An **HTML document's** title comes from its `<title>`, and its description from `<meta name="description">` when present.
 - A **Markdown document's** title comes from its first `# ` heading.
@@ -87,38 +92,32 @@ It matters more on a published site. The same document is then readable in three
 
 ## The build script
 
-The script is **per-repo**, because the index carries the repo's own styling — `pensa-grex`'s is its Googie theme, and there is no useful common version to copy yet. The handbook therefore specifies the script's *contract* and *guarantees*, not its code, and ships only the workflow.
+The script is shared: `build-pages-site` in [`ParkviewLab/dev-tools`](https://github.com/ParkviewLab/dev-tools) (its README documents the command). The mechanics (the folder scan, twin pairing, grouping, tag resolution, the stamp, and the link check) are one implementation there; the page shell is the one per-repo part. Two hand-written implementations of the same mechanics is the duplication axiom 1 exists to prevent.
 
-**When a second repo adopts this, that changes.** Two hand-written implementations of the same mechanics is the duplication axiom 1 exists to prevent, so the mechanics — the folder scan, twin pairing, grouping, tag resolution, and the link check — move to `dev-tools` at that point, leaving only the page shell (the styling and the introduction) per-repo.
+The **page shell** is the styling around the generated index: fonts, palette, top bar, hero and footer. A repo passes its own with `--shell site/shell.html`, an HTML file with named placeholders the script substitutes (the placeholder set is in the command's docstring and the dev-tools README); without one, a built-in shell in the ParkviewLab brand is used. A repo with styling of its own (a Googie theme, for one) keeps it as `site/shell.html` and passes it; a repo with none passes nothing. The introduction stays `site/intro.html`, and `site/` itself is optional: a repo with neither publishes its `docs/` alone under the default shell.
 
 ### The CLI contract
 
-The shipped workflow hard-codes it, so it is fixed:
+The shipped workflow hard-codes it, so it is fixed; the template's two per-repo slots are the `--shell` argument and the `ref:` of the dev-tools checkout:
 
 ```bash
-python3 scripts/build_pages_site.py --out DIR [--tag vX.Y.Z]
+python3 dev-tools/scripts/build-pages-site --out DIR [--tag vX.Y.Z] [--shell FILE] [--repo DIR]
 ```
 
-- **The path is `scripts/build_pages_site.py`.**
 - **`--out DIR` is required** — the directory the whole site is assembled into, new or empty.
 - **`--tag vX.Y.Z` is optional**, for a local trial run; the build otherwise resolves the tag itself (below).
+- **`--shell FILE` is optional**, the repo's page shell; absent, the brand default.
+- **`--repo DIR` is optional**, the repository to build; absent, the current directory, which is where the workflow runs. The `dev-tools` checkout in a subfolder is not read.
 
-The workflow's build step is exactly:
-
-```yaml
-- name: Build the site
-  run: python3 scripts/build_pages_site.py --out "${{ runner.temp }}/site"
-```
-
-Run that same command locally before pushing, and open the result with `python3 -m http.server`.
+The workflow checks `dev-tools` out at a **released tag** into `dev-tools/`, a subfolder of the checkout, and runs the command above from the repo root; the template carries the tag (its `ref:`), and a repo with a shell appends `--shell site/shell.html` to the build step. The tag is pinned so that a change to the script never reaches a site unreviewed; bumping it is a one-line change in the adopting repo. This is the one place a workflow reads another ParkviewLab repo, and the pin is what keeps it within the northstar's rule against depending on another repo's state: an exact released tag is a locked dependency, not a live one ([`ci.md`](ci.md#shared-dev-scripts-dev-tools)). Run the same command locally before pushing (`build-pages-site` is on `PATH` once dev-tools' `install.sh` has run) and open the result with `python3 -m http.server`.
 
 ### What it must guarantee
 
 - **Standard library only.** No dependency install in the deploy path.
 - **Nothing generated is committed.** The script assembles into `--out` (refusing a directory that is non-empty, or inside `site/`/`docs/`), and the workflow uploads that directory. There is no Jekyll or other build system in the path.
-- **It fails the build** when a document has **no title**, when a **placeholder survives the stamp** (the release tag substituted into a hand-built page), or when a **link in a page it generated or stamped does not resolve** against the assembled directory. That check covers every relative `href`, `src`, and CSS `url()` in those pages.
+- **It fails the build** when a document has **no title**, when a **placeholder survives the stamp** (the release tag substituted into a hand-built page), or when a **link in a page it generated or stamped does not resolve** against the assembled directory. That check covers every relative `href` and `src`, and every CSS `url()` inside a `<style>` element, in those pages.
 - **It only reports** an unresolved reference inside an **HTML** document copied from `docs/`. Those are published exactly as the repository holds them, so a broken reference of their own is a defect to fix in that document, not a reason to withhold the whole site. **Copied Markdown is not link-checked at all** — GitHub renders it, and its links are checked where the repo is read, not where it is published.
-- **It pins every GitHub link to one release tag**, taken from `git describe --tags --abbrev=0 --match 'v*'` unless `--tag` overrides it, which is why the workflow checks out with `fetch-depth: 0`.
+- **It pins every GitHub link to one release tag**, taken from `git describe --tags --abbrev=0 --match 'v[0-9]*'` unless `--tag` overrides it, which is why the workflow checks out with `fetch-depth: 0`.
 
 ### What it must not do
 

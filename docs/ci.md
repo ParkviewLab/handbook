@@ -157,3 +157,5 @@ A package should be owned by the **ParkviewLab PyPI org**, not by whoever's acco
 Cross-project scripts that encode an org convention live in **[`ParkviewLab/dev-tools`](https://github.com/ParkviewLab/dev-tools)**, not in each repo. `dev-tools/install.sh` **symlinks** `scripts/*` into `~/.local/bin/`, so a `git pull` in `dev-tools` propagates updates to every dev with no re-run. Git auto-discovers `git-<verb>` binaries on `PATH`, which is how `git bump` / `git release` work (see [`releases.md`](releases.md)).
 
 The test for what belongs in `dev-tools` vs a repo's own `scripts/`: *if I changed this, would it need changing in other repos too?* Yes → `dev-tools`. No → the repo's `scripts/`.
+
+A `dev-tools` script may also run inside a repo's workflow, checked out at an exact released tag (`build-pages-site` in [`docs-site.md`](docs-site.md#the-build-script) is the case). The pin is what makes that a locked dependency rather than one on `dev-tools`' state; a workflow never checks `dev-tools` out at a branch.
