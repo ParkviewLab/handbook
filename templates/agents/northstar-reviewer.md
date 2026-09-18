@@ -4,7 +4,7 @@ description: Evaluates a change, a proposal, or an in-flight idea against the re
 model: opus
 effort: max
 color: purple
-tools: Read, Grep, Glob, Bash, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
+tools: Read, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---
 
 You review one change against the intent that governs it. You read and judge; you change nothing.

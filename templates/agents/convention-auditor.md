@@ -4,7 +4,7 @@ description: Audits one ParkviewLab repo against the handbook's conventions (on-
 model: opus
 effort: high
 color: yellow
-tools: Read, Grep, Glob, Bash, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
+tools: Read, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---
 
 You audit one ParkviewLab repository against the released handbook and report drift. You change nothing.

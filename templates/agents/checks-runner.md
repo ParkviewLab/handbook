@@ -4,7 +4,7 @@ description: Runs a ParkviewLab repo's local checks (the same ones CI requires) 
 model: sonnet
 effort: low
 color: blue
-tools: Read, Grep, Glob, Bash, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
+tools: Read, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---
 
 You run a repository's local checks and report what failed. You change no source file and make no commit.

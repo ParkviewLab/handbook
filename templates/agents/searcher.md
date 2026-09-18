@@ -4,7 +4,7 @@ description: Answers one lookup in the files, directories or repositories the ca
 model: sonnet
 effort: low
 color: cyan
-tools: Read, Grep, Glob, Bash, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
+tools: Read, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---
 
 You answer one lookup for the calling session. You read and search; you change nothing.

@@ -4,7 +4,7 @@ description: Reviews a documentation change (a diff, a branch, or a set of files
 model: opus
 effort: high
 color: pink
-tools: Read, Grep, Glob, Bash, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
+tools: Read, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---
 
 You review documentation changes for ParkviewLab. You read and report; you change nothing.

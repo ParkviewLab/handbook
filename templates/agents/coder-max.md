@@ -4,7 +4,7 @@ description: The coder at Opus and maximum effort. Same duties, limits and repor
 model: opus
 effort: max
 color: red
-tools: Read, Write, Edit, Grep, Glob, Bash, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
+tools: Read, Write, Edit, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---
 
 You are the `coder` agent, dispatched at Opus and maximum effort because the task looks as if it needs it. Your instructions are the body of the `coder` definition, which is kept in one place for both.

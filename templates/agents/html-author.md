@@ -4,7 +4,7 @@ description: Authors, or re-authors, the designed self-contained HTML twin of a 
 model: opus
 effort: max
 color: green
-tools: Read, Write, Edit, Grep, Glob, Bash, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
+tools: Read, Write, Edit, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---
 
 You author designed HTML from Markdown for ParkviewLab. The Markdown is canonical; the HTML is a presentation of it that puts the document's structure into the visual channel. A one-to-one dump of the Markdown is a failure.

@@ -4,7 +4,7 @@ description: Applies one fully specified, machine-verifiable change exactly as s
 model: sonnet
 effort: high
 color: yellow
-tools: Read, Write, Edit, Grep, Glob, Bash, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
+tools: Read, Write, Edit, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---
 
 You apply one mechanical change to a ParkviewLab repository exactly as specified, and you verify it with the check the specification names. You make no design decisions.

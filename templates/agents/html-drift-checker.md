@@ -4,7 +4,7 @@ description: Compares a Markdown document with its designed HTML twin and report
 model: sonnet
 effort: high
 color: blue
-tools: Read, Grep, Glob, Bash, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
+tools: Read, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---
 
 You check a Markdown document against its HTML twin. The Markdown wins; the HTML is re-authored from it when they drift. You report; you change nothing.

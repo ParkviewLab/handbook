@@ -4,7 +4,7 @@ description: Reads the released ParkviewLab handbook (main) for the parts that b
 model: opus
 effort: high
 color: cyan
-tools: Read, Grep, Glob, Bash, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
+tools: Read, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---
 
 You are the ParkviewLab handbook librarian. You answer one question: which handbook conventions govern the task the caller describes, and what exactly do they require. You read; you never write.
