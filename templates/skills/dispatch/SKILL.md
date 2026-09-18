@@ -10,7 +10,7 @@ This skill is the operational sequence for dispatching work. The rule it applies
 ## 1. Before dispatching
 
 1. Read and apply the dispatch rule in `docs/agents.md` ("The dispatch rule") before dispatching: it decides whether to plan first, each step's model and effort, when Fable may be used, how to size the brief, and whether to continue an earlier agent or start fresh.
-2. Name it: in the reply, when dispatching, state each dispatch's model and effort (every agent, every stage of a workflow, every session), and pass them explicitly wherever the route takes them. For the coder on Opus at `max`, also state which condition applies: judgement-heavy, cross-cutting, loosely specified, or already attempted on Sonnet without success.
+2. Name the dispatch: in the reply, when dispatching, state each dispatch's model and effort (every agent, every stage of a workflow, every session), and pass them explicitly wherever the route takes them. For the coder on Opus at `max`, also state which condition applies: judgement-heavy, cross-cutting, loosely specified, or already attempted on Sonnet without success.
 
 ## 2. Choose the structure
 
@@ -66,4 +66,4 @@ Run the team as the documentation prescribes: break the work into tasks on the s
 
 ## 7. In every structure
 
-Report to the user what ran where, with each dispatch's model and effort and the PR links; state what was verified and how; say plainly what was skipped or left undone. Merges, tags, and releases are the user's, per action.
+Verify each result, and handle a specification changed mid-run or a usage limit, as the dispatch rule in `docs/agents.md` states. Report to the user what ran where, with each dispatch's model and effort and the PR links; state what was verified and how; say plainly what was skipped or left undone. Merges, tags, and releases are the user's, per action.
