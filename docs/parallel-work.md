@@ -5,7 +5,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Parallel work
 
-One session can run several pieces of work at once, across several repos, and manage them. This page states the four structures in which work is dispatched, which the shape of the work chooses, and the procedure for the one that needs the most ceremony; the model and effort of each dispatch, and the rest of the rule that governs dispatching, are in [`agents.md`](agents.md#the-dispatch-rule). The operational sequence is packaged as the `dispatch` skill in [`templates/skills/dispatch/`](../templates/skills/dispatch/SKILL.md), installed with the agents ([`agents.md`](agents.md)). The skill is the operational copy of this page's sections on the structures and of the dispatch rule, and it changes in the same pull request as either. The behavioural contract in [`ai-collaboration.md`](ai-collaboration.md) holds for every worker in every structure.
+One session can run several pieces of work at once, across several repos, and manage them. This page states the four structures in which work is dispatched, which the shape of the work chooses, and the procedure for the one that needs the most ceremony; the model and effort of each dispatch, and the rest of the rule that governs dispatching, are in [`agents.md`](agents.md#the-dispatch-rule). The operational sequence is packaged as the `dispatch` skill in [`templates/skills/dispatch/`](../templates/skills/dispatch/SKILL.md), installed with the agents ([`agents.md`](agents.md)). The skill is the operational copy of this page's sections on the structures, and it changes in the same pull request as this page. The behavioural contract in [`ai-collaboration.md`](ai-collaboration.md) holds for every worker in every structure.
 
 ## The coordinator and the workers
 

@@ -9,21 +9,8 @@ This skill is the operational sequence for dispatching work. The rule it applies
 
 ## 1. Before dispatching
 
-1. Plan or execute. If the task does not state exactly what changes, plan first: an Opus step at `max` (this session, or a planning agent it dispatches) writes an executable brief, with the files, the exact changes, the acceptance checks, and each step's structure, model and effort, as a Markdown file outside the repositories. Give the user the link and a short summary, and execute nothing until the user has given the go-ahead.
-2. Choose each dispatch's model and effort by its step:
-
-   | Step | Model | Effort |
-   |---|---|---|
-   | A lookup; running checks | Sonnet | `low` |
-   | A specified edit; a step of an approved plan that leaves no decision open | Sonnet | `high` |
-   | Implementation that must decide how | Sonnet (`coder`); Opus when the task looks as if it needs it (`coder-max`) | `high`; `max` with Opus |
-   | A review or an audit | Opus | `high` |
-   | Planning, design, writing policy, verifying findings | Opus | `max` |
-
-   When unclear, the stronger model and one level up. Never Fable unless the user has said yes, for this dispatch, to a request that gave the reason; and ask for it only after Opus at `max` has failed or been rejected, or for writing or judging what the user will rule on (a northstar, a policy, an org-wide design).
-3. Size the brief: the paths and the exact question, not pasted documents; for a step of a plan, the step, its acceptance checks, and the facts the agent cannot discover cheaply. Ask for a large result in a file, with the conclusion and the path returned.
-4. Continue or start fresh: continue an earlier agent (SendMessage to its name or id) when the next step needs its context, as a fix after its own implementation does; start a fresh one for every review and every verification, and when the earlier context is mostly irrelevant.
-5. Name it: in the reply, when dispatching, state each dispatch's model and effort (every agent, every stage of a workflow, every session), and pass them explicitly wherever the route takes them.
+1. Read and apply the dispatch rule in `docs/agents.md` ("The dispatch rule") before dispatching: it decides whether to plan first, each step's model and effort, when Fable may be used, how to size the brief, and whether to continue an earlier agent or start fresh.
+2. Name it: in the reply, when dispatching, state each dispatch's model and effort (every agent, every stage of a workflow, every session), and pass them explicitly wherever the route takes them. For the coder on Opus at `max`, also state which condition applies: judgement-heavy, cross-cutting, loosely specified, or already attempted on Sonnet without success.
 
 ## 2. Choose the structure
 
@@ -75,11 +62,8 @@ A worker that hits a permission prompt waits until the user attaches (`claude at
 
 Enable teams for that session or repo only, never in user settings: a `.claude/settings.json` in the repo worktree with `{"env": {"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"}}`, or `--settings '{"env":{"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS":"1"}}'` on the command line. While enabled, every subagent spawned with a name launches as a teammate.
 
-Run the team as the documentation prescribes: break the work into tasks on the shared task list (five or six per teammate), spawn three to five teammates by the Agent tool with a `name` each, give each its full context in its spawn prompt (no history carries over), assign disjoint files, use the agent definitions as teammate roles, wait for the teammates rather than doing their work, and monitor and steer. Teammates run in the lead's directory, take their definition's model and the lead's effort, end with the lead's session, cannot be resumed, and cannot spawn background subagents; permission prompts go to the lead. Remove the setting when the team's work is done.
+Run the team as the documentation prescribes: break the work into tasks on the shared task list (five or six per teammate), spawn three to five teammates by the Agent tool with a `name` each, give each its full context in its spawn prompt (no history carries over), assign disjoint files, use the agent definitions as teammate roles, wait for the teammates rather than doing their work, and monitor and steer. Teammates run in the lead's directory, take the model the spawning call names (their definition's where it names none) and the lead's effort, end with the lead's session, cannot be resumed, and cannot spawn background subagents; permission prompts go to the lead. Remove the setting when the team's work is done.
 
 ## 7. In every structure
 
-- Verify matched to the risk: code gets its tests and one reviewer on Opus; a document gets the document reviewers; work that is outward-facing or hard to undo (a release, settings, the wiki's structure, a proposal for ruling) gets a second, independent lens as well. Check every finding against its evidence, at `max`, before acting on it.
-- If the specification changes mid-run, stop every dispatch working from it at once and restart from the new specification, keeping the work that still fits.
-- If a usage limit is hit, say which at once and continue on the next model the rule allows for the step: Opus at `max` after Fable, Opus at the step's effort after Sonnet; for a judgement step on Opus, ask.
-- Report to the user what ran where, with each dispatch's model and effort and the PR links; state what was verified and how; say plainly what was skipped or left undone. Merges, tags, and releases are the user's, per action.
+Report to the user what ran where, with each dispatch's model and effort and the PR links; state what was verified and how; say plainly what was skipped or left undone. Merges, tags, and releases are the user's, per action.
