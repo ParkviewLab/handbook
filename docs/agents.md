@@ -108,7 +108,7 @@ scripts/install-agents.sh --dry-run   # preview
 scripts/install-agents.sh             # link into ~/.claude/agents and ~/.claude/skills
 ```
 
-The installer links to the **released** handbook (the sibling `handbook-main` worktree) by default, so an edited definition is picked up on the next `git pull` of `main` with no re-run; a brand-new file needs one more run. `--copy` copies instead of linking; `--source DIR` installs from another checkout; `--uninstall` removes the links. Claude Code discovers agents and skills through symlinked directories and symlinked files alike (verified on v2.1.270).
+The installer links to the **released** handbook (the sibling `handbook-main` worktree) by default, so an edited definition is picked up on the next `git pull` of `main` with no re-run; a brand-new file needs one more run. A session started after that run can use a new agent at once; one already running may not offer it for some minutes, although a new skill reaches it at once (v2.1.273: on 2026-09-18 a fresh headless session dispatched an agent created 18 seconds earlier, whilst on 2026-09-17 a running session could not dispatch a new agent for a few minutes; the delay was not measured). Dispatch a new agent from a session started after the installer ran. `--copy` copies instead of linking; `--source DIR` installs from another checkout; `--uninstall` removes the links. Claude Code discovers agents and skills through symlinked directories and symlinked files alike (verified on v2.1.270).
 
 ## Changing the set
 
