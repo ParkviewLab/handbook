@@ -55,13 +55,25 @@ The proposal's own record retired into this file rather than into the lab's oper
 
 ## 2026-09-17: how a definition's tools list treats MCP tools
 
-The rule as first written claimed that an MCP tool can be named only in full and never by a whole-server pattern. That was wrong as a statement of fact, and an experiment settled it on Claude Code v2.1.273: `mcp__<server>__<tool>` granted exactly that one tool; `mcp__<server>` and `mcp__<server>__*` each granted every tool of that server. An explicit list that names no MCP tool still withholds them all, which is why no other definition holds a wiki tool. The wrong rule was written and corrected inside the same pull request, so no release ever carried it; the documentation and the experiment agree.
+The rule as first written claimed that an MCP tool can be named only in full and never by a whole-server pattern. That was wrong as a statement of fact, and an experiment settled it on Claude Code v2.1.273: `mcp__<server>__<tool>` granted exactly that one tool; `mcp__<server>` and `mcp__<server>__*` each granted every tool of that server. An explicit list that names no MCP tool still withholds them all, which is why, at that point, no other definition held a wiki tool; the last entry below reverses that. The wrong rule was written and corrected inside the same pull request, so no release ever carried it; the documentation and the experiment agree.
 
 Naming each tool in full is therefore the choice here and not a necessity, and the page states it as such with its reason.
 
 The same principle removed two tools from the librarian's list on the same day. Its list held the two recycle-bin tools, and a read dispatched to the agent returned "Insufficient permissions for this operation", the wiki's routes for the recycle bin being served only to an administrative role that the account deliberately lacks. A list that is meant to be the exact boundary of what an agent can do cannot carry two entries that can never succeed, so they were removed rather than left as an aspiration.
 
 One further observation from the same day, recorded for whoever meets it: installing a new definition mid-session made the new skill available to the running session at once, whilst the new agent could not be dispatched for some minutes, after which it worked with no restart and no further action.
+
+## 2026-09-17, later: the four decisions the proposal had left open
+
+The librarian's proposal was built with four of its decisions unruled, which is why its book stayed on the wiki's Proposals shelf. All four were ruled the same evening, and the book now holds nothing open.
+
+Where the classification metadata lives: on the catalog entries, and nowhere else. The alternative was tags on the books themselves, and the library's own state decided it. Across the eleven books, their own tags carried four incompatible schemes, three books carried none, one used labels with no values, and only two used the ruled vocabulary, whilst every catalog entry was uniform because all were written in one pass by one rule. That is what happens when classification lives on the described thing and is applied by whoever creates it. The three books whose tags merely duplicated their entries lost those tags in consequence; the older ad-hoc tags on the rest are their authors' and stay.
+
+Withdrawn entries: kept, as built. A deleted book's entry moves to a chapter named Withdrawn with a note of where its substance went, so the catalog records what the library held as well as what it holds. The cost is nothing and the benefit appears only when someone asks after a book that is gone.
+
+The desktop application's writes: left alone, and recorded as an idea rather than a plan ([`in-flight_ideas.md`](in-flight_ideas.md)). The convention reaches Claude Code sessions through [`agents.md`](agents.md); the desktop application has no hooks and is not bound by it, so a write made there goes directly under the same wiki account. Binding it would need a second wiki account and token, a read-only token for the shared server, a second bridge and per-agent server configuration, which is a great deal of machinery for a client that writes rarely.
+
+Read-only wiki tools for the reading agents: granted, to every read-only definition rather than to the document reviewers alone. The line between a reviewer and any other reader is arbitrary once the tools are read-only, and the monopoly was always about writes; a reader that must ask for an excerpt cannot follow a citation, which makes the librarian a bottleneck in the one case where it adds nothing. Each of the eight gains exactly two tools, a search and a page read, and the sentence in [`agents.md`](agents.md) that said no other definition holds a wiki tool had to be restated in terms of writes, which is the measure of how far the grant reaches.
 
 ## Decision record
 
@@ -82,3 +94,7 @@ One further observation from the same day, recorded for whoever meets it: instal
 | 2026-09-17 | Agent memory and a register in a shared store | The rule qualified, not excepted: such a register is a document, not memory |
 | 2026-09-17 | Where the proposal's own record retires | Into this file, the handbook owning the agent; the lab's operations repository is for its machines and stacks |
 | 2026-09-17 | Naming MCP tools in a definition | Each in full, as a choice; whole-server patterns work but would grant a writer every write, including later ones |
+| 2026-09-17 | Where the classification metadata lives | On the catalog entries alone; the books' own tags carried four incompatible schemes whilst every entry was uniform |
+| 2026-09-17 | Withdrawn entries in the catalog | Kept in their own chapter, so the catalog records what the library held as well as what it holds |
+| 2026-09-17 | The desktop application's writes | Left alone and recorded as an idea; binding it would need a second account, token, bridge and per-agent configuration |
+| 2026-09-17 | Read-only wiki tools for the reading agents | Granted to every read-only definition, two tools each; the monopoly is about writes, and a reader must be able to follow a citation |
