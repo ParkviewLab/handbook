@@ -5,7 +5,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Commits & changelogs: the reasoning, the evidence and the decisions
 
-This file is the second half of the record of how release notes are generated. The line between the two is what a reader needs: [`commits-and-changelogs.md`](commits-and-changelogs.md) keeps every rule and every reason needed to apply one, and this file adds what is needed only to reopen a decision, which is the measurement the rule rests on, the alternatives set aside, and the dated rulings. Entries are in date order and the record at the foot summarises them. The decisions were proposed on the organisation's wiki, in the book "One changelog generator"; what is needed to reopen them is recorded here.
+This file is the second half of the record of how release notes are generated. The line between the two is what a reader needs: [`commits-and-changelogs.md`](commits-and-changelogs.md) keeps every rule and every reason needed to apply one, and this file adds what is needed only to reopen a decision, which is the measurement the rule rests on, the alternatives set aside, and the dated rulings. Entries are in date order and the record at the foot summarises them. Dates are those of America/Los_Angeles, in which the rulings were dated, and a time, where one is stated, is UTC. The decisions were proposed on the organisation's wiki, in the book "One changelog generator"; what is needed to reopen them is recorded here.
 
 It is a record, so it describes the past and keeps doing so ([`documentation.md`](documentation.md#documents-and-records)). An open question does not belong here; one about the changelog as it now stands goes to [`in-flight_ideas.md`](in-flight_ideas.md).
 
@@ -96,7 +96,7 @@ A pin that can be redirected lets the code every pinned release job runs, with w
 
 The northstar asks that dependencies between repositories be avoided. Where that meets one shape across many repositories, its answer is shared sources, dev-tools among them, and `ci.md` admits a dev-tools script into a workflow only at an exact release, a locked dependency rather than one on dev-tools' state. The changelog job stays within that rule on one condition, that what the pin names cannot change, which a SHA meets by construction and a tag meets only while nothing moves it.
 
-That no actor passes a ruleset with an empty bypass list was inferred from GitHub's documentation, which lets only actors with bypass permission past its rules, so the build was to try it on a scratch repository before the ruleset was applied anywhere (2026-09-19, below).
+That no actor passes a ruleset with an empty bypass list was inferred from GitHub's documentation, which lets only actors with bypass permission past its rules, so the build was to try it on a scratch repository before the ruleset was applied anywhere (below).
 
 ## 2026-09-18: four points of the rule, and the narrowing of D8 and D6
 
@@ -132,11 +132,11 @@ NR08 was ruled (a): dev-tools keeps GitHub's generated notes under the `release-
 
 CC05 and DR10 were ruled (a): the Markdown under dev-tools' `tests/`, the acceptance run's README and the evidence reports, is licensed CC-BY-4.0 through one `REUSE.toml` annotation, with `LICENSING.md` and the README saying so, and the code there stays AGPL-3.0-or-later, as the handbook's per-bucket licensing gives it. Made in [dev-tools #9](https://github.com/ParkviewLab/dev-tools/pull/9).
 
-## 2026-09-19: the tag ruleset tried, and dev-tools' `main` protected
+## 2026-09-18: the tag ruleset tried and applied, and dev-tools' `main` protected
 
-On 2026-09-19 (UTC) the ruleset of decision 8 was tried on a private scratch repository in the organisation before being applied anywhere: tags matching `refs/tags/v*`, updates and deletions restricted, force pushes blocked, no bypass actor, active. From an account holding the organisation's administrator role, the push of `v0.0.1` succeeded, since a release must still be taggable; a move by force push, a deletion by `git push`, a deletion through the REST API and a move through the REST API were each refused, git answering "GH013: Repository rule violations found" with "Cannot update this protected ref" or "Cannot delete this tag", and the REST API answering HTTP 422 with the same messages. The tag ended where it began, and GitHub reported `current_user_can_bypass: never` for that account. The inference behind decision 8, that with no bypass actor no one passes, was confirmed. The scratch repository was then deleted.
+In the evening of that day, at 03:19 UTC on 2026-09-19, the ruleset of decision 8 was tried on a private scratch repository in the organisation before being applied anywhere: "Release tags", on tags matching `refs/tags/v*`, updates and deletions restricted, force pushes blocked, no bypass actor, active. From an account holding the organisation's administrator role, the push of `v0.0.1` succeeded, since a release must still be taggable; a move by force push, a deletion by `git push`, a deletion through the REST API and a move through the REST API were each refused, git answering "GH013: Repository rule violations found" with "Cannot update this protected ref" or "Cannot delete this tag", and the REST API answering HTTP 422 with the same messages. The tag ended where it began, and GitHub reported `current_user_can_bypass: never` for that account. The inference behind decision 8, that with no bypass actor no one passes, was confirmed. The scratch repository was then deleted.
 
-The same day dev-tools' `main` was protected against force pushes and deletions by the call in [`ci.md`](ci.md#repo-merge-settings), and read back identical to paper-boxing's.
+At 03:24 UTC dev-tools' `main` was protected against force pushes and deletions by the call in [`ci.md`](ci.md#repo-merge-settings), and read back identical to paper-boxing's. At 03:48 UTC the ruleset was applied to dev-tools from the definition the trial had used, and read back active with an empty bypass list, GitHub reporting `current_user_can_bypass: never`. The convention auditor then found no deviation in dev-tools' `main` protection, or in its `release.yml` against the `release-txt.yml` of handbook v0.24.0.
 
 ## Decision record
 
@@ -166,4 +166,4 @@ The same day dev-tools' `main` was protected against force pushes and deletions 
 | 2026-09-18 | dev-tools' own release notes (NR08) | GitHub's generated notes, as the handbook's; the template's stated reason corrected by the release-by-target change |
 | 2026-09-18 | The licence of the Markdown under dev-tools' `tests/` (CC05, DR10) | CC-BY-4.0 by one `REUSE.toml` annotation; the code there AGPL-3.0-or-later |
 | 2026-09-18 | A refused or truncated Highlights call (NR02, CR03) | The placeholder; no server-side fallback, which would write with a model the script does not pin |
-| 2026-09-19 | Whether a tag ruleset with no bypass actor binds an administrator | It does: on a scratch repository, every move and deletion was refused |
+| 2026-09-18 | Whether a tag ruleset with no bypass actor binds an administrator | It does: on a scratch repository, every move and deletion was refused |
