@@ -99,7 +99,7 @@ Every repo's release workflow is `.github/workflows/release.yml`, whatever the r
 | Part | Job | What it carries |
 |---|---|---|
 | `head.yml` | none | the workflow name, the `v*` tag trigger, `permissions: contents: read` |
-| `gate.yml` | `gate` | the three checks: tag equals the version file, the tagged commit is reachable from `origin/main`, the version is strictly greater than the previous tag |
+| `gate.yml` | `gate` | the three checks: the tag equals the version in the repo's version file, the tagged commit is reachable from `origin/main`, the version is strictly greater than the previous tag |
 | `docker.yml` | `docker` | the multi-arch image on GHCR |
 | `pypi.yml` | `pypi` | the PyPI publish |
 | `npm.yml` | `npm` | the npm publish, with the optional scoped alias |
@@ -117,7 +117,7 @@ cat head.yml gate.yml docker.yml changelog.yml > <repo>/.github/workflows/releas
 
 Left in place, `TARGET_JOBS` fails `actionlint` and GitHub's own validation, so the workflow does not run at all: an unfinished assembly cannot half-publish. Run `actionlint` on the result before committing it.
 
-A difference from a part is judged, not forbidden. State every difference in the repo's pull request with its reason. A need of that repo alone is documented in the repo as its slot, in a comment at the job or in its `docs/decisions.md`: paper-boxing's three-image matrix and jonobones's scoped alias are the cases today. A difference that improves the part goes back into the handbook's part by a handbook pull request, and the other repos take it at their next re-assembly where it improves them. Only a mistaken or unexplained difference is corrected. `convention-auditor` reports each undocumented difference for that judgement rather than as a defect.
+A difference from a part is judged, not forbidden. State every difference in the repo's pull request with its reason. A need of that repo alone is documented in the repo as its slot, in a comment at the job or in its `docs/decisions.md`: paper-boxing's three-image matrix and jonobones's scoped alias are the cases today. A difference that improves the part goes back into the handbook's part by a handbook pull request, and the other repos take it at their next re-assembly where it improves them. Only a mistaken or unexplained difference is corrected. `convention-auditor` reports each undocumented difference for that judgement rather than as a defect. A repo not yet re-assembled is a separate case: it still carries a copy of one of the templates the parts replaced (`release-node.yml`, `release-electron.yml`, `release-txt.yml`, `dev-release-electron.yml`, or a trimmed `release.yml` or `dev-release.yml`), under whatever name, and the auditor reports that as not yet re-assembled rather than as drift.
 
 Notes that belong to CI:
 
