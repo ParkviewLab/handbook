@@ -119,11 +119,32 @@ A Python service may publish only an image, a Python library only to PyPI, a Nod
    - `pypi`: `uv build`, then PyPI trusted publishing (OIDC, `environment: pypi`).
    - `npm`: npm trusted publishing (OIDC), with an optional scoped-alias publish.
    - `installers`: electron-builder on a macOS / Windows / Linux matrix, each leg uploading its installers as `installers-<os>`.
-3. `changelog` (`needs:` the gate and every target job): runs `generate_changelog.py` `--mode=generate` against the tag (the one LLM call), switches to fresh `origin/main`, `--mode=insert`, commits `docs(changelog): v<new> [skip ci]` back to `main`, and creates the GitHub Release from the same body. Where the release builds installers, it downloads them first and attaches them to the Release.
+3. `changelog` (`needs:` the gate and every target job): checks `dev-tools` out at the commit of its pinned release and runs its `generate-changelog` ([`commits-and-changelogs.md`](commits-and-changelogs.md)). `--mode=generate --reuse-committed` runs against the tag: it reads the release's history and the repo's merged pull requests, lists every pull request the release holds and every commit that reached it without one, leaving out the release's own bookkeeping, and makes the one LLM call. The job then switches to a fresh `origin/main`, runs `--mode=insert`, commits `docs(changelog): v<new> [skip ci]` back to `main`, and creates the GitHub Release from the same body. Where the release builds installers, it downloads them first and attaches them to the Release. It runs after the target jobs, so a failure of the notes never holds back what they publish.
 
 The documents target replaces that last job with `release`, which creates the GitHub Release with GitHub's generated notes (the merged-PR titles since the previous tag, each with its link). It has no `changelog` job because a documents repo keeps no `CHANGELOG.md` to generate and commit back to `main`: the generated notes are its release record, and they already list what shipped, which is why the PR-title prefix still matters there. For hand-written notes, edit the Release after the workflow has created it (`gh release edit v<new> --notes-file …`). This handbook's own `release.yml` is the documents assembly, byte for byte.
 
 Reference implementations, by target: paper-boxing (image; its three-image matrix is a documented slot), cogrind-workshop (PyPI), smalt-mcp (PyPI and image), jonobones (npm and image), pensa-grex (installers), and this handbook (documents). A repo not yet re-assembled still carries the template the parts replaced, under whatever name (see [`ci.md`](ci.md#releaseyml--on-v-tag-push)).
+
+## Repairing a release whose changelog job failed
+
+When the `changelog` job fails, the gate and the target jobs have already succeeded, so the release is published under its tag, and the tag stays. What is missing depends on the step that failed: after a failure in generating or inserting, nothing has been committed and no Release exists; after a failure in creating the Release, `CHANGELOG.md` has been committed to `main` and only the Release is missing. The back-merge waits for the repair, so that it carries the changelog commit to `develop`. A re-run or a repair writes to `main` and publishes a Release, so it needs the same explicit go-ahead as the release itself ([`ai-collaboration.md`](ai-collaboration.md#shared-state-writes-need-explicit-authorization)).
+
+1. A transient failure, such as GitHub's API or the network (the model's call never fails the job): re-run the failed job. A re-run runs the tagged commit's workflow file, and so the same pin. The insert adds no second section for a tag already present, and the generate step, which passes `--reuse-committed`, takes a section already committed to `main` instead of calling the model again, so a re-run after a partial success duplicates nothing and creates the Release from the text in `CHANGELOG.md`.
+2. A defect in the script: repair by hand, with a corrected script from a `dev-tools` worktree, the person's own `gh` login, and `ANTHROPIC_API_KEY` in the environment (without the key the paragraph is the placeholder):
+
+   ```bash
+   # a full clone of the repo at <clone>, and <repo>-main pulled up to date
+   uv run --script <dev-tools>/scripts/generate-changelog --mode=generate --tag vX.Y.Z --repo <clone>
+   cp <clone>/release-body.md <repo>-main/
+   cd <repo>-main
+   uv run --script <dev-tools>/scripts/generate-changelog --mode=insert --tag vX.Y.Z
+   git add CHANGELOG.md && git commit -m "docs(changelog): vX.Y.Z [skip ci]" && git push
+   gh release create vX.Y.Z --title vX.Y.Z --notes-file release-body.md --verify-tag --target main
+   ```
+
+   Where the tag's section is already on `main`, the insert writes nothing and only the last command is needed. The correction reaches the repos as a `dev-tools` patch release, and the shape of history that caused the defect becomes a new test in `dev-tools`.
+3. A defect in the workflow file, such as a wrong pin or a missing permission: a re-run cannot pick up a fix, because it runs the tagged commit's workflow file. Repair by hand as in 2, with the script at the pin, then fix the workflow on `develop` and check it again at the next release.
+4. Where the release builds installers, they exist only as the run's artifacts: download them with `gh run download <run-id>` and attach them to the Release when it is created, before the run's artifacts expire.
 
 ## After the release: the back-merge cascade (mandatory)
 
