@@ -107,4 +107,4 @@ That is adequate for a server bound to `127.0.0.1` on a single-user machine. It 
 - Tool results are wrapped as `list[mcp.types.TextContent]` carrying JSON.
 - **Config is plain dataclasses + `os.environ.get`** — no `pydantic-settings`. Env var names are namespaced per server (`SMALT_*`, `OUTPUT_ROOT`, …) plus the generic `HOST`/`PORT`/`PUBLIC_BASE_URL`.
 
-Source: `smalt-mcp/.../{__main__,server,config,permissions}.py`, `deco-assaying/.../{config,routes}.py`. Deployment (Docker, "five ways to run it") is in [`packaging-and-deployment.md`](packaging-and-deployment.md).
+Source: `smalt-mcp/.../{__main__,server,config,permissions}.py`, `deco-assaying/.../{config,routes}.py`. Deployment, the image and the run section for the server's targets, is in [`packaging-and-deployment.md`](packaging-and-deployment.md).
