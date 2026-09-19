@@ -48,6 +48,10 @@ header.site .word small{display:block;color:var(--muted);font-size:10.5px;letter
 .hero p.lede{font-size:19px;max-width:760px;margin:0;}
 .hero p.lede .leads{display:block;margin-top:10px;font-size:16px;color:var(--muted);}
 
+/* Callout: the standing of the handbook itself, read before the intents */
+.callout{max-width:760px;background:var(--card);border-left:4px solid var(--teal);padding:14px 18px;margin:0;font-size:15.5px;}
+.callout p{margin:0;}
+
 .section-label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:54px 0 18px;font-weight:600;display:flex;align-items:center;gap:10px;}
 .section-label::before{content:"";width:12px;height:12px;background:var(--ac,var(--teal-deep));}
 .umbrella{max-width:760px;font-size:16.5px;margin:6px 0 18px;}
@@ -171,6 +175,13 @@ footer.site{margin-top:64px;border-top:3px solid var(--ink);padding-top:20px;fon
       standing by accident.</span></p>
   </div>
 
+  <div class="callout">
+    <p>The handbook is a guide, not a rulebook. It records what has been tried
+      and found to work well, and it is how new things are done until new
+      information shows a better way. When a better way is found or invented, the
+      handbook is updated with it, and the repos it would improve adopt it.</p>
+  </div>
+
   <div class="section-label">intents</div>
   <p class="umbrella">ParkviewLab engineering serves four complementary intents:
     facets of one purpose, presented as peers rather than as one primary and three
@@ -181,7 +192,8 @@ footer.site{margin-top:64px;border-top:3px solid var(--ink);padding-top:20px;fon
         of one-offs. They share one layout, one toolchain, one release flow, one
         brand — so each repo is legible the moment you open it, and the family
         coheres without coupling. Deviation from the common shapes must be
-        justified and documented.</p></div>
+        justified and documented, and a deviation that proves a better way is
+        carried back into the handbook.</p></div>
     <div class="intent i2"><div class="num">2</div><h3>Self-contained &amp; self-describing</h3>
       <p>A repo carries everything needed to understand, build, run, and ship it:
         locked dependencies, a single source of truth for its version, tag-driven
@@ -217,7 +229,9 @@ footer.site{margin-top:64px;border-top:3px solid var(--ink);padding-top:20px;fon
         and every repo wears the one brand. None of this is what a repo
         <em>does</em>. It is how a repo is laid out, tooled, licensed, and
         released, and it is the same whether the repo is a Python service, a
-        desktop application, or this handbook.</p>
+        desktop application, or this handbook. Every release starts with a tag,
+        then a gate checks the version, and then it ends in a published
+        product.</p>
       <p>The payoff is recognition. A developer who has worked in one ParkviewLab
         repo can open any other and know where the version lives, how to cut a
         branch, and what a release takes, before reading a line of its code. The
@@ -336,7 +350,7 @@ footer.site{margin-top:64px;border-top:3px solid var(--ink);padding-top:20px;fon
   <div class="section-label" style="--ac:var(--red)">what it is not</div>
   <div class="nots">
     <div class="not"><h4>Not a monorepo</h4><p>Many independently-released repos that share a shape — not one big tree.</p></div>
-    <div class="not"><h4>Not a place for improvised per-repo process</h4><p>Repos differ in <em>what</em> they do, not in <em>how</em> they're laid out, tooled, licensed, or released. When a repo must deviate, the deviation is documented.</p></div>
+    <div class="not"><h4>Not a place for improvised per-repo process</h4><p>Repos differ in <em>what</em> they do, not in <em>how</em> they're laid out, tooled, licensed, or released. When a repo must deviate, the deviation is documented; when it proves a better way, the handbook is updated with it.</p></div>
   </div>
 
   <footer class="site">
