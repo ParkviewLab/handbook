@@ -1,0 +1,31 @@
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Verify dev build from develop
+        id: v
+        run: |
+          if [ "$GITHUB_REF" != "refs/heads/develop" ]; then
+            echo "dev-release runs from develop only (got $GITHUB_REF)"; exit 1
+          fi
+          # The repository's one version file, read as the release gate reads it.
+          if [ -f pyproject.toml ]; then
+            FILE=pyproject.toml
+            VERSION=$(python3 -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")
+          elif [ -f package.json ]; then
+            FILE=package.json
+            VERSION=$(jq -r .version package.json)
+          elif [ -f VERSION.txt ]; then
+            FILE=VERSION.txt
+            VERSION=$(tr -d '[:space:]' < VERSION.txt)
+          else
+            echo "no version file: expected pyproject.toml, package.json or VERSION.txt"; exit 1
+          fi
+          case "$VERSION" in
+            *.dev[0-9]*|*-dev[0-9]*) ;;
+            *) echo "::error::$FILE version '$VERSION' has no dev marker (expected X.Y.Z.devN or X.Y.Z-devN); the build would be indistinguishable from a release. Open a dev cycle first: git dev-release --open"; exit 1 ;;
+          esac
+          echo "dev version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
