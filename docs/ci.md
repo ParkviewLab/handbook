@@ -35,15 +35,15 @@ gh repo edit <owner>/<repo> \
   --enable-merge-commit=false \
   --enable-rebase-merge=false \
   --delete-branch-on-merge=true
-# squash commit subject = the PR title, so git-cliff parses the Conventional
-# Commit prefix even on a single-commit PR:
+# squash commit subject = the PR title, so the changelog lists the PR under its
+# Conventional Commit type even on a single-commit PR:
 gh api -X PATCH repos/<owner>/<repo> \
   -f squash_merge_commit_title=PR_TITLE \
   -f squash_merge_commit_message=COMMIT_MESSAGES
 ```
 
 - **Squash-only** means a PR's merge button can only squash — no one can pick the wrong method for a feature PR into `develop` (see [`branching.md`](branching.md)).
-- **`squash_merge_commit_title=PR_TITLE` is load-bearing.** The GitHub default (`COMMIT_OR_PR_TITLE`) uses the *commit* subject on a single-commit PR, which may miss the `feat:`/`fix:` prefix and silently drop the entry from the changelog.
+- **`squash_merge_commit_title=PR_TITLE` decides the title the changelog lists.** The GitHub default (`COMMIT_OR_PR_TITLE`) uses the *commit* subject on a single-commit PR, which may miss the `feat:`/`fix:` prefix and file the entry under Other changes ([`commits-and-changelogs.md`](commits-and-changelogs.md)).
 - **`delete_branch_on_merge`** auto-removes the branch after merge.
 - Because the repo is squash-only, `develop → main` (which needs a merge commit) is done **from the CLI during a release** — `git merge --no-ff develop` on `main`, not the PR button. That needs `main` to accept direct pushes; don't add a PR-required ruleset to `main` without rethinking this (you'd have to re-enable merge commits for that path). See [`releases.md`](releases.md).
 - **`main` is protected against force pushes and deletions, nothing more.** No required checks, reviews, or restrictions on `main`: the release flow (and the `changelog` job, where the release has one) push to it directly, and the release gate covers the promotion. The two blocks bind admins as well, which is the point: `main` is the release ledger and is never rewritten. `develop`'s rule already blocks both. Apply it with the call below; `required_linear_history` must stay `false` (the promotion is a merge commit), and adding a required check to `main` later would block the release push (see the previous point).
@@ -132,7 +132,7 @@ Notes that belong to CI:
     type=raw,value=latest
   ```
 - **Trusted publishing (OIDC), no long-lived secrets** — PyPI (`pypa/gh-action-pypi-publish`, `environment: pypi`) and npm. Register the publisher at the **org** level so the package is born org-owned — see [Org-owned trusted publishers](#org-owned-trusted-publishers) below.
-- The `changelog` job needs `contents: write` (scoped to that job) and the org-level `ANTHROPIC_API_KEY`. It pulls the anthropic SDK just-in-time with `uv run --with anthropic …` so the workflow snippet stays identical in every repo that adopts it, regardless of whether `anthropic` is a project dep.
+- The `changelog` job needs `contents: write` and `pull-requests: read`, scoped to that job (a job's `permissions:` block sets every scope it does not name to none), the org-level `ANTHROPIC_API_KEY`, and `GH_TOKEN` for reading the merged pull requests. It checks `dev-tools` out into `dev-tools/` at the pinned release ([below](#shared-dev-scripts-dev-tools)) and runs `uv run --script dev-tools/scripts/generate-changelog`, which installs the exact anthropic SDK version the script declares for that run alone, whatever the repo's own dependencies.
 
 ## The documents assembly: `VERSION.txt` repos, on a `v*` tag push
 
@@ -183,4 +183,17 @@ Cross-project scripts that encode an org convention live in **[`ParkviewLab/dev-
 
 The test for what belongs in `dev-tools` vs a repo's own `scripts/`: *if I changed this, would it need changing in other repos too?* Yes → `dev-tools`. No → the repo's `scripts/`.
 
-A `dev-tools` script may also run inside a repo's workflow, checked out at an exact released tag (`build-pages-site` in [`docs-site.md`](docs-site.md#the-build-script) is the case). The pin is what makes that a locked dependency rather than one on `dev-tools`' state; a workflow never checks `dev-tools` out at a branch.
+A `dev-tools` script may also run inside a repo's workflow, from a checkout of `dev-tools` at an exact release into `dev-tools/`, a subfolder of the checkout. Two do: `build-pages-site`, which builds the documentation site ([`docs-site.md`](docs-site.md#the-build-script)), and `generate-changelog`, which writes the release notes in the `changelog` job ([`commits-and-changelogs.md`](commits-and-changelogs.md)). The pin is what makes each a locked dependency rather than one on `dev-tools`' state, and a workflow never checks `dev-tools` out at a branch. It holds only while what the pin names cannot change, and the two pins meet that condition in different ways:
+
+- The `changelog` job pins the release's full commit SHA, with its tag in a comment on the same line (`ref: <sha> # vX.Y.Z`, the SHA from `git rev-parse vX.Y.Z^{commit}`). The job commits to `main` and creates the Release, and a SHA names one commit by construction: nothing done in `dev-tools` can redirect it, and a re-run of a past release job runs exactly what the original ran.
+- The documentation site's pin in `pages-docs.yml` is the tag itself, and a tag names its commit only while nothing moves it. `dev-tools` carries a ruleset on `refs/tags/v*` that refuses the update, the force push and the deletion of a release tag and names no bypass actor, so no one, an administrator included, can move a release tag while it is active. An administrator can still disable or delete the ruleset, which makes it a guard rather than a lock, and it is to be kept: it holds the site's pin in place, and it keeps the tag in each SHA pin's comment true. Its cost is that a `dev-tools` release cut in error cannot be re-tagged; the next patch release corrects it.
+
+Every workflow pin of a `dev-tools` script, the documentation site's excepted, follows one policy:
+
+- A repo moves its pin during the next piece of work done in it, to the newest `dev-tools` release whose own release run passed. That run's gate checks the tag after the tag exists, so a tag that fails it stays under the ruleset, no pin moves to it, and the next patch release supersedes it.
+- Preparing a release counts as such a piece of work: the release preflight reports a pin that lags behind the newest passing release, and a pull request moves it before the promotion. A release is when the script writes the notes, and notes once published stay as published.
+- No pin pull requests are opened across the repos when `dev-tools` releases. The pin in the handbook's release parts catches up with the next handbook change.
+- The job summary names the `dev-tools` version each release ran, and `convention-auditor` reports a pin that is not the newest passing release, or whose SHA is not its tag's commit.
+- A local run, such as a dry run or the repair of a failed changelog job, takes the script from a `dev-tools` worktree at the pin, not from the clone `install.sh` links, which runs whatever branch that clone has checked out.
+
+The documentation site's pin moves on its own occasions, when a repo needs a newer `build-pages-site`; bumping it is a one-line change in that repo.
