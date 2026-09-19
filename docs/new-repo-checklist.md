@@ -8,7 +8,7 @@ SPDX-License-Identifier: CC-BY-4.0
 The master sequence for bootstrapping a new ParkviewLab repo into every convention. Each step links to the doc with the detail.
 
 > **If it's a website** (static site on GitHub Pages — e.g. parkviewlab.ai), follow the lighter path in [`website.md`](website.md): contained worktrees named **`live`/`staging`** (default branch `staging`); Pages via Actions; REUSE with `LicenseRef-AllRightsReserved` + the bundled font's license; `reuse-website.yml`
-> + `pages-deploy.yml`; the page footers (copyright + "updated on" date) + a stamp step + a local preview script. **Skip §2 (language scaffold), §3 (packaging), and §8 (first release) entirely** — a website has no version, tags, or PyPI/Docker publish; "publishing" is promoting `staging`→`live`. §1, §5 (licensing), §6 (docs), and §7 (AI pointers) still apply, adapted as `website.md` describes.
+> + `pages-deploy.yml`; the page footers (copyright + "updated on" date) + a stamp step + a local preview script. **Skip §2 (language scaffold), §3 (targets and packaging), and §8 (first release) entirely** — a website has no version, tags, or PyPI/Docker publish; "publishing" is promoting `staging`→`live`. §1, §5 (licensing), §6 (docs), and §7 (AI pointers) still apply, adapted as `website.md` describes.
 
 ## 1. Name & create
 
@@ -20,30 +20,31 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 
 ## 2. Language scaffold
 
-> **If it's a Node repo**, use the Node stack instead of the Python one below: `package.json` from [`templates/package.json.template`](../templates/package.json.template), TypeScript + ESLint + Vitest, version read at runtime via `src/version.ts` — see [`node-tooling.md`](node-tooling.md). §3–§8 still apply (Node publishes to npm + GHCR, as Python does to PyPI + GHCR).
+> **If it's a Node repo**, use the Node stack instead of the Python one below: `package.json` from [`templates/package.json.template`](../templates/package.json.template), TypeScript + ESLint + Vitest, version read at runtime via `src/version.ts` — see [`node-tooling.md`](node-tooling.md). §3–§8 still apply, and §3 decides what the repo publishes.
 
 > **If it's an Electron desktop app**, use the Electron stack: the app at the repo **root** (`package.json` + `src/{main,preload,renderer}` + `electron.vite.config.js`
-> + `electron-builder.yml`), electron-vite + electron-builder, plain JS **or** TS — see [`electron-tooling.md`](electron-tooling.md). It ships OS installers to a GitHub Release (no Docker / npm / PyPI): §3 uses `electron-builder.yml` instead of a Dockerfile, and §4 uses the `*-electron.yml` workflows.
+> + `electron-builder.yml`), electron-vite + electron-builder, plain JS **or** TS — see [`electron-tooling.md`](electron-tooling.md). An app that ships OS installers takes the installers target in §3 and §4.
 
 - [ ] `pyproject.toml` from [`templates/pyproject.toml.template`](../templates/pyproject.toml.template) — name, description, deps; src-layout; ruff/ty/pytest config; `.python-version` = `3.13`. See [`python-tooling.md`](python-tooling.md).
 - [ ] If it's an MCP server: the `src/<pkg>/` skeleton (`config.py`, `__main__.py`, `server.py`, `tools.py`, `schema.py`) with `/health` + `/admin/version` and `--transport`. See [`mcp-server-conventions.md`](mcp-server-conventions.md).
 - [ ] Version read from package metadata at runtime — no literal. See [`releases.md`](releases.md).
 - [ ] `tests/` + `conftest.py` (session-scoped client if MCP); pytest markers. See [`testing.md`](testing.md).
 
-## 3. Packaging
+## 3. Targets and packaging
 
-- [ ] `Dockerfile` (uv base, `/data` volume, `CMD python -m <pkg>`) and `docker-compose.yml` (CHANGE-ME env, named volume). See [`packaging-and-deployment.md`](packaging-and-deployment.md).
-- [ ] README in the house shape, incl. the "five ways to run it" table and the Configuration env-var table. See [`documentation.md`](documentation.md).
+- [ ] Decide what the product publishes: one or several of the five targets in [`releases.md`](releases.md#what-a-release-publishes) (an image on GHCR, a package on PyPI, a package on npm, installers, documents). The workflows in §4 and the publishers in §5 follow from this.
+- [ ] Each target's packaging: `Dockerfile` (uv base, `/data` volume, `CMD python -m <pkg>`) and `docker-compose.yml` (CHANGE-ME env, named volume) for the image, see [`packaging-and-deployment.md`](packaging-and-deployment.md); the `pyproject.toml` build for PyPI, see [`python-tooling.md`](python-tooling.md); `package.json`'s `files` and `bin` for npm, see [`node-tooling.md`](node-tooling.md); `electron-builder.yml` for installers, see [`electron-tooling.md`](electron-tooling.md).
+- [ ] README in the house shape, with the run section for the repo's targets and the Configuration env-var table. See [`documentation.md`](documentation.md).
 
 ## 4. Changelog & CI
 
 - [ ] `cliff.toml` — copy **verbatim** from [`templates/cliff.toml`](../templates/cliff.toml).
 - [ ] `scripts/generate_changelog.py` from [`templates/generate_changelog.py`](../templates/generate_changelog.py).
-- [ ] Workflows from [`templates/.github/workflows/`](../templates/.github/workflows/): `reuse.yml` + `version-guard.yml` (**every** repo), plus `test.yml`, `release.yml`, `license-check.yml`, and optional `dev-release.yml` (Python code repos; **Node** repos use `test-node.yml` + `release-node.yml`; **Electron** apps use `test-electron.yml` + `release-electron.yml` + `dev-release-electron.yml` instead; **VERSION.txt/docs** repos use `release-txt.yml` alone — no `test.yml`, `license-check.yml`, `dev-release.yml`, `cliff.toml`, or `generate_changelog.py`). Pin actions exactly; GHCR tags include `latest`. See [`ci.md`](ci.md).
+- [ ] Workflows from [`templates/.github/workflows/`](../templates/.github/workflows/): `reuse.yml` + `version-guard.yml` (**every** repo); the test workflow of the repo's stack (`test.yml`, or `test-node.yml` / `test-electron.yml`); `license-check.yml` where the repo's license requires it; `release.yml`, assembled from the parts of the repo's targets, and optionally `dev-release.yml`, assembled from their dev parts. A documents repo has no dev workflow and needs no `cliff.toml` or `generate_changelog.py`; it has a test workflow only where it ships code, as dev-tools does for its scripts. Pin actions exactly; GHCR tags include `latest`. See [`ci.md`](ci.md#releaseyml--on-v-tag-push).
 - [ ] **Branch protection on `develop`:** mark the workflow checks as **required status checks** (so the merge button waits for green); **let admins bypass** so the release back-merge/promotion (direct pushes) aren't blocked. See [`ci.md`](ci.md#required-checks-before-merge).
 - [ ] **Branch protection on `main`:** block force pushes and deletions, nothing else (no required checks or reviews: the release flow pushes directly). See [`ci.md`](ci.md#repo-merge-settings).
 - [ ] Confirm the org `ANTHROPIC_API_KEY` secret is inherited.
-- [ ] Configure PyPI (and npm, if applicable) **trusted publishers** — plus a **TestPyPI** trusted publisher if the repo adopts `dev-release.yml`.
+- [ ] Configure one **trusted publisher** per registry target: PyPI (workflow `release.yml`, environment `pypi`) and, where the repo has dev builds, TestPyPI (`dev-release.yml`, `testpypi`); npm (`release.yml`). The image, installers and documents targets need none.
 
 ## 5. Licensing
 
@@ -67,5 +68,5 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 ## 8. First release
 
 - [ ] `git bump` → `git release` → `git push --follow-tags` (from `main`).
-- [ ] `gh run watch` until the whole workflow (incl. `changelog`, where the profile has one) is green.
+- [ ] `gh run watch` until the whole workflow, including the job that creates the Release, is green.
 - [ ] Back-merge cascade `main → develop → working branches`. See [`releases.md`](releases.md).

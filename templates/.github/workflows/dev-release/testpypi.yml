@@ -1,0 +1,21 @@
+
+  testpypi:
+    needs: gate
+    runs-on: ubuntu-latest
+    environment: testpypi   # matches the trusted-publisher config on TestPyPI
+    permissions:
+      contents: read
+      id-token: write       # TestPyPI trusted publishing (OIDC)
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+
+      - name: Build wheel + sdist
+        run: uv build
+
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
