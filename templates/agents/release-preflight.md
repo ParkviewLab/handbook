@@ -23,7 +23,7 @@ Run `git fetch origin` first (a read of the remote), then:
 4. Version source of truth: exactly one (`pyproject.toml`, `package.json`, or `VERSION.txt`); its value on `develop` is unchanged since the last tag, except a `.devN` placeholder on a code repo; no duplicated version literals.
 5. CI on `develop`'s head: `gh run list --branch develop --limit 5`; the required checks are green.
 6. What would ship: `git log <last tag>..develop --first-parent --oneline`, listed and classified by Conventional Commit type. For a `VERSION.txt` repo there is no type signal, so classify each PR by significance (new convention or section, clarification or correction, removal or reversal).
-7. The last tag, its date, and whether the release workflow of the previous release completed (including its `changelog` job where the profile has one), so the back-merge cascade was not skipped.
+7. The last tag, its date, and whether the release workflow of the previous release completed (including its `changelog` job where the repository's release has one), so the back-merge cascade was not skipped.
 8. The release workflow on `develop` holds exactly the jobs of the repo's publish targets (`docs/releases.md`, "What a release publishes"): the gate, one job per target, and the job that creates the Release. A job for a target the repo has never published is not a defect in itself; report it for the user's confirmation before the release, since that release would publish there for the first time.
 9. Documents: this preflight does not verify that `README.md` and `docs/` are current; `docs-currency-checker` does, and the session dispatches it alongside you (`docs/agents.md`). Say in the report that its verdict is a separate input to the release decision.
 
