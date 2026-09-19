@@ -7,11 +7,13 @@ SPDX-License-Identifier: CC-BY-4.0
 
 The conventions defined in the other documents in this handbook are downstream of these intents; when a convention and an intent conflict, the intent wins and the convention needs to be fixed. A change of intent is made here first, in the same pull request as the convention that follows it, so that no disagreement is left standing by accident.
 
+The handbook is a guide, not a rulebook. It records what has been tried and found to work well, and it is how new things are done until new information shows a better way. When a better way is found or invented, the handbook is updated with it, and the repos it would improve adopt it.
+
 ## Intents
 
 ParkviewLab engineering serves four complementary intents: facets of one purpose, presented as peers rather than as one primary and three secondary, and mutually reinforcing.
 
-1. **One shape across many repos.** ParkviewLab is a *family* of repos, not a monorepo and not a pile of one-offs. They share one layout, one toolchain, one release flow, one brand — so each repo is legible the moment you open it, and the family coheres without coupling. Deviation from the common shapes must be justified and documented.
+1. **One shape across many repos.** ParkviewLab is a *family* of repos, not a monorepo and not a pile of one-offs. They share one layout, one toolchain, one release flow, one brand — so each repo is legible the moment you open it, and the family coheres without coupling. Deviation from the common shapes must be justified and documented, and a deviation that proves a better way is carried back into the handbook.
 
 2. **Self-contained and self-describing.** A repo carries everything needed to understand, build, run, and ship it: locked dependencies, a single source of truth for its version, tag-driven releases, and documentation as a first-class artifact. Nothing load-bearing lives only in someone's memory. Try hard to avoid dependencies between repos.
 
@@ -21,7 +23,7 @@ ParkviewLab engineering serves four complementary intents: facets of one purpose
 
 ### 1. One shape across many repos
 
-The shape is concrete. Every repo is cloned the same way, a contained layout with a bare clone and one worktree per trunk; every repo has the same two trunks, `main` released and `develop` integrating, and the same prefixed ephemeral branches; every pull request is squash-merged with a Conventional Commit title, which is what the changelog is generated from; every release is cut by a tag; every README, licence header, and pointer file has the same place and the same form; and every repo wears the one brand. None of this is what a repo *does*. It is how a repo is laid out, tooled, licensed, and released, and it is the same whether the repo is a Python service, a desktop application, or this handbook.
+The shape is concrete. Every repo is cloned the same way, a contained layout with a bare clone and one worktree per trunk; every repo has the same two trunks, `main` released and `develop` integrating, and the same prefixed ephemeral branches; every pull request is squash-merged with a Conventional Commit title, which is what the changelog is generated from; every release is cut by a tag; every README, licence header, and pointer file has the same place and the same form; and every repo wears the one brand. None of this is what a repo *does*. It is how a repo is laid out, tooled, licensed, and released, and it is the same whether the repo is a Python service, a desktop application, or this handbook. Every release starts with a tag, then a gate checks the version, and then it ends in a published product.
 
 The payoff is recognition. A developer who has worked in one ParkviewLab repo can open any other and know where the version lives, how to cut a branch, and what a release takes, before reading a line of its code. The family coheres without coupling: repos share a shape, not a build, and a change to one never breaks another. When a repo must deviate, the deviation is written down where the next reader will find it, so the shape stays legible even where it bends.
 
@@ -73,7 +75,7 @@ When making a decision, these are the questions to keep answering:
 ## What ParkviewLab engineering is not
 
 - **Not a monorepo.** Many independently-released repos that share a shape — not one big tree.
-- **Not a place for improvised per-repo process.** Repos differ in *what* they do, not in *how* they're laid out, tooled, licensed, or released. When a repo must deviate, the deviation is documented.
+- **Not a place for improvised per-repo process.** Repos differ in *what* they do, not in *how* they're laid out, tooled, licensed, or released. When a repo must deviate, the deviation is documented; when it proves a better way, the handbook is updated with it.
 
 ---
 <sub>© 2026 Gary Frattarola · Licensed under [CC-BY-4.0](../LICENSES/CC-BY-4.0.txt) · part of the ParkviewLab handbook</sub>
