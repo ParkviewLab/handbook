@@ -70,6 +70,9 @@ Agent wall-clock time, measured, for the record and to calibrate the next estima
 | Step | Estimated | Measured |
 |---|---|---|
 | The rule, the parts and the pages | 4.5 h | 0.5 h |
+| The review and the fixes it found | 1.5 h | 0.75 h |
+
+The review's three quarters of an hour were 21 minutes of review, five lenses run as one workflow with each lens's findings checked by a fresh agent, nine agents in all; 10 minutes of fixes; and the coordinating session's verification between the two.
 
 ## Decision record
 
