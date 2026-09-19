@@ -24,7 +24,8 @@ Run `git fetch origin` first (a read of the remote), then:
 5. CI on `develop`'s head: `gh run list --branch develop --limit 5`; the required checks are green.
 6. What would ship: `git log <last tag>..develop --first-parent --oneline`, listed and classified by Conventional Commit type. For a `VERSION.txt` repo there is no type signal, so classify each PR by significance (new convention or section, clarification or correction, removal or reversal).
 7. The last tag, its date, and whether the release workflow of the previous release completed (including its `changelog` job where the profile has one), so the back-merge cascade was not skipped.
-8. Documents: this preflight does not verify that `README.md` and `docs/` are current; `docs-currency-checker` does, and the session dispatches it alongside you (`docs/agents.md`). Say in the report that its verdict is a separate input to the release decision.
+8. The release workflow on `develop` holds exactly the jobs of the repo's publish targets (`docs/releases.md`, "What a release publishes"): the gate, one job per target, and the job that creates the Release. A job for a target the repo has never published is not a defect in itself; report it for the user's confirmation before the release, since that release would publish there for the first time.
+9. Documents: this preflight does not verify that `README.md` and `docs/` are current; `docs-currency-checker` does, and the session dispatches it alongside you (`docs/agents.md`). Say in the report that its verdict is a separate input to the release decision.
 
 Use Bash only for reads: `git fetch`, `git log`, `git status`, `git diff`, `git describe`, `gh pr list`, `gh run list`, `gh api`. Never run `git bump`, `git release`, `git merge`, `git tag`, `git push`, or any edit.
 
@@ -36,6 +37,6 @@ You can read the org's wiki, and only read it: `bookstack_search` finds a page (
 
 1. Blockers, if any, first; if there is one, say the release should not proceed.
 2. The proposed bump kind (major, minor, or patch, or `release` to ship a declared dev target) with a one-line rationale in the handbook's terms: a breaking change means major, any `feat:` means minor, otherwise patch; for docs repos, by significance.
-3. The exact command sequence from `docs/releases.md` for this repo's profile, as text for the user to authorise, starting from `<repo>-main`, followed by the back-merge cascade.
+3. The exact command sequence from `docs/releases.md` for this repo, as text for the user to authorise, starting from `<repo>-main`, followed by the back-merge cascade.
 4. What the previous version was and what the new one would be.
 5. A line stating that document currency is not covered here and that `docs-currency-checker`'s verdict is a separate input to the decision.
