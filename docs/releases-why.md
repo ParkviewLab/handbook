@@ -82,7 +82,7 @@ Agent wall-clock time, measured, for the record and to calibrate the next estima
 | 2026-09-18 | How a workflow is assembled (T4) | By the recipe in `ci.md`, with no assembler script; a difference from a part is judged, not forbidden |
 | 2026-09-18 | The northstar (T5) | Amended in four passages: the handbook is a guide, and a better way found is carried back into it |
 | 2026-09-18 | When the repositories are re-assembled (T6) | All at once after the release, one pull request each, so the version-increase check reaches every release gate the same day |
-| 2026-09-18 | The real-history set of the changelog tests (T7) | Relabelled by version file and publish target, `Cargo.toml` pending; made in dev-tools' own pull request |
+| 2026-09-18 | The real-history set of the changelog tests (T7) | Relabelled by version file and publish target, `Cargo.toml` with installers and `npm only` pending; made in dev-tools' own pull request |
 | 2026-09-18 | The order against the builds in flight (T8) | This fix first, the other plans amended to it; the changelog build's untouched files start at once |
 | 2026-09-18 | The dev gate and installers (T9) | Ruled for the real-merges build (its decision 5): one dev gate for every target, the installers part writing the computed dev version into the version file in its workspace as the registry parts will, nothing committed, and `git dev-release` keyed on its declared input alone. Until that build lands, the dev parts read the version file that `git dev-release` commits and pushes to `develop` |
 | 2026-09-18 | The installers' dev counterpart (T10) | Unsigned installers kept seven days as workflow artifacts, with no tag and no GitHub Release; a pre-release set aside |
