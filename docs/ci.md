@@ -151,7 +151,8 @@ TestPyPI belongs to the PyPI target. A repo that publishes to PyPI and has dev b
 Two guards keep versioning honest (see [`releases.md`](releases.md#version-rules)):
 
 - **Feature PRs into `develop` must not change the version.** `version-guard.yml` fails the PR if the version source-of-truth (`pyproject.toml` `[project].version` / `package.json` `version` / a `VERSION.txt` file) differs from the base — bumps belong at release, on `main`, not in feature work. (The release back-merge to `develop` is a direct push, not a PR, so it isn't subject to this.)
-- **The release gate enforces a monotonic increase.** On top of the existing gate checks (tag == SoT version, tag reachable from `origin/main`), it rejects a tag whose version is not **strictly greater** than the previous tag — catching a forgotten or backwards bump before anything publishes. Implemented as the third step of the gate part, which every release workflow carries.
+- **The release gate enforces a monotonic increase.** On top of the existing gate checks (tag == SoT version, tag reachable from `origin/main`), it rejects a tag whose version is not **strictly greater** than the previous tag — catching a forgotten or backwards bump before anything publishes. Implemented as the third step of the gate part. A repo has the check once its workflows are assembled from the parts; until then its gate is whatever its older workflow carried, which in nine repos is the first two checks and in jonobones is no gate at all.
+- **The release gate refuses a dev version.** The first gate step fails a tag whose version still carries a `.devN` or `-devN` marker. The promotion brings `develop`'s placeholder onto `main`, so a tag cut before `git bump release` would otherwise publish a dev version to every target, `latest` among the image's tags.
 
 ## `license-check.yml` — copyleft guard
 

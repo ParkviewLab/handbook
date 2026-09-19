@@ -22,6 +22,12 @@
             echo "no version file: expected pyproject.toml, package.json or VERSION.txt"
             exit 1
           fi
+          # A dev version is never released: the promotion carries develop's
+          # placeholder onto main, and `git bump release` drops it before the tag.
+          case "$VERSION" in
+            *.dev[0-9]*|*-dev[0-9]*)
+              echo "::error::$FILE version '$VERSION' is a dev version; finalize the cycle with git bump release before tagging"; exit 1 ;;
+          esac
           if [ "$TAG" != "$VERSION" ]; then
             echo "tag $TAG != $FILE $VERSION"
             exit 1

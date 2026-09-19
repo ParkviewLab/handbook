@@ -111,7 +111,7 @@ A Python service may publish only an image, a Python library only to PyPI, a Nod
 `.github/workflows/release.yml` fires on `push: tags: ['v*']` and runs:
 
 1. `gate` (every other job `needs: gate`, so a failure ships nothing):
-   - tag (minus `v`) equals the version in the repo's one version file, read in `git bump`'s order (`pyproject.toml`, `package.json`, `VERSION.txt`),
+   - tag (minus `v`) equals the version in the repo's one version file, read in `git bump`'s order (`pyproject.toml`, `package.json`, `VERSION.txt`), and that version carries no dev marker: the promotion brings `develop`'s `.devN` placeholder onto `main`, and `git bump release` drops it before the tag,
    - the tagged commit is reachable from `origin/main` (release tags must come from `main`), and
    - the version is strictly greater than the previous tag (monotonic, see [`ci.md`](ci.md#version-checks)). A shared gate, rather than inline checks in one publish job, means a bad tag can't slip out through the job that didn't check.
 2. The job of each of the repo's publish targets, in parallel:
