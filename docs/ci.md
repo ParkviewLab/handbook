@@ -21,7 +21,7 @@ A PR can't merge into `develop` until its required checks are green — enforced
 - `pytest -m "not network and not docling"` (the fast test tier)
 - **`license-check`** (pip-licenses copyleft block) **where the repo's license requires it** [`license-check.yml`]
 
-(A docs repo like this handbook has no code, so it runs only `reuse` + `version guard` on PRs — and `release-txt.yml` on a `v*` tag push; see below.)
+(A docs repo like this handbook has no code, so it runs only `reuse` + `version guard` on PRs, and its release workflow, the documents target's, on a `v*` tag push; see below.)
 
 **Enforcement.** Add these as **required status checks** on `develop` (Settings → Branches, or `gh api`), and **let admins bypass** — the release flow's back-merge (`main→develop`) and promotion (`develop→main`) are direct pushes, not PRs, so they must not be blocked by these PR checks. The release's own gate (see [`releases.md`](releases.md)) covers the promotion.
 
@@ -94,7 +94,32 @@ The test subset excludes the slow/networked tiers (see [`testing.md`](testing.md
 
 ## `release.yml` — on `v*` tag push
 
-The tag-driven publish pipeline: `gate` → `docker` + `pypi`/npm → `changelog`. Fully described in [`releases.md`](releases.md). Notes that belong to CI:
+Every repo's release workflow is `.github/workflows/release.yml`, whatever the repo publishes, and it is assembled from the parts in [`templates/.github/workflows/release/`](../templates/.github/workflows/release/): the gate, the job of each of the product's publish targets, and the job that creates the GitHub Release. Which jobs those are is decided by the targets, never by the language; [`releases.md`](releases.md#what-a-release-publishes) is the rule and the table of targets, and describes what each job publishes.
+
+| Part | Job | What it carries |
+|---|---|---|
+| `head.yml` | none | the workflow name, the `v*` tag trigger, `permissions: contents: read` |
+| `gate.yml` | `gate` | the three checks: tag equals the version file, the tagged commit is reachable from `origin/main`, the version is strictly greater than the previous tag |
+| `docker.yml` | `docker` | the multi-arch image on GHCR |
+| `pypi.yml` | `pypi` | the PyPI publish |
+| `npm.yml` | `npm` | the npm publish, with the optional scoped alias |
+| `installers.yml` | `installers` | the macOS / Windows / Linux installer build |
+| `changelog.yml` | `changelog` | the CHANGELOG commit back to `main` and the GitHub Release |
+| `documents.yml` | `release` | the GitHub Release with GitHub's generated notes |
+
+The assembly is a concatenation: `head.yml`, `gate.yml`, the part of each target in the order `docker`, `pypi`, `npm`, `installers`, and then `changelog.yml`; for the documents target, `documents.yml` after the gate and nothing else. Then, in the `changelog` job, replace `TARGET_JOBS` in `needs:` with the target jobs, and delete the "Download all built installers" step unless the repo has the installers target. Add the SPDX header the repo's REUSE layout asks for. An image-only service, for instance:
+
+```bash
+cd <handbook>/templates/.github/workflows/release
+cat head.yml gate.yml docker.yml changelog.yml > <repo>/.github/workflows/release.yml
+# then in that file: needs: [gate, docker], and no installers download step
+```
+
+Left in place, `TARGET_JOBS` fails `actionlint` and GitHub's own validation, so the workflow does not run at all: an unfinished assembly cannot half-publish. Run `actionlint` on the result before committing it.
+
+A difference from a part is judged, not forbidden. State every difference in the repo's pull request with its reason. A need of that repo alone is documented in the repo as its slot, in a comment at the job or in its `docs/decisions.md`: paper-boxing's three-image matrix and jonobones's scoped alias are the cases today. A difference that improves the part goes back into the handbook's part by a handbook pull request, and the other repos take it at their next re-assembly where it improves them. Only a mistaken or unexplained difference is corrected. `convention-auditor` reports each undocumented difference for that judgement rather than as a defect.
+
+Notes that belong to CI:
 
 - **Pin action versions exactly** (`astral-sh/setup-uv@v8.1.0`, not `@v8`).
 - **Keep actions on the Node 24 runtime.** GitHub removed Node 20 from its runners (force-upgraded to node24 on 2026-06-16; removed ~2026-09-16). Several actions only switched to node24 *several majors* up, so a naïve "one major up" can still land on node20. Verified node24 floors (lowest node24 version): `actions/checkout@v6` · `astral-sh/setup-uv@v8.1.0` (≥v7) · `docker/setup-qemu-action@v4` · `docker/setup-buildx-action@v4` · `docker/login-action@v4` · `docker/metadata-action@v6` · `docker/build-push-action@v7` (**skip v6 — still node20**) · `actions/upload-artifact@v6` (skip v5) · `actions/download-artifact@v7` (skip v5/v6) · `actions/upload-pages-artifact@v5` (skip v4 — bundles a node20 upload-artifact) · `actions/deploy-pages@v5` · `actions/configure-pages@v6` · `actions/setup-python@v6` · `actions/cache@v5`. (All node24 majors need Actions Runner ≥ 2.327.1; GitHub-hosted runners satisfy this.)
@@ -108,26 +133,25 @@ The tag-driven publish pipeline: `gate` → `docker` + `pypi`/npm → `changelog
   ```
 - **Trusted publishing (OIDC), no long-lived secrets** — PyPI (`pypa/gh-action-pypi-publish`, `environment: pypi`) and npm. Register the publisher at the **org** level so the package is born org-owned — see [Org-owned trusted publishers](#org-owned-trusted-publishers) below.
 - The `changelog` job needs `contents: write` (scoped to that job) and the org-level `ANTHROPIC_API_KEY`. It pulls the anthropic SDK just-in-time with `uv run --with anthropic …` so the workflow snippet stays identical in every repo that adopts it, regardless of whether `anthropic` is a project dep.
-- **Node repos** use [`release-node.yml`](../templates/.github/workflows/release-node.yml) — the same `gate` → image + **npm** (OIDC) → `changelog` shape, with an optional scoped-alias publish. See [`node-tooling.md`](node-tooling.md).
-- **Electron apps** use [`release-electron.yml`](../templates/.github/workflows/release-electron.yml) — the same `gate` + `changelog` shape, but the middle is a **macOS/Windows/Linux build matrix** (electron-builder) whose installers the `changelog` job attaches to the GitHub Release. **No GHCR image.** See [`electron-tooling.md`](electron-tooling.md).
-- **Pure CLI/library packages** (no container image, e.g. `cogrind-workshop`) drop the `docker` job from `release.yml` — and from `dev-release.yml` if present — leaving `gate` → `pypi`/npm → `changelog`. Trim the job from the template; no separate template.
 
-## `release-txt.yml` — VERSION.txt repos, on `v*` tag push
+## The documents assembly: `VERSION.txt` repos, on a `v*` tag push
 
-The release profile for repos whose version lives in `VERSION.txt` (docs repos like this handbook, and `dev-tools`): the same three-check `gate` (tag == `VERSION.txt`; tagged commit reachable from `origin/main`; version strictly greater than the previous `v*` tag) → a `release` job that creates the GitHub Release with `gh release create --verify-tag --generate-notes` (`contents: write` scoped to that job). Nothing else: there is no artifact to build or publish, and no `changelog` job — a docs repo has no Conventional-Commit signal to categorise, so the Release notes are GitHub's generated notes (the merged-PR titles since the previous tag), which is why the PR-title prefix still matters here. The job is idempotent: a re-run, or a Release already created by hand, finds it and exits 0. To add hand-written notes, edit the Release after the workflow has created it (`gh release edit v<new> --notes-file …`). The handbook runs the template verbatim as its own `.github/workflows/release.yml`, as it does `version-guard.yml`.
+A repo whose version lives in `VERSION.txt` (docs repos like this handbook, and `dev-tools`) publishes documents, and its `release.yml` is `head.yml` + `gate.yml` + `documents.yml`: the same three-check gate, then a `release` job that creates the GitHub Release with `gh release create --verify-tag --generate-notes` (`contents: write` scoped to that job). Nothing else. There is no artifact to build or publish, and no `changelog` job: the repo publishes no package, and GitHub's generated notes already list every pull request merged since the previous tag with its link, which is why the PR-title prefix still matters here. The job is idempotent: a re-run, or a Release already created by hand, finds it and exits 0. To add hand-written notes, edit the Release after the workflow has created it (`gh release edit v<new> --notes-file …`). The handbook's own `.github/workflows/release.yml` is that assembly byte for byte.
 
-## `dev-release.yml` — on-demand dev build (optional, code repos)
+## `dev-release.yml` — on-demand dev build
 
-A **manually-triggered** (`workflow_dispatch`) pre-release publish, for exercising a candidate before the real release — run from `develop` (`gh workflow run dev-release.yml --ref develop`, or via `git dev-release`). It builds and publishes a **pre-release** — a GHCR **`:dev`** image (+ `:X.Y.Z.devN`) and `X.Y.Z.devN` to **TestPyPI** — and creates **no `v*` tag**, so it never trips the `release.yml` gate; no changelog/CHANGELOG-commit. Needs its **own TestPyPI trusted publisher**, which differs from the PyPI one in two fields: it authorizes the workflow **`dev-release.yml`** (not `release.yml`) and the environment **`testpypi`** (not `pypi`). **TestPyPI is a separate instance from pypi.org** — its own account and login, and an org must be requested there independently; until that org is approved the publisher is a plain **individual-account** pending publisher, which is fine for a throwaway sandbox. Create a matching `testpypi` GitHub environment (no protection rules). See [`releases.md`](releases.md#development-versioning).
+A dev build is for local testing, and it is optional: a repo has one or it has none. Where it has one, `.github/workflows/dev-release.yml` is assembled the same way from the parts in [`templates/.github/workflows/dev-release/`](../templates/.github/workflows/dev-release/): `head.yml`, `gate.yml`, and then the dev part of each of the repo's targets that has one, in the order `docker.yml`, `testpypi.yml`, `installers.yml`. npm has no dev part, as documents have none ([`releases.md`](releases.md#what-a-release-publishes)).
 
-**Electron apps** use [`dev-release-electron.yml`](../templates/.github/workflows/dev-release-electron.yml) — `workflow_dispatch` from `develop` builds the macOS/Windows/Linux installers as 7-day **workflow artifacts** (no registry, no `v*` tag, no dev-version requirement). See [`electron-tooling.md`](electron-tooling.md).
+It is **manually triggered** (`workflow_dispatch`) and run from `develop` (`gh workflow run dev-release.yml --ref develop`, or via `git dev-release`). The dev gate requires a dev marker on the version (`X.Y.Z.devN` or `X.Y.Z-devN`), refuses any ref but `develop`, and hands the version to the dev jobs. It creates **no `v*` tag**, so it never trips the `release.yml` gate, and it runs no changelog job. What each dev job publishes is its target's dev counterpart: the `dev` image (never `latest`), the dev version on TestPyPI, or unsigned installers kept seven days as workflow artifacts.
+
+TestPyPI belongs to the PyPI target. A repo that publishes to PyPI and has dev builds needs its **own TestPyPI trusted publisher**, which differs from the PyPI one in two fields: it authorizes the workflow **`dev-release.yml`** (not `release.yml`) and the environment **`testpypi`** (not `pypi`). **TestPyPI is a separate instance from pypi.org** — its own account and login, and an org must be requested there independently; until that org is approved the publisher is a plain **individual-account** pending publisher, which is fine for a throwaway sandbox. Create a matching `testpypi` GitHub environment (no protection rules). A repo that does not publish to PyPI needs none of this. See [`releases.md`](releases.md#development-versioning).
 
 ## Version checks
 
 Two guards keep versioning honest (see [`releases.md`](releases.md#version-rules)):
 
 - **Feature PRs into `develop` must not change the version.** `version-guard.yml` fails the PR if the version source-of-truth (`pyproject.toml` `[project].version` / `package.json` `version` / a `VERSION.txt` file) differs from the base — bumps belong at release, on `main`, not in feature work. (The release back-merge to `develop` is a direct push, not a PR, so it isn't subject to this.)
-- **The release gate enforces a monotonic increase.** On top of the existing gate checks (tag == SoT version, tag reachable from `origin/main`), it rejects a tag whose version is not **strictly greater** than the previous tag — catching a forgotten or backwards bump before anything publishes. Implemented as the gate's third step in all four release templates (`release.yml`, `-node`, `-electron`, `-txt`).
+- **The release gate enforces a monotonic increase.** On top of the existing gate checks (tag == SoT version, tag reachable from `origin/main`), it rejects a tag whose version is not **strictly greater** than the previous tag — catching a forgotten or backwards bump before anything publishes. Implemented as the third step of the gate part, which every release workflow carries.
 
 ## `license-check.yml` — copyleft guard
 
