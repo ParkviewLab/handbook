@@ -94,8 +94,8 @@ What a repo's release does is decided by what the product publishes, never by it
 
 | Target | Release job | Dev-build job |
 |---|---|---|
-| A container image on GHCR | `docker`: amd64 and arm64, tagged with the version, major.minor and `latest` | `docker`: tagged `dev` and with the dev version, never `latest` |
-| A package on PyPI | `pypi`: trusted publishing, environment `pypi` | `testpypi`: the dev version on TestPyPI, environment `testpypi` |
+| A container image on GHCR | `docker`: the multi-arch image, `latest` among its tags | `docker`: tagged `dev`, with the dev version and `sha-<commit>`, never `latest` |
+| A package on PyPI | `pypi`: trusted publishing | `testpypi`: the dev version on TestPyPI, environment `testpypi` |
 | A package on npm | `npm`: trusted publishing | none |
 | Installers for macOS, Windows or Linux | `installers`: built on each system and attached to the GitHub Release | `installers`: unsigned, kept seven days as workflow artifacts, with no tag and no GitHub Release |
 | Documents, for a `VERSION.txt` repo | `release`: the GitHub Release with GitHub's generated notes | none |
@@ -158,7 +158,7 @@ Between releases a repo's `develop` should carry an **honest pre-release version
 0.3.0   <   0.3.1.dev0   <   0.3.1
 ```
 
-So after shipping `0.3.0`, `develop` works toward `0.3.1.dev0` — above the last release, below the target. **Never** suffix a version you've already shipped: `0.3.0-dev` sorts *below* `0.3.0`, so pip/uv/Docker treat it as *older* than the release. Form: Python `X.Y.Z.devN` (PEP 440); **Node/Electron `X.Y.Z-devN`** (semver — `npm version` rejects the dotted PEP-440 form); the dev image carries the tag `dev` and the dev version as the version file holds it (`0.3.1.dev1`), never `latest`.
+So after shipping `0.3.0`, `develop` works toward `0.3.1.dev0` — above the last release, below the target. **Never** suffix a version you've already shipped: `0.3.0-dev` sorts *below* `0.3.0`, so pip/uv/Docker treat it as *older* than the release. Form: Python `X.Y.Z.devN` (PEP 440); **Node/Electron `X.Y.Z-devN`** (semver — `npm version` rejects the dotted PEP-440 form); the dev image carries the tags `dev`, the dev version as the version file holds it (`0.3.1.dev1`) and `sha-<commit>`, never `latest`.
 
 **2. Open the next cycle at release time.** The [back-merge cascade](#after-the-release-the-back-merge-cascade-mandatory) also bumps `develop`'s SoT to the next-patch placeholder `X.Y.(Z+1).dev0` (a direct push — exempt from `version-guard.yml`, like the back-merge itself). Feature PRs leave it unchanged, so the guard still passes; `develop` now reports e.g. `0.3.1.dev0` everywhere — `/admin/version`, a casual editable install, a deploy. *(A feature branch cut before the open-cycle trips the version-guard until it merges `develop` — the same sync the up-to-date rule already requires.)*
 
