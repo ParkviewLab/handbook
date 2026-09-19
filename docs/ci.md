@@ -99,7 +99,7 @@ Every repo's release workflow is `.github/workflows/release.yml`, whatever the r
 | Part | Job | What it carries |
 |---|---|---|
 | `head.yml` | none | the workflow name, the `v*` tag trigger, `permissions: contents: read` |
-| `gate.yml` | `gate` | the three checks: the tag equals the version in the repo's version file, the tagged commit is reachable from `origin/main`, the version is strictly greater than the previous tag |
+| `gate.yml` | `gate` | the three checks: the tag equals the version in the repo's version file and that version carries no dev marker, the tagged commit is reachable from `origin/main`, the version is strictly greater than the previous tag |
 | `docker.yml` | `docker` | the multi-arch image on GHCR |
 | `pypi.yml` | `pypi` | the PyPI publish |
 | `npm.yml` | `npm` | the npm publish, with the optional scoped alias |
