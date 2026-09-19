@@ -1,0 +1,14 @@
+name: Release
+
+# Assembled from the ParkviewLab handbook's release parts, one for each of this
+# repository's publish targets: the gate, then the job of each target, then the
+# job that creates the GitHub Release. The recipe is in the handbook's ci.md.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:

@@ -9,7 +9,7 @@ A **website repo** is a static site we publish to the internet — plain HTML/CS
 
 > Not to be confused with a **documentation site** — a `docs/` directory published from an ordinary code repo's `main` at `parkviewlab.github.io/<repo>/`. That repo keeps `main`/`develop`, tags, and releases; only the deploy is shared. See [`docs-site.md`](docs-site.md).
 
-It is a deliberately **lighter** profile than the Python-package one. A package shipped to PyPI can't be unpublished and has many consumers, so its release ceremony (version bumps, tags, the gate, the back-merge cascade) buys real safety. A website is the opposite: **instantly re-deployable** — a bad change is reverted and live again in seconds. So the website profile keeps the conventions that pay for themselves and **drops the release ceremony that doesn't**. The goal is that updating and publishing the site is *easy*.
+It is a deliberately **lighter** profile than that of a repo which publishes a package. A package shipped to PyPI can't be unpublished and has many consumers, so its release ceremony (version bumps, tags, the gate, the back-merge cascade) buys real safety. A website is the opposite: **instantly re-deployable** — a bad change is reverted and live again in seconds. So the website profile keeps the conventions that pay for themselves and **drops the release ceremony that doesn't**. The goal is that updating and publishing the site is *easy*.
 
 ## What carries over, what's dropped
 

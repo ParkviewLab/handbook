@@ -5,7 +5,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Packaging & deployment
 
-ParkviewLab servers ship as a PyPI package **and** a multi-arch container image, and each README documents **five ways to run it**. Publishing is covered in [`releases.md`](releases.md)/[`ci.md`](ci.md); this page is the artifact shapes.
+What a ParkviewLab server ships is what its publish targets say: a package on PyPI, a multi-arch container image, or both ([`releases.md`](releases.md#what-a-release-publishes)). This page is the shape of those artifacts, the Dockerfile and the compose file of the image target, and the run section each set of targets gives a README. Publishing itself is covered in [`releases.md`](releases.md)/[`ci.md`](ci.md).
 
 ## Dockerfile
 
@@ -55,9 +55,9 @@ A copy-and-edit example stack:
 
 Source: `deco-assaying/.../docker-compose.yml`.
 
-## "Five ways to run it" (README)
+## The README's run section
 
-Every server's README has a run table covering the same five modes, fastest to most persistent:
+What a README tells a reader to run follows the repo's targets. A server that publishes both a PyPI package and an image has the five-mode table, fastest to most persistent:
 
 | # | Mode | For |
 |---|---|---|
@@ -67,7 +67,9 @@ Every server's README has a run table covering the same five modes, fastest to m
 | 4 | Linux **systemd** user unit | persistent daemon on Linux |
 | 5 | **Docker** / docker-compose | container |
 
-Plus a prereqs note (uv; Python 3.13 comes via uv), a sanity check (`curl http://127.0.0.1:<PORT>/health`), and an env-var **Configuration** table (name, default, purpose) matching the server's `config.py`.
+Modes 1 to 4 need the package and mode 5 needs the image, so a PyPI-only package lists modes 1 to 4 and stops there. A server that publishes only an image has a Docker section in their place: how to run it with `docker compose` or as a Portainer stack, and a line saying there is no PyPI package. paper-boxing's README is the reference.
+
+Either way, a prereqs note (uv; Python 3.13 comes via uv), a sanity check (`curl http://127.0.0.1:<PORT>/health`), and an env-var **Configuration** table (name, default, purpose) matching the server's `config.py`.
 
 ## Configuration via env vars
 

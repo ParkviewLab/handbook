@@ -19,7 +19,8 @@ Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/
 | [repo-layout.md](docs/repo-layout.md) | Contained, repo-prefixed worktree layout, required contents, repo naming |
 | [branching.md](docs/branching.md) | Two-trunk model, branch prefixes, ephemeral worktrees, merge flow |
 | [commits-and-changelogs.md](docs/commits-and-changelogs.md) | Conventional Commits, `cliff.toml`, the LLM-Highlights changelog |
-| [releases.md](docs/releases.md) | Version single-source-of-truth, `git bump`/`git release`, the gate, back-merge cascade |
+| [releases.md](docs/releases.md) | What a release publishes, version single-source-of-truth, `git bump`/`git release`, the gate, back-merge cascade |
+| [releases-why.md](docs/releases-why.md) | Why a release carries the jobs it does: the ruling, the alternatives set aside, and the dated decisions |
 | [python-tooling.md](docs/python-tooling.md) | uv + ruff + ty + hatchling, the `pyproject.toml` shape |
 | [node-tooling.md](docs/node-tooling.md) | npm + TypeScript + ESLint + Vitest, the `package.json` shape |
 | [electron-tooling.md](docs/electron-tooling.md) | electron-vite + electron-builder, cross-platform desktop installers |
@@ -27,12 +28,12 @@ Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/
 | [docs-site.md](docs/docs-site.md) | Publishing a repo's own `docs/` as a GitHub Pages site from `main` |
 | [website.md](docs/website.md) | Website repos: `live`/`staging`, Pages-via-Actions deploy, custom-domain HTTPS, page footers — the lighter profile |
 | [testing.md](docs/testing.md) | pytest markers/tiers, conftest patterns, visual verification |
-| [packaging-and-deployment.md](docs/packaging-and-deployment.md) | Dockerfile, compose, the "five ways to run it" README |
+| [packaging-and-deployment.md](docs/packaging-and-deployment.md) | Dockerfile, compose, the README's run section for each set of targets |
 | [licensing.md](docs/licensing.md) | REUSE/SPDX, per-bucket licensing, `LICENSING.md` |
 | [documentation.md](docs/documentation.md) | `docs/` convention, northstar structure, README shape, dual-track HTML |
 | [md-to-html.md](docs/md-to-html.md) | How to **author** (not convert) designed HTML from Markdown |
 | [brand.md](docs/brand.md) | Palette, fonts, logos, voice |
-| [ci.md](docs/ci.md) | The three workflows, org secrets, action pinning, `dev-tools` |
+| [ci.md](docs/ci.md) | The workflows, the release parts and how a release is assembled from them, org secrets, action pinning, `dev-tools` |
 | [ai-collaboration.md](docs/ai-collaboration.md) | The behavioural contract for AI devs |
 | [agents.md](docs/agents.md) | The agent definitions (fourteen, each with its model and effort), the dispatch rule (models and effort by the step, planning, verification), user-level installation |
 | [agents-why.md](docs/agents-why.md) | Why the set is as it is: the evidence, the alternatives set aside, and the dated rulings |
@@ -41,7 +42,7 @@ Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/
 
 ## Templates & tooling
 
-- **[`templates/`](templates/)** — copy-paste sources kept identical across repos: `cliff.toml`, `pyproject.toml.template`/`package.json.template`, `electron-builder.yml`, `CONTRIBUTING.md`, the `.github/workflows/`, `generate_changelog.py`, the `LICENSING.md`/`REUSE.toml` templates, the `AGENTS.md`/`CLAUDE.md` pointer templates, the [`md-to-html/`](templates/md-to-html/) default HTML scaffold, the [`agents/`](templates/agents/) agent definitions, and the [`skills/`](templates/skills/) `dispatch` and `tangent` skills.
+- **[`templates/`](templates/)** — copy-paste sources kept identical across repos: `cliff.toml`, `pyproject.toml.template`/`package.json.template`, `electron-builder.yml`, `CONTRIBUTING.md`, the `.github/workflows/` (with the `release/` and `dev-release/` parts each repo's workflows are assembled from), `generate_changelog.py`, the `LICENSING.md`/`REUSE.toml` templates, the `AGENTS.md`/`CLAUDE.md` pointer templates, the [`md-to-html/`](templates/md-to-html/) default HTML scaffold, the [`agents/`](templates/agents/) agent definitions, and the [`skills/`](templates/skills/) `dispatch` and `tangent` skills.
 - **[`brand/`](brand/)** — canonical logos (all rights reserved) + the Michroma font (`OFL-1.1`); see [licensing.md](docs/licensing.md).
 - **[`scripts/sync-agent-files.sh`](scripts/sync-agent-files.sh)** — writes the `AGENTS.md` + `CLAUDE.md` pointer files into every repo from the templates:
 
