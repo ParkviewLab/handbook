@@ -1,0 +1,39 @@
+
+  # Unsigned installers for macOS, Windows and Linux, uploaded as workflow
+  # artifacts and kept seven days. There is no `v*` tag and no GitHub Release, so
+  # the release gate is untouched; the build is for local testing.
+  installers:
+    needs: gate
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+          cache: npm
+      - run: npm ci
+      # electron 43 ships no install script, so `npm ci` does not extract its prebuilt.
+      # dist/ is otherwise filled lazily on first require, which `npm run legal` never
+      # triggers (it reads dist/ from disk). Extract it now so dist/ and its Chromium
+      # notices exist before `npm run legal`.
+      - run: node node_modules/electron/install.js
+      - run: npm run legal      # generate legal/ before electron-builder copies extraResources
+      - run: npm run build
+      - name: Package installers (unsigned)
+        run: npx electron-builder --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+      - uses: actions/upload-artifact@v6
+        with:
+          name: dev-installers-${{ matrix.os }}
+          retention-days: 7
+          if-no-files-found: error
+          path: |
+            dist/*.dmg
+            dist/*.exe
+            dist/*.AppImage
+            dist/*.deb

@@ -1,0 +1,19 @@
+name: Dev release
+
+# Assembled from the ParkviewLab handbook's dev-release parts, one for each of
+# this repository's publish targets that has a dev counterpart: the gate, then
+# the dev job of each of those targets. The recipe is in the handbook's ci.md.
+#
+# A dev build is for local testing: a candidate CI builds before the release, not
+# a version for others to use. Manually triggered (workflow_dispatch; run it with
+# `--ref develop`, or via `git dev-release`). It creates NO `v*` tag, so the
+# release gate is untouched, and runs no changelog job. See the handbook's
+# releases.md ("What a release publishes", "Development versioning").
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
