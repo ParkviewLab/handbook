@@ -123,7 +123,7 @@ A Python service may publish only an image, a Python library only to PyPI, a Nod
 
 The documents target replaces that last job with `release`, which creates the GitHub Release with GitHub's generated notes (the merged-PR titles since the previous tag, each with its link). It has no `changelog` job because a documents repo keeps no `CHANGELOG.md` to generate and commit back to `main`: the generated notes are its release record, and they already list what shipped, which is why the PR-title prefix still matters there. For hand-written notes, edit the Release after the workflow has created it (`gh release edit v<new> --notes-file …`). This handbook's own `release.yml` is the documents assembly, byte for byte.
 
-Reference implementations, by target: paper-boxing (image; its three-image matrix is a documented slot), cogrind-workshop (PyPI), smalt-mcp (PyPI and image), jonobones (npm and image), pensa-grex (installers), and this handbook (documents).
+Reference implementations, by target: paper-boxing (image; its three-image matrix is a documented slot), cogrind-workshop (PyPI), smalt-mcp (PyPI and image), jonobones (npm and image), pensa-grex (installers), and this handbook (documents). A repo not yet re-assembled still carries the template the parts replaced, under whatever name (see [`ci.md`](ci.md#releaseyml--on-v-tag-push)).
 
 ## After the release: the back-merge cascade (mandatory)
 
