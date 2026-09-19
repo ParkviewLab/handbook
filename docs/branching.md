@@ -26,14 +26,14 @@ Working branches are named `<prefix>-<short-description>`, **hyphen not slash**.
 | `bug-` / `fix-` | `fix:` | Bug fixes (user-visible) |
 | `doc-` | `docs:` | Docs |
 | `test-` | `test:` | Tests |
-| `ops-` | `chore:` / `ci:` | _(dropped from changelog — operational/infra)_ |
-| `ci-` | `ci:` | _(dropped)_ |
-| `build-` | `build:` | _(dropped)_ |
-| `release-` | the `release vX.Y.Z` bump commit | _(dropped — version-bump branches)_ |
+| `ops-` | `chore:` / `ci:` | Maintenance |
+| `ci-` | `ci:` | Maintenance |
+| `build-` | `build:` | Maintenance |
+| `release-` | the `release vX.Y.Z` bump commit | _(left out: a version bump is bookkeeping)_ |
 
 The **everyday four** are `feature-`, `bug-`, `doc-`, `ops-`. The rest exist for when a change is purely tests, CI, build plumbing, or a release bump.
 
-> **Key rule: the PR title carries the changelog prefix, not the branch.** Branches are **squash-merged**, so the *PR title* becomes the commit subject that `git-cliff` parses. A branch named `feature-foo` still needs a PR titled `feat: …` for it to land in the changelog. Commits without a recognised prefix are silently dropped from `CHANGELOG.md` (they stay in git history). See [`commits-and-changelogs.md`](commits-and-changelogs.md).
+> **Key rule: the PR title carries the changelog prefix, not the branch.** Branches are **squash-merged**, so the *PR title* becomes the commit subject from which the changelog takes the title. A branch named `feature-foo` still needs a PR titled `feat: …` for it to be listed under Features. A title without a recognised prefix is listed whole under Other changes, which says nothing about what kind of change it is. See [`commits-and-changelogs.md`](commits-and-changelogs.md).
 
 ## Working-branch lifecycle (ephemeral worktree)
 
@@ -51,7 +51,7 @@ uv sync                       # each worktree gets its own deps (or: npm ci)
 # Then sync the trunk worktree and clean up — see "After the merge" below.
 ```
 
-- Working branches **squash-merge** into `develop`: each PR collapses to a single commit whose subject is the PR title (the `feat:`/`fix:`/… prefix `git-cliff` parses). That one dated commit is the record of *when the feature landed*; the branch's individual commits stay viewable on the PR. (A squash always creates a fresh commit, so `--no-ff` doesn't apply here.)
+- Working branches **squash-merge** into `develop`: each PR collapses to a single commit whose subject is the PR title (with the `feat:`/`fix:`/… prefix by which the changelog groups it). That one dated commit is the record of *when the feature landed*; the branch's individual commits stay viewable on the PR. (A squash always creates a fresh commit, so `--no-ff` doesn't apply here.)
 - Promotion `develop → main` is part of a **release**, not a reviewed PR: run from the CLI on `main` with `git merge --no-ff develop` (a merge commit → a dated per-release ledger via `git log --first-parent main`), then bump + tag + push. See [`releases.md`](releases.md).
 - Pulls are **`git pull --ff-only`** — never an implicit merge on pull.
 
