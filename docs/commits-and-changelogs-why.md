@@ -140,6 +140,12 @@ In the evening of that day, at 03:19 UTC on 2026-09-19, the ruleset of decision 
 
 At 03:24 UTC dev-tools' `main` was protected against force pushes and deletions by the call in [`ci.md`](ci.md#repo-merge-settings), and read back identical to paper-boxing's. At 03:48 UTC the ruleset was applied to dev-tools from the definition the trial had used, and read back active with an empty bypass list, GitHub reporting `current_user_can_bypass: never`. The convention auditor then found no deviation in dev-tools' `main` protection, or in its `release.yml` against the `release-txt.yml` of handbook v0.24.0.
 
+## 2026-09-19: the pilot in paper-boxing, and what it cost
+
+paper-boxing switched its changelog job to dev-tools' `generate-changelog` at v1.2.0's commit, and released v0.4.1 with it. The release ran green in all five jobs. The published list is #16, #17 and #18, which is the expected set exactly; the Release body equals what the script writes now; `CHANGELOG.md` on `main` holds one matching section; and the Highlights paragraph was generated rather than the placeholder, so the model call worked with the org key. Before the merge, the script's list was checked against all five of paper-boxing's earlier tags, and each matched its recorded or expected set. The retired `cliff.toml` and `scripts/generate_changelog.py` were deleted in a second pull request after the release.
+
+Durations, agent wall-clock, measured: the switch pull request about 20 minutes, its dry run over five tags 5 minutes, the release and its cascade 15 minutes, and the deletion pull request 5 minutes. The pilot used no agent at all: the session made the change, ran the checks and read the diffs itself, under the practice the owner adopted on 19 September 2026.
+
 ## Decision record
 
 | Date | Decision | Ruling |
