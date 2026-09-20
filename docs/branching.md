@@ -29,7 +29,7 @@ Working branches are named `<prefix>-<short-description>`, **hyphen not slash**.
 | `ops-` | `chore:` / `ci:` | Maintenance |
 | `ci-` | `ci:` | Maintenance |
 | `build-` | `build:` | Maintenance |
-| `release-` | the `release vX.Y.Z` bump commit | _(left out: a version bump is bookkeeping)_ |
+| `release-` | the `release vX.Y.Z` bump commit | _(left out by content where it is made on the trunk; a bump merged by pull request is listed under Other changes)_ |
 
 The **everyday four** are `feature-`, `bug-`, `doc-`, `ops-`. The rest exist for when a change is purely tests, CI, build plumbing, or a release bump.
 

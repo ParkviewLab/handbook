@@ -7,6 +7,8 @@ SPDX-License-Identifier: CC-BY-4.0
 
 ParkviewLab generates each release's section of `CHANGELOG.md` and its GitHub Release notes automatically, with one script: `generate-changelog` in [`ParkviewLab/dev-tools`](https://github.com/ParkviewLab/dev-tools), which the changelog job of every release workflow runs from a checkout of dev-tools pinned to a release. The notes are a Highlights paragraph written by a model, then the list of what the release holds: every pull request merged into it, under the group that the [Conventional Commits](https://www.conventionalcommits.org/) type of its title names, and every commit that reached it without a pull request. The prefixes on PR titles therefore decide how the list reads. (A `VERSION.txt` repo, such as this handbook or `dev-tools`, has no changelog job; its Release notes are GitHub's generated notes, the titles of the pull requests merged since the previous tag, so the prefix on the PR title matters there too. See [`releases.md`](releases.md#what-the-release-workflow-does).)
 
+A repo not yet switched still carries `cliff.toml` and `scripts/generate_changelog.py` and runs them, as it did before: the switch is one pull request per repo, and paper-boxing is the first. Everything below describes a repo once it has switched.
+
 This page states the rules and the reasons needed to apply them. Its sibling [`commits-and-changelogs-why.md`](commits-and-changelogs-why.md) records what is needed only to reopen one of them: the measurement the rule rests on, the alternatives set aside, and the dated rulings.
 
 ## Conventional Commit prefixes

@@ -55,7 +55,8 @@
           git fetch origin main
           git checkout origin/main
           mv /tmp/release-body.md release-body.md
-          # Re-runs only the file-manipulation half — no LLM call, no anthropic SDK needed.
+          # Re-runs only the file-manipulation half, so it makes no model call.
+          # `uv run --script` still installs the SDK the script declares, unused here.
           uv run --script dev-tools/scripts/generate-changelog --mode=insert
 
       - name: Commit CHANGELOG.md back to main

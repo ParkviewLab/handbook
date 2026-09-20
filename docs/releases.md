@@ -127,6 +127,8 @@ Reference implementations, by target: paper-boxing (image; its three-image matri
 
 ## Repairing a release whose changelog job failed
 
+This section describes a repo whose changelog job runs the shared script. A repo not yet switched still runs its own copy, and its repair is that copy's ([`commits-and-changelogs.md`](commits-and-changelogs.md)).
+
 When the `changelog` job fails, the gate and the target jobs have already succeeded, so the release is published under its tag, and the tag stays. What is missing depends on the step that failed: after a failure in generating or inserting, nothing has been committed and no Release exists; after a failure in creating the Release, `CHANGELOG.md` has been committed to `main` and only the Release is missing. The back-merge waits for the repair, so that it carries the changelog commit to `develop`. A re-run or a repair writes to `main` and publishes a Release, so it needs the same explicit go-ahead as the release itself ([`ai-collaboration.md`](ai-collaboration.md#shared-state-writes-need-explicit-authorization)).
 
 1. A transient failure, such as GitHub's API or the network (the model's call never fails the job): re-run the failed job. A re-run runs the tagged commit's workflow file, and so the same pin. The insert adds no second section for a tag already present, and the generate step, which passes `--reuse-committed`, takes a section already committed to `main` instead of calling the model again, so a re-run after a partial success duplicates nothing and creates the Release from the text in `CHANGELOG.md`.
