@@ -27,7 +27,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 license = "MIT"                           # per-repo choice — see licensing.md
 license-files = ["LICENSE"]
-authors = [{ name = "Gary", email = "garycoding@gmail.com" }]
+authors = [{ name = "Gary Frattarola", email = "garyf@parkviewlab.ai" }]
 dependencies = [ … ]
 
 [project.scripts]

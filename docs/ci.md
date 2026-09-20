@@ -35,15 +35,15 @@ gh repo edit <owner>/<repo> \
   --enable-merge-commit=false \
   --enable-rebase-merge=false \
   --delete-branch-on-merge=true
-# squash commit subject = the PR title, so git-cliff parses the Conventional
-# Commit prefix even on a single-commit PR:
+# squash commit subject = the PR title, so the changelog lists the PR under its
+# Conventional Commit type even on a single-commit PR:
 gh api -X PATCH repos/<owner>/<repo> \
   -f squash_merge_commit_title=PR_TITLE \
   -f squash_merge_commit_message=COMMIT_MESSAGES
 ```
 
 - **Squash-only** means a PR's merge button can only squash — no one can pick the wrong method for a feature PR into `develop` (see [`branching.md`](branching.md)).
-- **`squash_merge_commit_title=PR_TITLE` is load-bearing.** The GitHub default (`COMMIT_OR_PR_TITLE`) uses the *commit* subject on a single-commit PR, which may miss the `feat:`/`fix:` prefix and silently drop the entry from the changelog.
+- **`squash_merge_commit_title=PR_TITLE` decides the title the changelog lists.** The GitHub default (`COMMIT_OR_PR_TITLE`) uses the *commit* subject on a single-commit PR, which may miss the `feat:`/`fix:` prefix and file the entry under Other changes ([`commits-and-changelogs.md`](commits-and-changelogs.md)).
 - **`delete_branch_on_merge`** auto-removes the branch after merge.
 - Because the repo is squash-only, `develop → main` (which needs a merge commit) is done **from the CLI during a release** — `git merge --no-ff develop` on `main`, not the PR button. That needs `main` to accept direct pushes; don't add a PR-required ruleset to `main` without rethinking this (you'd have to re-enable merge commits for that path). See [`releases.md`](releases.md).
 - **`main` is protected against force pushes and deletions, nothing more.** No required checks, reviews, or restrictions on `main`: the release flow (and the `changelog` job, where the release has one) push to it directly, and the release gate covers the promotion. The two blocks bind admins as well, which is the point: `main` is the release ledger and is never rewritten. `develop`'s rule already blocks both. Apply it with the call below; `required_linear_history` must stay `false` (the promotion is a merge commit), and adding a required check to `main` later would block the release push (see the previous point).
@@ -110,8 +110,9 @@ Every repo's release workflow is `.github/workflows/release.yml`, whatever the r
 The assembly is a concatenation: `head.yml`, `gate.yml`, the part of each target in the order `docker`, `pypi`, `npm`, `installers`, and then `changelog.yml`; for the documents target, `documents.yml` after the gate and nothing else. Then, in the `changelog` job, replace `TARGET_JOBS` in `needs:` with the target jobs, and delete the "Download all built installers" step unless the repo has the installers target. Add the SPDX header the repo's REUSE layout asks for. An image-only service, for instance:
 
 ```bash
-cd <handbook>/templates/.github/workflows/release
-cat head.yml gate.yml docker.yml changelog.yml > <repo>/.github/workflows/release.yml
+# from the repo's root, with H an absolute path to the handbook's parts
+H=<handbook>/templates/.github/workflows/release
+cat "$H"/head.yml "$H"/gate.yml "$H"/docker.yml "$H"/changelog.yml > .github/workflows/release.yml
 # then in that file: needs: [gate, docker], and no installers download step
 ```
 
@@ -132,7 +133,7 @@ Notes that belong to CI:
     type=raw,value=latest
   ```
 - **Trusted publishing (OIDC), no long-lived secrets** — PyPI (`pypa/gh-action-pypi-publish`, `environment: pypi`) and npm. Register the publisher at the **org** level so the package is born org-owned — see [Org-owned trusted publishers](#org-owned-trusted-publishers) below.
-- The `changelog` job needs `contents: write` (scoped to that job) and the org-level `ANTHROPIC_API_KEY`. It pulls the anthropic SDK just-in-time with `uv run --with anthropic …` so the workflow snippet stays identical in every repo that adopts it, regardless of whether `anthropic` is a project dep.
+- The `changelog` job needs `contents: write` and `pull-requests: read`, scoped to that job (a job's `permissions:` block sets every scope it does not name to none), the org-level `ANTHROPIC_API_KEY`, and `GH_TOKEN` for reading the merged pull requests. It checks `dev-tools` out into `dev-tools/` at the pinned release ([below](#shared-dev-scripts-dev-tools)) and runs `uv run --script dev-tools/scripts/generate-changelog`, which installs the exact anthropic SDK version the script declares for that run alone, whatever the repo's own dependencies.
 
 ## The documents assembly: `VERSION.txt` repos, on a `v*` tag push
 
@@ -142,7 +143,7 @@ A repo whose version lives in `VERSION.txt` (docs repos like this handbook, and 
 
 A dev build is for local testing, and it is optional: a repo has one or it has none. Where it has one, `.github/workflows/dev-release.yml` is assembled the same way from the parts in [`templates/.github/workflows/dev-release/`](../templates/.github/workflows/dev-release/): `head.yml`, `gate.yml`, and then the dev part of each of the repo's targets that has one, in the order `docker.yml`, `testpypi.yml`, `installers.yml`. npm has no dev part, as documents have none ([`releases.md`](releases.md#what-a-release-publishes)).
 
-It is **manually triggered** (`workflow_dispatch`) and run from `develop` (`gh workflow run dev-release.yml --ref develop`, or via `git dev-release`). The dev gate requires a dev marker on the version (`X.Y.Z.devN` or `X.Y.Z-devN`), refuses any ref but `develop`, and hands the version to the dev jobs. It creates **no `v*` tag**, so it never trips the `release.yml` gate, and it runs no changelog job. What each dev job publishes is its target's dev counterpart: the image tagged `dev`, with the dev version and `sha-<commit>` (never `latest`), the dev version on TestPyPI, or unsigned installers kept seven days as workflow artifacts.
+It is **manually triggered** (`workflow_dispatch`) and run from `develop` (`gh workflow run dev-release.yml --ref develop`, or via `git dev-release`). The dev gate requires a dev marker on the version (`X.Y.Z.devN` or `X.Y.Z-devN`), refuses any ref but `develop`, and makes the version available to the dev jobs, which the `docker` part reads. It creates **no `v*` tag**, so it never trips the `release.yml` gate, and it runs no changelog job. What each dev job publishes is its target's dev counterpart: the image tagged `dev`, with the dev version and `sha-<commit>` (never `latest`), the dev version on TestPyPI, or unsigned installers kept seven days as workflow artifacts.
 
 TestPyPI belongs to the PyPI target. A repo that publishes to PyPI and has dev builds needs its **own TestPyPI trusted publisher**, which differs from the PyPI one in two fields: it authorizes the workflow **`dev-release.yml`** (not `release.yml`) and the environment **`testpypi`** (not `pypi`). **TestPyPI is a separate instance from pypi.org** — its own account and login, and an org must be requested there independently; until that org is approved the publisher is a plain **individual-account** pending publisher, which is fine for a throwaway sandbox. Create a matching `testpypi` GitHub environment (no protection rules). A repo that does not publish to PyPI needs none of this. See [`releases.md`](releases.md#development-versioning).
 
@@ -183,4 +184,17 @@ Cross-project scripts that encode an org convention live in **[`ParkviewLab/dev-
 
 The test for what belongs in `dev-tools` vs a repo's own `scripts/`: *if I changed this, would it need changing in other repos too?* Yes → `dev-tools`. No → the repo's `scripts/`.
 
-A `dev-tools` script may also run inside a repo's workflow, checked out at an exact released tag (`build-pages-site` in [`docs-site.md`](docs-site.md#the-build-script) is the case). The pin is what makes that a locked dependency rather than one on `dev-tools`' state; a workflow never checks `dev-tools` out at a branch.
+A `dev-tools` script may also run inside a repo's workflow, from a checkout of `dev-tools` at an exact release into `dev-tools/`, a subfolder of the checkout. Two do: `build-pages-site`, which builds the documentation site ([`docs-site.md`](docs-site.md#the-build-script)), and `generate-changelog`, which writes the release notes in the `changelog` job ([`commits-and-changelogs.md`](commits-and-changelogs.md)). The pin is what makes each a locked dependency rather than one on `dev-tools`' state, and a workflow never checks `dev-tools` out at a branch. It holds only while what the pin names cannot change, and the two pins meet that condition in different ways:
+
+- The `changelog` job pins the release's full commit SHA, with its tag in a comment on the same line (`ref: <sha> # vX.Y.Z`, the SHA from `git rev-parse vX.Y.Z^{commit}`). The job commits to `main` and creates the Release, and a SHA names one commit by construction: nothing done in `dev-tools` can redirect it, and a re-run of a past release job runs exactly what the original ran.
+- The documentation site's pin in `pages-docs.yml` is the tag itself, and a tag names its commit only while nothing moves it. `dev-tools` carries a ruleset on `refs/tags/v*` that refuses the update, the force push and the deletion of a release tag and names no bypass actor, so no one, an administrator included, can move a release tag while it is active. An administrator can still disable or delete the ruleset, which makes it a guard rather than a lock, and it is to be kept: it holds the site's pin in place, and it keeps the tag in each SHA pin's comment true. Its cost is that a `dev-tools` release cut in error cannot be re-tagged; the next patch release corrects it.
+
+Every workflow pin of a `dev-tools` script, the documentation site's excepted, follows one policy, each pin with its own script:
+
+- A pin names a `dev-tools` release whose own release run passed and which is at or after the pin's floor: the newest such release that changed the pinned script. A `dev-tools` release that leaves the script unchanged raises no floor, so it makes no pin lag and costs no repo a pull request. Only a release whose run passed counts: that run's gate checks the tag after the tag exists, so a tag that fails it stays under the ruleset, and it is passed over.
+- A pin below its floor is moved during the next piece of work done in the repo. Preparing a release counts as such a piece of work, so a pin below the floor is moved by a pull request before the promotion: a release is when the script writes the notes, and notes once published stay as published. A pin that is moved, or set for the first time, takes the newest `dev-tools` release whose run passed.
+- No pin pull requests are opened across the repos when `dev-tools` releases. The pin in the handbook's release parts catches up with the next handbook change.
+- The floor is computed from `dev-tools`' release tags whose release runs passed: the newest of them whose range from the previous tag touched the script's file (`git log <previous tag>..<tag> -- scripts/<script>`, or `gh api repos/ParkviewLab/dev-tools/compare/<previous tag>...<tag>`). `convention-auditor` and the release preflight report a pin below its floor, and a pin whose SHA is not its tag's commit; the job summary names the `dev-tools` version each release ran.
+- A local run, such as a dry run or the repair of a failed changelog job, takes the script from a `dev-tools` worktree at the pin, not from the clone `install.sh` links, which runs whatever branch that clone has checked out.
+
+The documentation site's pin moves on its own occasions, when a repo needs a newer `build-pages-site`; bumping it is a one-line change in that repo.

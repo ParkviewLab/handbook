@@ -59,7 +59,7 @@ Source: jonobones's `package.json`.
 
 - **CI** — [`test-node.yml`](../templates/.github/workflows/test-node.yml): a `node-version` matrix runs `npm ci` · `npm run typecheck` · `npm run lint` · `npm test`. `reuse.yml` + `version-guard.yml` apply unchanged (the version guard already understands `package.json`). Repos may add tiers — jonobones adds `interop` / `docker` / `e2e` (see [`testing.md`](testing.md)).
 - **Release** — `release.yml`, assembled from the parts of the repo's publish targets and not from the stack (see [`ci.md`](ci.md#releaseyml--on-v-tag-push)). A package on npm takes the `npm` part: **npm trusted publishing (OIDC)**, with an optional second **scoped-alias** name (`@org/<pkg>`, as jonobones does with `jonobones` + `@parkviewlab/jonobones`; the step is commented out in the part). An image takes the `docker` part. The gate (tag == `package.json` version, reachable from `main`, strictly greater than the previous tag) and the `changelog` job are the same parts every release carries.
-- The changelog automation (`cliff.toml` + `scripts/generate_changelog.py`) is **language-agnostic**: the Python script reads `package.json` as well as `pyproject.toml`. Copy both from the handbook templates (see [`commits-and-changelogs.md`](commits-and-changelogs.md)).
+- The changelog automation is language-agnostic: the `changelog` job runs dev-tools' shared `generate-changelog` at a pinned release, which reads `package.json` as well as `pyproject.toml` and `Cargo.toml`, and nothing is copied into the repo (see [`commits-and-changelogs.md`](commits-and-changelogs.md)).
 
 ## Everyday commands
 

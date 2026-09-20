@@ -1,6 +1,6 @@
 # Contributing
 
-> Template — copy to a new repo as **`docs/CONTRIBUTING.md`** (this is the path every `cliff.toml` references). Replace `<repo>` as needed. The authoritative, org-wide version of all of this is the [ParkviewLab handbook](https://github.com/ParkviewLab/handbook).
+> Template — copy to a new repo as **`docs/CONTRIBUTING.md`**. Replace `<repo>` as needed. The authoritative, org-wide version of all of this is the [ParkviewLab handbook](https://github.com/ParkviewLab/handbook).
 
 This repo follows the ParkviewLab conventions. The essentials:
 
@@ -12,7 +12,7 @@ This repo follows the ParkviewLab conventions. The essentials:
 
 ## Commit / PR-title convention (this is what the changelog reads)
 
-Because PRs are squash-merged, **the PR title becomes the commit subject**, and the changelog is generated from it (via [git-cliff](https://git-cliff.org/) + `cliff.toml`). Prefix every PR title with a [Conventional Commit](https://www.conventionalcommits.org/) type:
+Because PRs are squash-merged, **the PR title becomes the commit subject**, and the changelog is generated from it (by dev-tools' shared `generate-changelog`, which lists every merged PR by its title, under the section its type names). Prefix every PR title with a [Conventional Commit](https://www.conventionalcommits.org/) type:
 
 | Prefix | CHANGELOG section | Notes |
 |---|---|---|
@@ -22,9 +22,10 @@ Because PRs are squash-merged, **the PR title becomes the commit subject**, and 
 | `refactor:` | Refactor | |
 | `docs:` | Docs | |
 | `test:` | Tests | |
-| `chore:` / `ci:` / `build:` / `style:` | _(dropped)_ | stays in git history, not surfaced |
+| `revert:` | Reverts | |
+| `chore:` / `ci:` / `build:` / `style:` | Maintenance | |
 
-A PR title without a recognised prefix is **silently dropped** from the changelog. So: prefix it.
+A `!` after the type (`feat!:`), or a `BREAKING CHANGE:` footer in the PR's description, lists the PR under Breaking changes instead. A PR title without a recognised prefix is listed whole under Other changes, which says nothing about what kind of change it is. So: prefix it. A commit that reaches a release without a PR is listed under Direct commits.
 
 ## Local checks before opening a PR
 

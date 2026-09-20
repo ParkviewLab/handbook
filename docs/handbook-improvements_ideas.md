@@ -247,7 +247,7 @@ Point-of-action enforcement (moving "gate the irreversible" from prose to rules)
 
 Changelog and CI hygiene:
 
-- A11 Add a PR-title Conventional-Commit check on `develop` PRs so a mistyped prefix fails loudly instead of silently vanishing from the changelog (P1/S, augment). [9]
+- A11 Add a PR-title Conventional-Commit check on `develop` PRs so a mistyped prefix fails loudly instead of silently vanishing from the changelog (P1/S, augment). [9] **Ruled not to be taken up for now** (2026-09-18, decision 4 (b) of the shared changelog generator; [`commits-and-changelogs-why.md`](commits-and-changelogs-why.md)): the shared generator lists a title without a type under Other changes instead of dropping it, so a check would only group titles, at the cost of blocking pull requests titled by GitHub's Revert button or by a Dependabot security update until they are retitled. To be taken up if Other changes fills.
 - A12 Label the LLM Highlights paragraph as machine-drafted and print it to the job summary before it ships, folding a read-before-ship moment into the existing bump-kind confirmation (P2/S, augment). [10]
 
 Node/Electron correctness and security:
