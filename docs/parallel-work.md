@@ -9,7 +9,7 @@ One session can run several pieces of work at once, across several repos, and ma
 
 ## The coordinator and the workers
 
-The coordinator is the main session, opened where it can reach every repo (the org root, or above it). Its role is the one the dispatch rule gives the main session ([`agents.md`](agents.md#the-dispatch-rule)): it plans, dispatches, verifies, opens the pull requests, and talks to the user, whilst the reading, searching, implementing and reviewing go to workers, so its context stays small.
+The coordinator is the main session, opened where it can reach every repo (the org root, or above it). Its role is the one the dispatch rule gives the main session ([`agents.md`](agents.md#the-dispatch-rule)): it plans, reads, searches, edits, runs the checks, verifies, opens the pull requests, and talks to the user. It dispatches where the work genuinely runs in parallel, where a read is too large for its context, or for one fresh review; the structures below are how such a dispatch is shaped, not a menu to be chosen from at the start of every task.
 
 A worker runs in one of four structures, and the shape of the work chooses it, not habit and not a default:
 
@@ -20,9 +20,9 @@ A worker runs in one of four structures, and the shape of the work chooses it, n
 | One background session per repo | Long, independent work the user may watch or steer: an implementation that runs under the repo's own configuration for as long as it needs and owns its pull request | The four properties below; the only structure in which a repo's own guardrails apply to the worker |
 | An agent team inside one session on one repo | Workers that must talk to each other: pieces of one change whose owners must confer, or competing hypotheses tested against each other | Teammate-to-teammate messaging and the shared task list exist only here |
 
-A workflow is not the default: most work is one bounded task, and a workflow is worth its script and setup only where there is fan-out to run in parallel and verification to run on the results. Sequential work, same-file edits, and work with many dependencies stay in one worker.
+A workflow is not the default and does not run unasked: most work is one bounded task the session does itself, and a workflow is worth its script and setup only where there is fan-out to run in parallel and verification to run on the results. It runs when the user asks for one or an approved plan names it ([the dispatch rule](agents.md#the-dispatch-rule)). Sequential work, same-file edits, and work with many dependencies stay in one worker.
 
-Ultracode, Claude Code's setting of `xhigh` effort with standing workflow orchestration, makes a workflow the default for every substantive task (its description in v2.1.273). Here the shape of the work decides, whether ultracode is on or not. What is kept from it is its thoroughness, inside whichever structure the shape chose: verification by a fresh agent rather than by the author, and review from more than one lens where the risk calls for it, as the dispatch rule's paragraph on verification sets out. The effort of each dispatch follows the rule, not ultracode's `xhigh`.
+Ultracode, Claude Code's setting of `xhigh` effort with standing workflow orchestration, makes a workflow the default for every substantive task (its description in v2.1.273). Here the shape of the work decides, whether ultracode is on or not. What is kept from it is its thoroughness, inside whichever structure the shape chose: findings checked against their evidence rather than taken on the author's word, and review from more than one lens where the risk calls for it, as the dispatch rule's paragraph on verification sets out. The effort of each dispatch follows the rule, not ultracode's `xhigh`.
 
 What a separate session gives a worker, and a subagent or teammate does not: the target repo's **own configuration** governs the work (its settings and permission rules, hooks, MCP servers, launch configuration, and the pointer file at its root load only for a session rooted there); its **own lifetime and attention** (it runs as long as the task needs, compacts its own context, can be attached to and steered, resumed later, and outlives the coordinator); its **own model, effort, and permission mode** for the whole session, set on its command line, with prompts answered in its own place; and its **own pull request** in the desktop app, whose CI monitor and auto-fix loop are per session and hold one PR each.
 
@@ -35,12 +35,12 @@ Delegate with the Agent tool by definition name and give the agent the absolute 
 A workflow is a script that Claude Code's Workflow tool runs in the coordinator's session. It spawns agents with `agent()`, passes items through stages with `pipeline()`, where an item enters its next stage as soon as its previous one finishes, or runs tasks together with `parallel()`, which returns when all have finished, and it returns one result to the coordinator.
 
 - Every `agent()` call passes `model` and `effort`, and `agentType` where a definition fits; left out, they fall back to the session's, which need not be the step's ([`agents.md`](agents.md#using-them)).
-- Verification is a stage of the script: a fresh agent per finding or result, on Opus at `max`, checking it against its evidence.
+- Verification is a stage of the script: one agent checks a batch of findings or results against their evidence, on Opus at `high`, or at `max` where the work is high risk. A fresh agent per finding is not used ([the dispatch rule](agents.md#the-dispatch-rule)).
 - Agents that write in parallel get disjoint files and one committer, or `isolation: 'worktree'`.
 - An agent writes a large result to a file and returns the conclusion and the path.
 - The coordinator names each stage's model and effort when it starts the workflow, and verifies the result as it would a subagent's.
 
-Claude Code's description of the Workflow tool restricts it to a workflow the user has asked for, in the user's own words or through a skill the user invoked (v2.1.273). The go-ahead on a plan that names a workflow is such a request, and so is a standing instruction to follow this page's structure rule; without either, the coordinator asks in one line.
+Claude Code's description of the Workflow tool restricts it to a workflow the user has asked for, in the user's own words or through a skill the user invoked (v2.1.273). That restriction and this handbook's rule agree: the go-ahead on a plan that names a workflow is such a request, and so is the user asking for one; without either, the coordinator asks in one line. There is no standing request.
 
 ## One background session per repo
 

@@ -116,9 +116,18 @@ cat "$H"/head.yml "$H"/gate.yml "$H"/docker.yml "$H"/changelog.yml > .github/wor
 # then in that file: needs: [gate, docker], and no installers download step
 ```
 
+`dev-tools` does that assembly, from v1.3.0, so that propagating a change to the parts is a command rather than an edit repeated in each repo:
+
+```bash
+assemble-workflows --handbook <handbook>          # write release.yml, and dev-release.yml where the repo has dev builds
+assemble-workflows --handbook <handbook> --check  # write nothing; report every difference from the assembly
+```
+
+`--check` names the job each difference falls in and exits 0 when the workflows match, 1 when a difference is undeclared, and 2 on a usage or declaration error, so CI and `convention-auditor` can run it. A repo declares what it publishes, and each difference it keeps on purpose, in `.github/workflows/.assembly.toml`: its `targets`, whether it has `dev` builds, its SPDX `header`, and a `[[slots]]` entry for each slot with its `job`, its `reason` and the workflow it applies to. A repo without that file has its targets and header read from the `release.yml` it already carries and declares no slot, so the check runs anywhere without preparing the repo first; a repo with a slot adds the file so that its slot reads as declared rather than as drift.
+
 Left in place, `TARGET_JOBS` fails `actionlint` and GitHub's own validation, so the workflow does not run at all: an unfinished assembly cannot half-publish. Run `actionlint` on the result before committing it.
 
-A difference from a part is judged, not forbidden. State every difference in the repo's pull request with its reason. A need of that repo alone is documented in the repo as its slot, in a comment at the job or in its `docs/decisions.md`: paper-boxing's three-image matrix and jonobones's scoped alias are the cases today. A difference that improves the part goes back into the handbook's part by a handbook pull request, and the other repos take it at their next re-assembly where it improves them. Only a mistaken or unexplained difference is corrected. `convention-auditor` reports each undocumented difference for that judgement rather than as a defect. A repo not yet re-assembled is a separate case: it still carries a copy of one of the templates the parts replaced (`release-node.yml`, `release-electron.yml`, `release-txt.yml`, `dev-release-electron.yml`, or a trimmed `release.yml` or `dev-release.yml`), under whatever name, and the auditor reports that as not yet re-assembled rather than as drift.
+A difference from a part is judged, not forbidden. State every difference in the repo's pull request with its reason. A need of that repo alone is documented in the repo as its slot, in a comment at the job or in its `docs/decisions.md`: paper-boxing's three-image matrix and jonobones's scoped alias are the cases today. A difference that improves the part goes back into the handbook's part by a handbook pull request, and the other repos take it at their next re-assembly where it improves them. Only a mistaken or unexplained difference is corrected. `convention-auditor` runs `assemble-workflows --check` rather than comparing by hand, and reports each undeclared difference for that judgement rather than as a defect. A repo not yet re-assembled is a separate case: it still carries a copy of one of the templates the parts replaced (`release-node.yml`, `release-electron.yml`, `release-txt.yml`, `dev-release-electron.yml`, or a trimmed `release.yml` or `dev-release.yml`), under whatever name, and the auditor reports that as not yet re-assembled rather than as drift.
 
 Notes that belong to CI:
 
