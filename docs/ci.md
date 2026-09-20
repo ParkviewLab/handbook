@@ -110,8 +110,9 @@ Every repo's release workflow is `.github/workflows/release.yml`, whatever the r
 The assembly is a concatenation: `head.yml`, `gate.yml`, the part of each target in the order `docker`, `pypi`, `npm`, `installers`, and then `changelog.yml`; for the documents target, `documents.yml` after the gate and nothing else. Then, in the `changelog` job, replace `TARGET_JOBS` in `needs:` with the target jobs, and delete the "Download all built installers" step unless the repo has the installers target. Add the SPDX header the repo's REUSE layout asks for. An image-only service, for instance:
 
 ```bash
-cd <handbook>/templates/.github/workflows/release
-cat head.yml gate.yml docker.yml changelog.yml > <repo>/.github/workflows/release.yml
+# from the repo's root, with H an absolute path to the handbook's parts
+H=<handbook>/templates/.github/workflows/release
+cat "$H"/head.yml "$H"/gate.yml "$H"/docker.yml "$H"/changelog.yml > .github/workflows/release.yml
 # then in that file: needs: [gate, docker], and no installers download step
 ```
 
@@ -142,7 +143,7 @@ A repo whose version lives in `VERSION.txt` (docs repos like this handbook, and 
 
 A dev build is for local testing, and it is optional: a repo has one or it has none. Where it has one, `.github/workflows/dev-release.yml` is assembled the same way from the parts in [`templates/.github/workflows/dev-release/`](../templates/.github/workflows/dev-release/): `head.yml`, `gate.yml`, and then the dev part of each of the repo's targets that has one, in the order `docker.yml`, `testpypi.yml`, `installers.yml`. npm has no dev part, as documents have none ([`releases.md`](releases.md#what-a-release-publishes)).
 
-It is **manually triggered** (`workflow_dispatch`) and run from `develop` (`gh workflow run dev-release.yml --ref develop`, or via `git dev-release`). The dev gate requires a dev marker on the version (`X.Y.Z.devN` or `X.Y.Z-devN`), refuses any ref but `develop`, and hands the version to the dev jobs. It creates **no `v*` tag**, so it never trips the `release.yml` gate, and it runs no changelog job. What each dev job publishes is its target's dev counterpart: the image tagged `dev`, with the dev version and `sha-<commit>` (never `latest`), the dev version on TestPyPI, or unsigned installers kept seven days as workflow artifacts.
+It is **manually triggered** (`workflow_dispatch`) and run from `develop` (`gh workflow run dev-release.yml --ref develop`, or via `git dev-release`). The dev gate requires a dev marker on the version (`X.Y.Z.devN` or `X.Y.Z-devN`), refuses any ref but `develop`, and makes the version available to the dev jobs, which the `docker` part reads. It creates **no `v*` tag**, so it never trips the `release.yml` gate, and it runs no changelog job. What each dev job publishes is its target's dev counterpart: the image tagged `dev`, with the dev version and `sha-<commit>` (never `latest`), the dev version on TestPyPI, or unsigned installers kept seven days as workflow artifacts.
 
 TestPyPI belongs to the PyPI target. A repo that publishes to PyPI and has dev builds needs its **own TestPyPI trusted publisher**, which differs from the PyPI one in two fields: it authorizes the workflow **`dev-release.yml`** (not `release.yml`) and the environment **`testpypi`** (not `pypi`). **TestPyPI is a separate instance from pypi.org** — its own account and login, and an org must be requested there independently; until that org is approved the publisher is a plain **individual-account** pending publisher, which is fine for a throwaway sandbox. Create a matching `testpypi` GitHub environment (no protection rules). A repo that does not publish to PyPI needs none of this. See [`releases.md`](releases.md#development-versioning).
 
