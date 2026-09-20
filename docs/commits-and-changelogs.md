@@ -26,7 +26,7 @@ These map to the branch prefixes in [`branching.md`](branching.md).
 
 ## `cliff.toml` — the canonical template, copied verbatim
 
-The categorization rules live in [`cliff.toml`](../templates/cliff.toml). It is the single source of truth; a repo that generates changelogs copies it **verbatim** — don't customise per-repo. (Rolling out across the family; today deco-assaying is the reference implementation.) Key settings:
+The categorization rules live in [`cliff.toml`](../templates/cliff.toml). It is the single source of truth; a repo that generates changelogs copies it **verbatim** — don't customise per-repo. Key settings:
 
 - `conventional_commits = true`, `filter_unconventional = true` (drop non-conforming commits), `filter_commits = true` (honour per-parser `skip`).
 - `commit_parsers` map each prefix to a group; `chore`/`ci`/`build`/`style`/`Merge` are `skip = true`.

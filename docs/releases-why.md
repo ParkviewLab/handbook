@@ -71,8 +71,12 @@ Agent wall-clock time, measured, for the record and to calibrate the next estima
 |---|---|---|
 | The rule, the parts and the pages | 4.5 h | 0.5 h |
 | The review and the fixes it found | 1.5 h | 0.75 h |
+| The release, with its preflight, currency check and two corrections | 0.5 h | 0.75 h |
+| The migration of the twelve repositories | 3 h | 0.75 h |
 
 The review's three quarters of an hour were 21 minutes of review, five lenses run as one workflow with each lens's findings checked by a fresh agent, nine agents in all; 10 minutes of fixes; and the coordinating session's verification between the two.
+
+The migration's three quarters of an hour cost 43 agents over eleven repositories, and one more run for jonobones. Almost every finding the auditor raised in them was no defect. That measurement is the evidence behind the later proposal to make dispatch an escalation rather than the floor, and to turn cross-repo propagation into a tool.
 
 ## Decision record
 
