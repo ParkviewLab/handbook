@@ -268,7 +268,7 @@ Testing, Python tooling, packaging, worktrees, merge safety:
 - A20 Add PERF and TRY to the ruff selector and an optional `pylock.toml` export (P3/M, augment). [29]
 - A21 Harden the uv-in-Docker template: non-root `USER`, the cache-split layers, a `HEALTHCHECK` against the existing `/health`, and a non-blocking image scan (P3/M, augment). [22]
 - A22 Add a per-worktree "run `uv sync`/`npm ci` on creation" convention (the one documented worktree footgun) (P2/S, preserve-bespoke). [25]
-- A23 Enable GitHub's native merge queue on the protected trunk and document an explicit hotfix procedure (branch off `main`, patch-tag, backport) (P2/S, augment). Cheap insurance; low urgency at current PR concurrency. [24]
+- A23 Enable GitHub's native merge queue on the protected trunk and document an explicit hotfix procedure (branch off `main`, patch-tag, backport) (P2/S, augment). Cheap insurance; low urgency at current PR concurrency. [24] **Landed in part** (2026-09-27): the hotfix half, by a procedure other than the one proposed here. [`releases.md`](releases.md#picking-a-merged-pull-request-onto-the-release-line)'s section "Picking a merged pull request onto the release line" picks a pull request already merged on `develop` whole onto `main` with `git cherry-pick -m 1`, releases it from there, and brings the release back through the checked back-merge pull request. The merge-queue half remains open.
 
 The visionOS profile (new ground; `vos-gspheres` is the reference, once its version-SoT is fixed):
 
@@ -315,7 +315,7 @@ On whether to combine or reorganize `handbook` and `dev-tools`, and what new hum
 
 ### Priority summary
 
-P1 (high value, low regret): A1, A2, A3, A4, A7, A8, A9, A10, A11, A13, A24, A25, B1, B2, C7a. P2: A5, A12, A14, A15, A16, A17, A18, A22, A23, A26, B3, B4 (landed in part), B5, B7, C1, C3, C6, C7b, D1 (D1 decided: keep two trunks; remaining work is automating the cascade). P3: A6, A19, A20, A21, B6, C2, C4, C5, C7c.
+P1 (high value, low regret): A1, A2, A3, A4, A7, A8, A9, A10, A11, A13, A24, A25, B1, B2, C7a. P2: A5, A12, A14, A15, A16, A17, A18, A22, A23 (landed in part), A26, B3, B4 (landed in part), B5, B7, C1, C3, C6, C7b, D1 (D1 decided: keep two trunks; remaining work is automating the cascade). P3: A6, A19, A20, A21, B6, C2, C4, C5, C7c.
 
 A natural first wave is the supply-chain and one-source-of-truth P1/S cluster (A1+A2, A3+A4, A7, A8, A9) plus the two governance foundations (B1, B2): all low-regret, mutually reinforcing, and each an instance of a pattern the org already trusts.
 
