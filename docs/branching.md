@@ -7,9 +7,11 @@ SPDX-License-Identifier: CC-BY-4.0
 
 ParkviewLab uses a two-trunk model — `develop` for integration, `main` for releases — with short-lived, **prefixed** working branches in ephemeral worktrees.
 
+Why the two trunks, why pull requests are merged with merge commits rather than squashed, and why the release comes back to `develop` through a pull request: [`branching-why.md`](branching-why.md) holds the alternatives set aside, the evidence and the dated rulings.
+
 ## The two permanent branches
 
-- **`develop`** — the integration trunk. Every working branch PRs into it. It is what `main` is promoted from.
+- **`develop`** — the integration trunk. Every working branch PRs into it, and nothing reaches it any other way: the release's back-merge and the dev cycle it opens arrive by a pull request too, so every commit on `develop` has passed the checks `develop` requires (see [`ci.md`](ci.md#required-checks-before-merge) and [`releases.md`](releases.md#after-the-release-the-back-merge-pull-request)). It is what `main` is promoted from.
 - **`main`** — the release-only surface. Tags live here; the only commits that land directly on `main` are the release bump+tag (and the CI changelog auto-commit). See [`releases.md`](releases.md).
 
 PRs target `develop`; releases are cut from `main`. (jonobones makes `develop` its GitHub *default* branch so PRs target integration by default; some older Python repos still default to `main` — the flow is the same either way.)
@@ -30,10 +32,13 @@ Working branches are named `<prefix>-<short-description>`, **hyphen not slash**.
 | `ci-` | `ci:` | Maintenance |
 | `build-` | `build:` | Maintenance |
 | `release-` | the `release vX.Y.Z` bump commit | _(left out by content where it is made on the trunk; a bump merged by pull request is listed under Other changes)_ |
+| `back-merge-` | `chore(release):` | _(left out: the pull request carries the `release-bookkeeping` label, which the notes exclude)_ |
 
 The **everyday four** are `feature-`, `bug-`, `doc-`, `ops-`. The rest exist for when a change is purely tests, CI, build plumbing, or a release bump.
 
-> **Key rule: the PR title carries the changelog prefix, not the branch.** Branches are **squash-merged**, so the *PR title* becomes the commit subject from which the changelog takes the title. A branch named `feature-foo` still needs a PR titled `feat: …` for it to be listed under Features. A title without a recognised prefix is listed whole under Other changes, which says nothing about what kind of change it is. See [`commits-and-changelogs.md`](commits-and-changelogs.md).
+`back-merge-` is not a prefix to type: the branch is `back-merge-<tag>` (`back-merge-v1.2.3`), and only `git back-merge` creates it, at the end of a release, with the pull request titled `chore(release): back-merge main into develop after <tag>` (see [`releases.md`](releases.md#after-the-release-the-back-merge-pull-request)). The hyphen is the table's rule, and it keeps the worktree a sibling directory rather than a nested one.
+
+> **Key rule: the PR title carries the changelog prefix, not the branch.** A PR is merged with a merge commit titled `<PR title> (#N)`, so the *PR title* becomes the commit subject from which the changelog takes the title. A branch named `feature-foo` still needs a PR titled `feat: …` for it to be listed under Features. A title without a recognised prefix is listed whole under Other changes, which says nothing about what kind of change it is. See [`commits-and-changelogs.md`](commits-and-changelogs.md).
 
 ## Working-branch lifecycle (ephemeral worktree)
 
@@ -51,28 +56,35 @@ uv sync                       # each worktree gets its own deps (or: npm ci)
 # Then sync the trunk worktree and clean up — see "After the merge" below.
 ```
 
-- Working branches **squash-merge** into `develop`: each PR collapses to a single commit whose subject is the PR title (with the `feat:`/`fix:`/… prefix by which the changelog groups it). That one dated commit is the record of *when the feature landed*; the branch's individual commits stay viewable on the PR. (A squash always creates a fresh commit, so `--no-ff` doesn't apply here.)
+- Working branches merge into `develop` **with a merge commit**: GitHub makes it with `--no-ff` and titles it `<PR title> (#N)` (with the `feat:`/`fix:`/… prefix by which the changelog groups it), and its message is the PR's description, so both are kept in the repo and not only on GitHub. That one dated commit on `develop`'s first-parent line is the record of *when the feature landed*, and the branch's own commits stay in the repo on the second-parent side.
 - Promotion `develop → main` is part of a **release**, not a reviewed PR: run from the CLI on `main` with `git merge --no-ff develop` (a merge commit → a dated per-release ledger via `git log --first-parent main`), then bump + tag + push. See [`releases.md`](releases.md).
 - Pulls are **`git pull --ff-only`** — never an implicit merge on pull.
 
 ## Tracking when a feature was added
 
-The two merge strategies above yield a dated history at three granularities:
+The merges above yield a dated history at three granularities:
 
-- **Per feature** — `git log --first-parent develop` is one line per squash commit (one per feature) plus one back-merge commit per release, each with its date. This holds because the cascade merges `main` into `develop` with `--no-ff` (see [`releases.md`](releases.md#after-the-release-the-back-merge-cascade-mandatory)); a fast-forward would replace the chain with `main`'s. In this handbook the cascade fast-forwarded from v0.8.5 to v0.14.0, so the chain below v0.14.0 is `main`'s release ledger; the per-feature ledger resumes at v0.15.0.
-- **Per release** — `git log --first-parent main` is one line per release merge commit.
+- **Per feature** — `git log --first-parent develop` is one line per pull request, its merge commit titled `<PR title> (#N)`, plus one per release, the merge of that release's back-merge pull request, each with its date. The chain holds because that pull request merges `main` into a branch of its own with `--no-ff` and is then merged by GitHub (see [`releases.md`](releases.md#after-the-release-the-back-merge-pull-request)); a fast-forward would replace the chain with `main`'s. In this handbook the back-merge fast-forwarded from v0.8.5 to v0.14.0, so the chain below v0.14.0 is `main`'s release ledger; the per-feature ledger resumes at v0.15.0.
+- **Per release** — `git log --first-parent main` is one line per release merge commit, the promotion, with that release's `release vX.Y.Z` bump and, where the release writes one, its `docs(changelog):` commit on the same chain.
 - **Per release, with contents** — annotated, dated tags (`git tag --list 'v*'`) and the dated sections of `CHANGELOG.md`, which group each release's features.
+
+A branch's own commits are in the history too, on the second-parent side of its merge, and so are the merges of `develop` into it that the up-to-date rule forces before it can be merged ([`ci.md`](ci.md#required-checks-before-merge)). Three consequences:
+
+- **Bisect on the first-parent line.** `git bisect start --first-parent <bad> <good>` keeps the search to the pull-request merges, so it tests one pull request at a time and never stops on a working commit that never built. A plain `git log`, `git bisect` or `git blame` walks the branch commits, which is what makes blame attribute a line to the commit that wrote it rather than to a whole pull request.
+- **Reverting a merged PR is `git revert -m 1 <merge>`**, which undoes the whole pull request against its first parent. The same branch cannot then simply be merged again — git sees it as already merged — so its changes return only by reverting the revert. The release that brings them back lists them as the pull request that reverted the revert, or under Direct commits where a direct commit re-applies them (`git cherry-pick -x` included), never as the original pull request again (see [`commits-and-changelogs.md`](commits-and-changelogs.md#how-a-releases-list-is-built)).
+- **Tidying a branch is allowed and not required.** Rebase it, squash or reword its commits before its PR merges if that leaves a clearer history; a branch that was committed as the work went is fine as it is. A tidy is a force push of the working branch, which needs its own go-ahead ([`ai-collaboration.md`](ai-collaboration.md#shared-state-writes-need-explicit-authorization)).
 
 ## Who merges
 
-The repo is configured **squash-only** (merge-commit and rebase merges are disabled), so a PR's merge button can only squash — there's no wrong option to pick. Set new repos up the same way; see [`ci.md`](ci.md#repo-merge-settings).
+The repo is configured **merge-commit only** (squash and rebase merges are disabled), so a PR's merge button can only make a merge commit — there's no wrong option to pick. Set new repos up the same way; see [`ci.md`](ci.md#repo-merge-settings).
 
-- **Feature PR → `develop`:** opened by anyone (including AI devs); a **human reviews and squash-merges** it (the merge button, or `gh pr merge <n> --squash`) once the **required checks are green** — branch protection keeps the button disabled until they pass (see [`ci.md`](ci.md#required-checks-before-merge)). Merged branches auto-delete. A broad directive ("fix all that", "finish it") authorises the *work*, not the merge.
-- **`develop → main`:** done from the CLI as part of a **release**, not a reviewed PR. A single release authorisation ("do the release") covers the whole flow — including the `git merge --no-ff develop` promotion — with no second approval. See [`ai-collaboration.md`](ai-collaboration.md) and [`releases.md`](releases.md).
+- **Feature PR → `develop`:** opened by anyone (including AI devs); a **human reviews and merges** it (the merge button, or `gh pr merge <n> --merge`) once the **required checks are green** — branch protection keeps the button disabled until they pass (see [`ci.md`](ci.md#required-checks-before-merge)). Merged branches auto-delete. A broad directive ("fix all that", "finish it") authorises the *work*, not the merge.
+- **The back-merge PR → `develop`:** merged by whoever runs the release, under that release's authorisation, because it is the release's last step and not a feature PR. `git back-merge` opens it, waits for `develop`'s required checks on its head, and merges it with `gh pr merge <n> --merge --match-head-commit <sha>`, never with `--admin`, so the commit that lands is the one the checks examined. The version guard's back-merge mode is what reviews it: it admits the released state of `main` and, in a code repo, the open-cycle bump, and nothing else (see [`ci.md`](ci.md#version-guardyml--version-sot-unchanged-every-repo) and [`releases.md`](releases.md#after-the-release-the-back-merge-pull-request)).
+- **`develop → main`:** done from the CLI as part of a **release**, not a reviewed PR. A single release authorisation ("do the release") covers the whole flow — including the `git merge --no-ff develop` promotion and the back-merge PR's merge — with no second approval. See [`ai-collaboration.md`](ai-collaboration.md) and [`releases.md`](releases.md).
 
 ## After the merge
 
-Two steps follow a merge, and they have different owners. The **sync** belongs to whoever performed the merge — the squash merge of a PR, but equally the release promotion and the back-merge, which have no PR author at all. The **cleanup** belongs to whoever opened the pull request (in parallel work, the coordinator — see [`parallel-work.md`](parallel-work.md)). Do each as soon as the merge is confirmed, alongside the release prompt ([`ai-collaboration.md`](ai-collaboration.md#shared-state-writes-need-explicit-authorization)).
+Two steps follow a merge, and they have different owners. The **sync** belongs to whoever performed the merge — a feature PR's merge, the back-merge PR's (which `git back-merge` performs and syncs itself), and the release promotion, which alone has no PR author at all. The **cleanup** belongs to whoever opened the pull request (in parallel work, the coordinator — see [`parallel-work.md`](parallel-work.md)). Do each as soon as the merge is confirmed, alongside the release prompt ([`ai-collaboration.md`](ai-collaboration.md#shared-state-writes-need-explicit-authorization)).
 
 ### Sync the trunk worktree
 
@@ -91,18 +103,18 @@ The release flow already syncs both trunks before promoting: a stale local `deve
 
 Do this when no further work on that branch is expected; **keep the worktree when it is**. Leaving one isn't free: each worktree carries its own installed dependencies (`uv sync` / `npm ci`), hundreds of megabytes routinely — 241 MB of `node_modules` in the case that prompted this rule.
 
-> **A squash merge breaks the ancestry test.** The squash is a *fresh* commit, so the branch tip is never an ancestor of the trunk, and `git branch -d` answers a different question than the one asked. It tests the branch against its configured upstream first, so while `origin/<branch>` still exists it **succeeds** (the branch was pushed with `-u` at creation and the upstream matches); once a `git fetch --prune` has dropped that ref it falls back to `HEAD` and **refuses**. Neither answer says whether the work landed. **Verify from the pull request.**
+> **The ancestry test answers the question.** A merge commit keeps both parents, so once the PR has merged the branch tip is an ancestor of `develop`, and `git merge-base --is-ancestor` answers exactly what is asked: did this branch's work land? The exception is a branch whose PR was **squash-merged before its repo's switch** to merge commits ([`releases.md`](releases.md#until-a-repository-has-switched)): the squash is a *fresh* commit, so that tip is never an ancestor of the trunk, and neither the ancestry test nor `git branch -d` says whether the work landed. **Verify such a branch from its pull request** (`gh pr view <n> --json state,mergedAt` — "MERGED" with a date).
 
 ```bash
 # from the develop worktree, with the trunk already synced:
-gh pr view <n> --json state,mergedAt   # "MERGED" with a date — the authoritative answer
+git fetch --prune origin                                # drops origin/<branch>, deleted at the merge
+git merge-base --is-ancestor <branch> origin/develop    # exit 0 — the work landed
 git worktree remove ../<repo>-<branch>
-git branch -D <branch>
+git branch -d <branch>
 git push origin --delete <branch>      # only if the remote ref still exists
 ```
 
-- **`-D`, not `-d`**, per the note above: `-d`'s verdict is unrelated to whether the work landed, so delete unconditionally and let the PR state be the gate.
-- **`git diff --stat origin/develop origin/<branch>`** is a quick confirmation, not a check, and the asymmetry matters: *empty* output proves the trees are identical and the work landed, but non-empty proves nothing, since the trunk's own later commits show in the diff — the normal case once anything else has merged. After a fetch has pruned `origin/<branch>` it doesn't run at all (`unknown revision`).
+- **The prune comes first, and then `-d` asks the right question.** `git branch -d` tests the branch against its configured upstream where it has one, so while `origin/<branch>` still exists it succeeds whatever `develop` holds; after the prune it falls back to `HEAD`, which in the `develop` worktree is the synced trunk, and its verdict is the ancestry test's. Keep the explicit `git merge-base --is-ancestor` all the same: it names the branch it compares against, and it is the form a script or an agent can read the exit status of.
 - **`git worktree remove` refuses while the worktree holds modified or untracked, non-ignored files** (a gitignored `node_modules`/`.venv` doesn't block it); `--force` removes it anyway, so look at what those files are first. `git worktree prune` isn't needed after a successful removal — it's the repair for a worktree directory deleted by hand, whose administrative entry it clears.
 - The last line is usually unnecessary: the remote branch is already gone, and the local `origin/<branch>` left behind is merely stale, which `git fetch --prune` clears.
 
