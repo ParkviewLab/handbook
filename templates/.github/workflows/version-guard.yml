@@ -1,9 +1,23 @@
 name: Version guard
 
-# Feature PRs into `develop` must NOT change the version source-of-truth — the
-# bump happens at release, on `main` (see the handbook's releases.md / ci.md).
-# The release back-merge (main→develop) is a direct push, not a PR, so it is not
-# subject to this check.
+# The one required context `no-version-change`, in one job with two modes (see
+# the handbook's releases.md and ci.md).
+#
+# Ordinary mode, for every pull request into `develop` but a back-merge: a feature
+# PR must NOT change the version source-of-truth; the bump happens at release, on
+# `main`. A version file the base branch does not yet have is new, not bumped, and
+# passes.
+#
+# Back-merge mode, for a pull request from this repository (never a fork) whose
+# branch is `back-merge-vX.Y.Z`: the release comes back into `develop` through that
+# pull request, which `git back-merge` opens, and dev-tools' `back-merge-check`,
+# checked out at a pinned release, verifies that it brings the released state of
+# `main` and, in a code repository, the open-cycle commit, and nothing else. The
+# mode is chosen inside the one job, since a second job skipped by `if:` would
+# report success; the branch name selects the mode and grants nothing.
+#
+# A repository that has not yet switched to merge commits ends its release with
+# the direct back-merge, which this check does not see.
 
 on:
   pull_request:
@@ -18,26 +32,75 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          fetch-depth: 0        # every branch and tag in full; nothing re-fetches develop shallow
+      - name: Select the mode
+        id: mode
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          SAME_REPO: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        run: |
+          mode=ordinary
+          case "$HEAD_REF" in back-merge-v*) [ "$SAME_REPO" = true ] && mode=back-merge ;; esac
+          echo "mode: $mode"
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
       - name: Version SoT must be unchanged
+        if: steps.mode.outputs.mode == 'ordinary'
         env:
           BASE: ${{ github.base_ref }}
         run: |
           fail=0
           flag() { echo "::error::$1 changed in a feature PR — version bumps happen at release on main, not in feature work (handbook releases.md)."; fail=1; }
+          new_file() { echo "$1 is new in this PR (origin/$BASE has none): a first introduction is not a bump."; }
           if [ -f VERSION.txt ]; then
-            old=$(git show "origin/$BASE:VERSION.txt" 2>/dev/null || echo "")
-            [ "$(cat VERSION.txt)" = "$old" ] || flag VERSION.txt
+            if git cat-file -e "origin/$BASE:VERSION.txt" 2>/dev/null; then
+              old=$(git show "origin/$BASE:VERSION.txt")
+              [ "$(cat VERSION.txt)" = "$old" ] || flag VERSION.txt
+            else
+              new_file VERSION.txt
+            fi
           fi
           if [ -f pyproject.toml ]; then
-            new=$(grep -E '^version *=' pyproject.toml | head -1 || true)
-            old=$(git show "origin/$BASE:pyproject.toml" 2>/dev/null | grep -E '^version *=' | head -1 || true)
-            [ "$new" = "$old" ] || flag "pyproject.toml [project].version"
+            if git cat-file -e "origin/$BASE:pyproject.toml" 2>/dev/null; then
+              new=$(grep -E '^version *=' pyproject.toml | head -1 || true)
+              old=$(git show "origin/$BASE:pyproject.toml" | grep -E '^version *=' | head -1 || true)
+              [ "$new" = "$old" ] || flag "pyproject.toml [project].version"
+            else
+              new_file pyproject.toml
+            fi
           fi
           if [ -f package.json ]; then
-            new=$(grep -E '"version"' package.json | head -1 || true)
-            old=$(git show "origin/$BASE:package.json" 2>/dev/null | grep -E '"version"' | head -1 || true)
-            [ "$new" = "$old" ] || flag "package.json version"
+            if git cat-file -e "origin/$BASE:package.json" 2>/dev/null; then
+              new=$(grep -E '"version"' package.json | head -1 || true)
+              old=$(git show "origin/$BASE:package.json" | grep -E '"version"' | head -1 || true)
+              [ "$new" = "$old" ] || flag "package.json version"
+            else
+              new_file package.json
+            fi
+          fi
+          if [ -f Cargo.toml ]; then
+            # The first top-level `version =` line: [package].version in a single
+            # crate, [workspace.package].version in a workspace.
+            if git cat-file -e "origin/$BASE:Cargo.toml" 2>/dev/null; then
+              new=$(grep -E '^version *=' Cargo.toml | head -1 || true)
+              old=$(git show "origin/$BASE:Cargo.toml" | grep -E '^version *=' | head -1 || true)
+              [ "$new" = "$old" ] || flag "Cargo.toml version"
+            else
+              new_file Cargo.toml
+            fi
           fi
           if [ "$fail" = 0 ]; then echo "version unchanged ✓"; fi
           exit $fail
+      - uses: actions/checkout@v6
+        if: steps.mode.outputs.mode == 'back-merge'
+        with:
+          repository: ParkviewLab/dev-tools
+          ref: 9731fed1572553e368f6b2a77cc0a7d82fd94627 # v1.4.0
+          path: dev-tools
+      - name: The back-merge brings the release and nothing else
+        if: steps.mode.outputs.mode == 'back-merge'
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_REF: ${{ github.head_ref }}
+        # The base is the synthetic merge's first parent, the develop tip this run
+        # was tested against; the head is the pull request's head, never HEAD.
+        run: dev-tools/scripts/back-merge-check "$(git rev-parse HEAD^1)" "$HEAD_SHA" origin/main "${HEAD_REF#back-merge-}"

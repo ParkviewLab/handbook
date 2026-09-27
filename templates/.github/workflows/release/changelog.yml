@@ -22,7 +22,7 @@
       - uses: actions/checkout@v6
         with:
           repository: ParkviewLab/dev-tools
-          ref: b9f15071cb5bd454440b3e38c2c838c9346bf50b # v1.3.0
+          ref: 9731fed1572553e368f6b2a77cc0a7d82fd94627 # v1.4.0
           path: dev-tools
 
       # Installers target only: omit this step where the release builds none.
