@@ -25,7 +25,7 @@ This is the decision the rest follows from. The workflow triggers on **push to `
 
 Because `main` advances only at a release ([`branching.md`](branching.md)), **what the site says is what the newest release ships**. That is the point: a visitor reading the documentation site is reading the documentation for the version they can download.
 
-The deploy fires on the release push (the promotion, bump, and tag) and **not** on the changelog commit CI makes afterwards, which carries `[skip ci]` ([`ci.md`](ci.md#releaseyml--on-v-tag-push)). So the published site is built from the release commit, before that changelog commit lands on `main`.
+The deploy fires on the release push (the promotion, or for a hotfix the pick, with the bump and the tag) and **not** on the changelog commit CI makes afterwards, which carries `[skip ci]` ([`ci.md`](ci.md#releaseyml--on-v-tag-push)). So the published site is built from the release commit, before that changelog commit lands on `main`.
 
 The cost is explicit, and worth stating before adopting it:
 
