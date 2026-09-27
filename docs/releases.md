@@ -223,7 +223,7 @@ The back-merge lands by a pull request rather than by a direct push, because a d
 
 A repository has **switched** when it allows merge commits as its only merge method and its `version-guard.yml` carries the back-merge mode. Its switch pull request, which brings that guard, merges before its merge settings change, so a repository that allows merge commits carries the guard too. `git back-merge` therefore reads only that setting, `allow_merge_commit`, which GitHub returns only to a caller with admin rights on the repository; where it cannot read the setting, it stops. It finds this section by its exact heading and quotes it where it refuses, so the heading is not renamed whilst any repository needs the section.
 
-Until a repository has switched, its release ends as it always has, by direct push under the administrators' bypass:
+Until a repository has switched, its release ends as it always has, by direct push. Its `develop` binds administrators, as every protected `develop` does since 2026-09-27 ([`branching-why.md`](branching-why.md#2026-09-27-the-rollout-and-administrators-bound-at-once)), so `enforce_admins` is switched off before the first push below, with `gh api -X DELETE repos/<owner>/<repo>/branches/develop/protection/enforce_admins`, and on again after the last, with the same path and `-X POST` ([`ci.md`](ci.md#required-checks-before-merge)):
 
 ```bash
 # in the <repo>-main worktree, after `gh run watch` shows the whole workflow green:
