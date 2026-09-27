@@ -131,6 +131,12 @@ The thirteen repositories that run the version guard switch in the order the bui
 
 `pensa-forma` switches with its first release rather than with the other code repositories, because its version lives in `Cargo.toml`: both the back-merge's check and the open cycle read the version file, and its first release needs that reading in any case.
 
+## 2026-09-27: a head that `develop` has moved beyond
+
+Ruled 2026-09-27, restating what the design requires rather than changing it: a head that `develop` has moved beyond is never merged, and `git back-merge` rebuilds the branch from the new `develop`, whichever check stops it. Where the repository requires branches to be up to date there are two, and the earlier wording named only the second: the command's own test, before it asks for the merge, that `origin/develop` is an ancestor of the head, and GitHub's refusal of an out-of-date merge if it does ask. The command tries three rebuilds and then leaves the pull request open. Where a repository does not require up-to-date branches there is nothing to rebuild for: GitHub's merge carries the newer `develop`, and what the back-merge brings is still exactly what the check examined.
+
+Set aside: test-only code in the released script, to suppress its own check so that GitHub's refusal could be exercised deliberately. A released command would then carry a path that exists for its test, and GitHub's refusal is covered by `dev-tools`' own tests, where the fake GitHub answers as GitHub does.
+
 ## Decision record
 
 | Date | Decision | Ruling |
@@ -149,3 +155,4 @@ The thirteen repositories that run the version guard switch in the order the bui
 | 2026-09-26 | The three points the design left inconsistent | An existing head is current only if the check passes on it; the transition section is found by its exact heading; `git dev-release` refuses a committing dev build after a switch |
 | 2026-09-26 | The repositories the rule reaches | `vos-gspheres` under it and bound at its switch; `yucca-basing` left as it is; `hazel-tracking` at its creation; `pvl-dotview` at its alignment; `pensa-forma` with its first release |
 | 2026-09-27 | The dev version before a first release | The target is the version file's own version with any dev marker removed, and the kind is not used |
+| 2026-09-27 | A head that `develop` has moved beyond | Never merged: the command rebuilds from the new `develop`, whichever check stops it, and gives up after three rebuilds; test-only code to force GitHub's refusal set aside |
