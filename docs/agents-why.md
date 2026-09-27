@@ -156,7 +156,7 @@ What the change costs, stated so that it can be reopened. The session's context 
 | 2026-09-18 | An agent team with the librarian for every coder or every dispatch | Declined: a teammate is a full session, idle for most tasks, and agent teams are experimental |
 | 2026-09-18 | Where a small addition to the set is proposed | In the plan of the change that builds it, and ruled on there, as an alternative to the wiki's Proposals shelf, what stays open of such an addition going to `in-flight_ideas.md`; the rule on changing the set amended to say so |
 | 2026-09-18 | The dispatch skill's copy of the rule | Cut back to the procedure, pointing to `agents.md` for the rule itself, so the rule has one source; a copy of the rule kept in step with this page by editing both together declined |
-| 2026-09-19 | The catalog's chapter for deleted books | Renamed from Withdrawn to Removed, the owner's ruling recorded on the catalog's vocabulary page; it keeps the entries of completed proposals and of withdrawn ones |
+| 2026-09-19 | The catalog's chapter for deleted books | Renamed from Withdrawn to Removed, as ruled and recorded on the catalog's vocabulary page; it keeps the entries of completed proposals and of withdrawn ones |
 | 2026-09-19 | The premise of the dispatch rule | Usage is a constraint alongside wall-clock time; dispatch is an escalation, not the floor |
 | 2026-09-19 | The main session's model and effort | No fixed default; the level decides, and the session states its choice at the start |
 | 2026-09-19 | `checks-runner` | Kept, and bounded to large output and to a failing check that needs diagnosis |
