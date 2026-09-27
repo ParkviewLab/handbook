@@ -31,7 +31,9 @@ A title of the form `type(scope)!: description` is grouped by its type. The scop
 
 The groups appear in this order, and a group with nothing in it is left out; a release with nothing to list reads `_No changes._`. A breaking-change footer is a line beginning `BREAKING CHANGE:` or `BREAKING-CHANGE:`, in the pull request's description or in the message of any of its commits. The types map to the branch prefixes in [`branching.md`](branching.md).
 
-> The PR title is what matters. PRs are squash-merged, so the PR title becomes the subject of the commit GitHub makes, and the list takes the title from that commit. A title without a recognised type is not dropped: it is listed whole under Other changes, where its place in the list says nothing about what kind of change it is. So: prefix your PR titles. No check enforces the prefix, and retitling a PR after its merge does not change the commit, so correct a title before merging.
+> The PR title is what matters. GitHub titles the merge commit it makes `<PR title> (#N)`, and the list takes the title from that commit. A title without a recognised type is not dropped: it is listed whole under Other changes, where its place in the list says nothing about what kind of change it is. So: prefix your PR titles. No check enforces the prefix, and retitling a PR after its merge does not change the commit, so correct a title before merging.
+
+> A `BREAKING CHANGE:` footer belongs in **the pull request's description**. The merge commit's message is that description, whereas a footer written in one branch commit reaches no commit that represents the pull request. The script looks in both — the description and each of the pull request's own commits — so a footer in a commit is still found, but the description is where it is certain to travel with the release.
 
 ## How a release's list is built
 

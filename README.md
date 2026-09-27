@@ -18,9 +18,10 @@ Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/
 | [northstar.md](docs/northstar.md) · [.html](docs/northstar.html) | Methodology intents + axioms |
 | [repo-layout.md](docs/repo-layout.md) | Contained, repo-prefixed worktree layout, required contents, repo naming |
 | [branching.md](docs/branching.md) | Two-trunk model, branch prefixes, ephemeral worktrees, merge flow |
+| [branching-why.md](docs/branching-why.md) | Why the branching and merge model is what it is: the measurement, the alternatives set aside, and the dated rulings |
 | [commits-and-changelogs.md](docs/commits-and-changelogs.md) | Conventional Commits, dev-tools' `generate-changelog` and the list it builds from merged pull requests, the LLM-Highlights changelog |
 | [commits-and-changelogs-why.md](docs/commits-and-changelogs-why.md) | Why the changelog is generated as it is: the measurement, the alternatives set aside, and the dated rulings |
-| [releases.md](docs/releases.md) | What a release publishes, version single-source-of-truth, `git bump`/`git release`, the gate, back-merge cascade |
+| [releases.md](docs/releases.md) | What a release publishes, version single-source-of-truth, `git bump`/`git release`, the gate, the back-merge pull request |
 | [releases-why.md](docs/releases-why.md) | Why a release carries the jobs it does: the ruling, the alternatives set aside, and the dated decisions |
 | [python-tooling.md](docs/python-tooling.md) | uv + ruff + ty + hatchling, the `pyproject.toml` shape |
 | [node-tooling.md](docs/node-tooling.md) | npm + TypeScript + ESLint + Vitest, the `package.json` shape |
@@ -66,7 +67,7 @@ Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/
 
 ## Contributing
 
-This handbook is developed through the flow it prescribes. Work happens on a prefixed working branch (`doc-<topic>` for most changes) in an ephemeral worktree off `develop`, pushed when it is created and after each commit. A working branch is a proposal: it becomes a pull request into `develop`, titled with the Conventional Commit prefix, and a person reviews and squash-merges it. Releases are cut from `main` with the CLI flow in [releases.md](docs/releases.md); `main` is the released handbook, and what every repo's pointer files reference. A change of intent amends [docs/northstar.md](docs/northstar.md) in the same pull request ([documentation.md](docs/documentation.md), "The northstar leads"). See [branching.md](docs/branching.md) and [ai-collaboration.md](docs/ai-collaboration.md).
+This handbook is developed through the flow it prescribes. Work happens on a prefixed working branch (`doc-<topic>` for most changes) in an ephemeral worktree off `develop`, pushed when it is created and after each commit. A working branch is a proposal: it becomes a pull request into `develop`, titled with the Conventional Commit prefix, and a person reviews and merges it with a merge commit titled with that title and the pull request's number. Releases are cut from `main` with the CLI flow in [releases.md](docs/releases.md); `main` is the released handbook, and what every repo's pointer files reference. A change of intent amends [docs/northstar.md](docs/northstar.md) in the same pull request ([documentation.md](docs/documentation.md), "The northstar leads"). See [branching.md](docs/branching.md) and [ai-collaboration.md](docs/ai-collaboration.md).
 
 ## License
 
