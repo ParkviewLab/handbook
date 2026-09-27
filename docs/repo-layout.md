@@ -84,7 +84,7 @@ The two permanent worktrees are read-mostly: `<repo>-main` is the release surfac
 git -C <repo>.git worktree add ../<repo>-<branch> -b <branch> develop
 ```
 
-Never edit or commit directly in the permanent checkouts. See [`branching.md`](branching.md) for the branch prefixes.
+Never edit or commit directly in the permanent checkouts, beyond what the flow itself prescribes there: the release's own commits in `<repo>-main`, listed above, and two direct back-merges made in `<repo>-develop`. One is the direct back-merge of a repository that has not switched to merge commits, with the commits `git dev-release` makes there until the switch ([`releases.md`](releases.md#until-a-repository-has-switched)); the other, after the switch, is the exception's direct back-merge, made where `git back-merge` refuses and neither repair of the history applies, whose next dev cycle `git dev-release --open --direct` commits after the merge ([`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)). See [`branching.md`](branching.md) for the branch prefixes.
 
 ### Ephemeral `.claude` state lives at the container root
 
