@@ -11,10 +11,10 @@ Why the two trunks, why pull requests are merged with merge commits rather than 
 
 ## The two permanent branches
 
-- **`develop`** — the integration trunk. Every working branch PRs into it, and nothing reaches it any other way: the release's back-merge and the dev cycle it opens arrive by a pull request too, so every commit on `develop` has passed the checks `develop` requires (see [`ci.md`](ci.md#required-checks-before-merge) and [`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)). It is what `main` is promoted from.
-- **`main`** — the release-only surface. Tags live here; the only commits that land directly on `main` are the release bump+tag (and the CI changelog auto-commit). See [`releases.md`](releases.md).
+- **`develop`** — the integration trunk. Every working branch PRs into it, and in the flow nothing reaches it any other way: the release's back-merge and the dev cycle it opens arrive by a pull request too, so nothing the flow writes to `develop` bypasses the checks `develop` requires (see [`ci.md`](ci.md#required-checks-before-merge) and [`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)). Two kinds of write lie outside the flow: an emergency write, such as the repair of a version-line conflict, pushed directly with administrators unbound for it where they are bound; and, in a repo that has not switched, the release's direct pushes ([`releases.md`](releases.md#until-a-repository-has-switched)). It is what `main` is promoted from.
+- **`main`** — the release-only surface. Tags live here, and only a release's own commits land on `main`: the promotion's merge commit, the release bump that is tagged, the CI changelog auto-commit where the release writes one, and, for a hotfix, a merged pull request picked onto it whole. See [`releases.md`](releases.md).
 
-PRs target `develop`; releases are cut from `main`. (jonobones makes `develop` its GitHub *default* branch so PRs target integration by default; some older Python repos still default to `main` — the flow is the same either way.)
+PRs target `develop`; releases are cut from `main`. `develop` is every repo's GitHub *default* branch, so a PR targets integration by default; a website's default branch is `staging` ([`website.md`](website.md)).
 
 > **Consume `main`, not `develop`.** Because `main` only advances at a release, its tip is always the latest **released** state — so that's what to depend on: the published artifact (a package, an image or an installer) or a `vX.Y.Z` tag, and `main` (or a tag) for read-consumed repos like this handbook. `develop` is integration and may be ahead of the last release / mid-change. Pin a `vX.Y.Z` tag when you need an exact, immutable reference.
 
@@ -32,7 +32,7 @@ Working branches are named `<prefix>-<short-description>`, **hyphen not slash**.
 | `ci-` | `ci:` | Maintenance |
 | `build-` | `build:` | Maintenance |
 | `release-` | the `release vX.Y.Z` bump commit | _(left out by content where it is made on the trunk; a bump merged by pull request is listed under Other changes)_ |
-| `back-merge-` | `chore(release):` | _(left out: the pull request carries the `release-bookkeeping` label, which the notes exclude)_ |
+| `back-merge-` | `chore(release):` | _(left out: the changelog job's notes leave out a pull request by its `back-merge-vX.Y.Z` head branch, and a documents repo's generated notes by its `release-bookkeeping` label)_ |
 
 The **everyday four** are `feature-`, `bug-`, `doc-`, `ops-`. The rest exist for when a change is purely tests, CI, build plumbing, or a release bump.
 
@@ -64,7 +64,7 @@ uv sync                       # each worktree gets its own deps (or: npm ci)
 
 The merges above yield a dated history at three granularities:
 
-- **Per feature** — `git log --first-parent develop` is one line per pull request, its merge commit titled `<PR title> (#N)`, plus one per release, the merge of that release's back-merge pull request, each with its date. The chain holds because that pull request merges `main` into a branch of its own with `--no-ff` and is then merged by GitHub (see [`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)); a fast-forward would replace the chain with `main`'s. In this handbook the back-merge fast-forwarded from v0.8.5 to v0.14.0, so the chain below v0.14.0 is `main`'s release ledger; the per-feature ledger resumes at v0.15.0.
+- **Per feature** — `git log --first-parent develop` is one line per pull request, its merge commit titled `<PR title> (#N)`, plus one per release, the merge of that release's back-merge pull request, each with its date. The chain holds because GitHub merges every pull request, the back-merge's included, with a merge commit whose first parent is `develop`'s tip, so `main`'s release ledger stays on the second-parent side. The back-merge branch's own `git merge --no-ff` has another reason: without it, where no PR merged during the release, the branch would fast-forward onto `main`'s tip, the `[skip ci]` changelog commit where the release writes one, and so lack the merge commit of its own that `back-merge-check` requires (see [`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)). In this handbook the back-merge fast-forwarded from v0.8.5 to v0.14.0, so the chain below v0.14.0 is `main`'s release ledger; the per-feature ledger resumes at v0.15.0.
 - **Per release** — `git log --first-parent main` is one line per release merge commit, the promotion, with that release's `release vX.Y.Z` bump and, where the release writes one, its `docs(changelog):` commit on the same chain.
 - **Per release, with contents** — annotated, dated tags (`git tag --list 'v*'`) and the dated sections of `CHANGELOG.md`, which group each release's features.
 
