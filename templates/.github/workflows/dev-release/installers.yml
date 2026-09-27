@@ -15,6 +15,11 @@
         with:
           node-version: 24.x
           cache: npm
+      - name: Set the dev version in the workspace (nothing is committed)
+        shell: bash
+        env:
+          VERSION: ${{ needs.gate.outputs.version }}
+        run: npm version "$VERSION" --no-git-tag-version --allow-same-version --ignore-scripts
       - run: npm ci
       # electron 43 ships no install script, so `npm ci` does not extract its prebuilt.
       # dist/ is otherwise filled lazily on first require, which `npm run legal` never

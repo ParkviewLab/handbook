@@ -12,6 +12,11 @@
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
 
+      - name: Set the dev version in the workspace (nothing is committed)
+        env:
+          VERSION: ${{ needs.gate.outputs.version }}
+        run: uv version --no-sync "$VERSION"   # pyproject.toml and uv.lock together
+
       - name: Build wheel + sdist
         run: uv build
 
