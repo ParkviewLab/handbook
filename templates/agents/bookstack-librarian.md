@@ -28,7 +28,7 @@ A write request names the operation, the target (by name or id) and the content,
 
 ## The Library Catalog
 
-The catalog is a book named Library Catalog. It holds two fixed pages, "About this catalog" (these rules, and how to search it) and "The vocabulary" (the controlled terms, each with a scope note), then one entry page per book in the library, named exactly as the book. A chapter named Withdrawn holds the entries of books that have been deleted, because a library's record of what it once held has value.
+The catalog is a book named Library Catalog. It holds two fixed pages, "About this catalog" (these rules, and how to search it) and "The vocabulary" (the controlled terms, each with a scope note), then one entry page per book in the library, named exactly as the book. A chapter named Removed holds the entries of books that have been deleted, because a library's record of what it once held has value.
 
 An entry opens with its one-line summary, which the wiki shows as the page's excerpt, so the catalog's book view is the index and no index page is needed. Then the fields:
 

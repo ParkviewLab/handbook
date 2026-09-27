@@ -20,7 +20,7 @@ ParkviewLab/                          ← org root: one container dir per repo
 ```
 
 - The container `repo_name/` is a **plain directory** — it holds the bare repo and the worktrees but has no `.git` of its own. The bare `repo_name.git/` is a **sibling** of the worktrees, not their parent, so git resolves each worktree's `.git` pointer directly and never walks up into the container. (This is why it does *not* trip the "never nest a worktree inside another worktree" rule.)
-- `repo_name-main/` and `repo_name-develop/` are **permanent** worktrees, never worked in directly — only the release bump+tag commit lands on `main`; everything else arrives in `develop` via merge.
+- `repo_name-main/` and `repo_name-develop/` are **permanent** worktrees, never worked in directly — only a release's own commits land on `main` (the promotion's merge commit, the release bump that is tagged, the CI changelog auto-commit where the release writes one, and, for a hotfix, a merged pull request picked onto it whole); everything else arrives in `develop` via merge.
 - Each working branch gets its **own ephemeral worktree**, a sibling of the permanent ones, named `<repo>-<branch>` (the branch keeps its prefix: `feature-foo` → `repo_name-feature-foo`) — see [`branching.md`](branching.md).
 - **Why repo-prefixed names?** The directory name is what an editor tab, terminal title, and recent-folders list show. `repo_name-develop` is unambiguous across the org; a bare `develop` is not. The cost — the repo segment appears twice in a full path (`repo_name/repo_name-develop`) — is hidden by tab-completion and editor tabs.
 - **Each worktree is independent for dependencies.** A fresh worktree needs its own `uv sync` (Python) or `npm ci` (Node) — the virtualenv / `node_modules` are not shared.
@@ -78,13 +78,13 @@ git still detects the bare *layout* structurally, so `fetch`, `worktree add`, an
 
 ### Never commit in `<repo>-main` / `<repo>-develop`
 
-The two permanent worktrees are read-mostly: `<repo>-main` is the release surface (only the release bump+tag commit lands there) and `<repo>-develop` is the integration trunk (PRs merge into it). **All real work happens in an ephemeral, prefixed working-branch worktree off `develop`:**
+The two permanent worktrees are read-mostly: `<repo>-main` is the release surface (only a release's own commits land there: the promotion's merge commit, the release bump that is tagged, the CI changelog auto-commit where the release writes one, and, for a hotfix, a merged pull request picked onto it whole) and `<repo>-develop` is the integration trunk (PRs merge into it). **All real work happens in an ephemeral, prefixed working-branch worktree off `develop`:**
 
 ```bash
 git -C <repo>.git worktree add ../<repo>-<branch> -b <branch> develop
 ```
 
-Never edit or commit directly in the permanent checkouts. See [`branching.md`](branching.md) for the branch prefixes.
+Never edit or commit directly in the permanent checkouts. In `<repo>-main` only the release's own commits are made, the ones listed above. In `<repo>-develop` three writes are made that the handbook prescribes outside the flow ([`branching.md`](branching.md#the-two-permanent-branches)), each committed there and pushed directly: in a repository that has not switched to merge commits, the release's direct back-merge, with the commits `git dev-release` makes there until the switch ([`releases.md`](releases.md#until-a-repository-has-switched)); the repair of a version-line conflict, which `git back-merge` names as decision 6 (a) ([`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)); and the exception's direct back-merge, with, in a code repo, the dev cycle that `git dev-release --open --direct` commits after it ([`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)). See [`branching.md`](branching.md) for the branch prefixes.
 
 ### Ephemeral `.claude` state lives at the container root
 
