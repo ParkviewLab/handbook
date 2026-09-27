@@ -5,12 +5,12 @@ name: Version guard
 #
 # Ordinary mode, for every pull request into `develop` but a back-merge: a feature
 # PR must NOT change the version source-of-truth; the bump happens at release, on
-# `main`. It compares the project's own version with the base's, read as
-# back-merge-check treats a line as the project's: [project].version in
-# pyproject.toml, the top-level version in package.json, [package].version (or
-# [workspace.package].version, in a workspace) in Cargo.toml, and VERSION.txt
-# whole. A version file the base branch does not yet have is new, not bumped, and
-# passes.
+# `main`. It compares the project's own version with the base's: [project].version
+# in pyproject.toml and the top-level version in package.json, as back-merge-check
+# reads them; in Cargo.toml, which back-merge-check does not read,
+# [package].version (or [workspace.package].version, in a workspace); and
+# VERSION.txt whole. A version file the base branch does not yet have is new, not
+# bumped, and passes.
 #
 # Back-merge mode, for a pull request from this repository (never a fork) whose
 # branch is `back-merge-vX.Y.Z`: the release comes back into `develop` through that
