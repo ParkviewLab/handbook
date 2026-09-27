@@ -16,7 +16,7 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 - [ ] Create the GitHub repo under `ParkviewLab/`.
 - [ ] Set up the local **contained, repo-prefixed worktree** layout (`<repo>.git` + `<repo>-main` + `<repo>-develop`). See [`repo-layout.md`](repo-layout.md#creating-the-layout).
 - [ ] Make `develop` the GitHub default branch (PRs target integration).
-- [ ] Configure **squash-only** merge settings (squash on; merge-commit + rebase off; `squash_merge_commit_title=PR_TITLE`; auto-delete branches). See [`ci.md`](ci.md#repo-merge-settings).
+- [ ] Configure **merge-commit-only** merge settings (merge commits on; squash + rebase off; `merge_commit_title=PR_TITLE` and `merge_commit_message=PR_BODY`; auto-delete branches). See [`ci.md`](ci.md#repo-merge-settings).
 
 ## 2. Language scaffold
 
@@ -40,7 +40,7 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 
 - [ ] Nothing to copy for the changelog: the release's `changelog` job runs dev-tools' `generate-changelog` at a pinned release. See [`commits-and-changelogs.md`](commits-and-changelogs.md).
 - [ ] Workflows from [`templates/.github/workflows/`](../templates/.github/workflows/): `reuse.yml` + `version-guard.yml` (**every** repo); the test workflow of the repo's stack (`test.yml`, or `test-node.yml` / `test-electron.yml`); `license-check.yml` where the repo's license requires it; `release.yml`, assembled from the parts of the repo's targets, and optionally `dev-release.yml`, assembled from their dev parts. A documents repo has no dev workflow and no `changelog` job; it has a test workflow only where it ships code, as dev-tools does for its scripts. Pin actions exactly; GHCR tags include `latest`. See [`ci.md`](ci.md#releaseyml--on-v-tag-push).
-- [ ] **Branch protection on `develop`:** mark the workflow checks as **required status checks** (so the merge button waits for green); **let admins bypass** so the release back-merge/promotion (direct pushes) aren't blocked. See [`ci.md`](ci.md#required-checks-before-merge).
+- [ ] **Branch protection on `develop`:** mark the workflow checks as **required status checks** (so the merge button waits for green). Nothing in the release flow needs a way round them — the promotion pushes `main`, and the back-merge arrives by a pull request — so **bind administrators** (`enforce_admins`) too: at once in a repo that will make no release, and otherwise once its first back-merge PR has merged, which proves the flow in that repo first. See [`ci.md`](ci.md#required-checks-before-merge).
 - [ ] **Branch protection on `main`:** block force pushes and deletions, nothing else (no required checks or reviews: the release flow pushes directly). See [`ci.md`](ci.md#repo-merge-settings).
 - [ ] Confirm the org `ANTHROPIC_API_KEY` secret is inherited.
 - [ ] Configure one **trusted publisher** per registry target: PyPI (workflow `release.yml`, environment `pypi`) and, where the repo has dev builds, TestPyPI (`dev-release.yml`, `testpypi`); npm (`release.yml`). The image, installers and documents targets need none.
@@ -68,4 +68,5 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 
 - [ ] `git bump` → `git release` → `git push --follow-tags` (from `main`).
 - [ ] `gh run watch` until the whole workflow, including the job that creates the Release, is green.
-- [ ] Back-merge cascade `main → develop → working branches`. See [`releases.md`](releases.md).
+- [ ] `git back-merge` — it opens the back-merge PR from `back-merge-<tag>`, waits for `develop`'s required checks and merges it, then fast-forwards the `develop` worktree and lists the open working branches to bring up to date. See [`releases.md`](releases.md#after-the-release-the-back-merge-pull-request).
+- [ ] Bind administrators on `develop` now that the first back-merge PR has merged (the `enforce_admins` call in [`ci.md`](ci.md#required-checks-before-merge)).
