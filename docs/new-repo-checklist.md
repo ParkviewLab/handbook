@@ -68,5 +68,5 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 
 - [ ] `git bump` → `git release` → `git push --follow-tags` (from `main`).
 - [ ] `gh run watch` until the whole workflow, including the job that creates the Release, is green.
-- [ ] `git back-merge` — it opens the back-merge PR from `back-merge-<tag>`, waits for `develop`'s required checks and merges it, then fast-forwards the `develop` worktree and lists the open working branches to bring up to date. See [`releases.md`](releases.md#after-the-release-the-back-merge-pull-request).
+- [ ] `git back-merge` — it opens the back-merge PR from `back-merge-<tag>`, waits for `develop`'s required checks and merges it, then fast-forwards the `develop` worktree and lists the open working branches to bring up to date. See [`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request).
 - [ ] Bind administrators on `develop` now that the first back-merge PR has merged (the `enforce_admins` call in [`ci.md`](ci.md#required-checks-before-merge)).

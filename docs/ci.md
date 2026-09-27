@@ -23,13 +23,13 @@ A PR can't merge into `develop` until its required checks are green — enforced
 
 (A docs repo like this handbook has no code, so it runs only `reuse` + `version guard` on PRs, and its release workflow, the documents target's, on a `v*` tag push; see below.)
 
-**Enforcement.** Add these as **required status checks** on `develop` (Settings → Branches, or `gh api`). The release does not need a way round them: the promotion pushes `main`, which carries no required checks, and the back-merge and the dev cycle it opens reach `develop` by a pull request that passes them ([`releases.md`](releases.md#after-the-release-the-back-merge-pull-request)). So nothing in the flow writes to `develop` outside its protection, and **administrators are bound on `develop`** once that repo's first back-merge PR has merged:
+**Enforcement.** Add these as **required status checks** on `develop` (Settings → Branches, or `gh api`). The release does not need a way round them: the promotion pushes `main`, which carries no required checks, and the back-merge and the dev cycle it opens reach `develop` by a pull request that passes them ([`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)). So nothing in the flow writes to `develop` outside its protection, and **administrators are bound on `develop`** once that repo's first back-merge PR has merged:
 
 ```bash
 gh api -X POST repos/<owner>/<repo>/branches/develop/protection/enforce_admins
 ```
 
-GitHub's rule is that a protection rule's restrictions do not apply to administrators by default, and that this setting applies them too. Binding changes nothing in the flow; it makes `develop`'s checks the gate for every write, including a mistaken one. A write in an emergency — the repair of a version-line conflict ([`releases.md`](releases.md#after-the-release-the-back-merge-pull-request)) — then needs the setting switched off and on again, which is an explicit change to the repo's settings rather than a routine consequence of the flow. Until a repo has switched, its release writes `develop` directly and the bypass stays ([`releases.md`](releases.md#until-a-repository-has-switched)).
+GitHub's rule is that a protection rule's restrictions do not apply to administrators by default, and that this setting applies them too. Binding changes nothing in the flow; it makes `develop`'s checks the gate for every write, including a mistaken one. A write in an emergency — the repair of a version-line conflict ([`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)) — then needs the setting switched off and on again, which is an explicit change to the repo's settings rather than a routine consequence of the flow. Until a repo has switched, its release writes `develop` directly and the bypass stays ([`releases.md`](releases.md#until-a-repository-has-switched)).
 
 ## Repo merge settings
 

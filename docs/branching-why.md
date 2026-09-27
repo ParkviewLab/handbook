@@ -31,7 +31,7 @@ Ruled 2026-09-18: removed at once, everywhere (one handbook pull request carryin
 
 ## 2026-09-18: real merges, and the release's back-merge by pull request
 
-The ruling of 18 September 2026: pull requests into `develop` are merged with real merge commits titled `<PR title> (#N)`, squash merging is disabled, and the release's back-merge and the dev cycle it opens reach `develop` through a checked pull request rather than a direct push. [`branching.md`](branching.md) and [`releases.md`](releases.md#after-the-release-the-back-merge-pull-request) state the rules; [`ci.md`](ci.md#repo-merge-settings) holds the settings and the guard.
+The ruling of 18 September 2026: pull requests into `develop` are merged with real merge commits titled `<PR title> (#N)`, squash merging is disabled, and the release's back-merge and the dev cycle it opens reach `develop` through a checked pull request rather than a direct push. [`branching.md`](branching.md) and [`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request) state the rules; [`ci.md`](ci.md#repo-merge-settings) holds the settings and the guard.
 
 ### The measured problem
 
