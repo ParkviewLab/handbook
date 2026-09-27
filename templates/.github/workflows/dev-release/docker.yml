@@ -40,9 +40,12 @@
         uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
+          # The first tag of the highest priority becomes the image's version
+          # label (org.opencontainers.image.version), so the dev version comes
+          # before `dev`, which has the same priority.
           tags: |
-            type=raw,value=dev
             type=raw,value=${{ needs.gate.outputs.version }}
+            type=raw,value=dev
             type=sha,prefix=sha-
 
       - name: Build and push (linux/amd64 + linux/arm64)
