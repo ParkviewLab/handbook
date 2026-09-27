@@ -8,6 +8,20 @@
     steps:
       - uses: actions/checkout@v6
 
+      - name: Install uv, to set the dev version in pyproject.toml
+        if: hashFiles('pyproject.toml') != ''
+        uses: astral-sh/setup-uv@v8.1.0
+
+      - name: Set the dev version in the workspace (nothing is committed)
+        env:
+          VERSION: ${{ needs.gate.outputs.version }}
+        run: |
+          if [ -f pyproject.toml ]; then
+            uv version --no-sync "$VERSION"   # pyproject.toml and uv.lock together
+          elif [ -f package.json ]; then
+            npm version "$VERSION" --no-git-tag-version --allow-same-version --ignore-scripts
+          fi
+
       - name: Set up QEMU (arm64 emulation)
         uses: docker/setup-qemu-action@v4
 
@@ -26,9 +40,12 @@
         uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
+          # The first tag of the highest priority becomes the image's version
+          # label (org.opencontainers.image.version), so the dev version comes
+          # before `dev`, which has the same priority.
           tags: |
-            type=raw,value=dev
             type=raw,value=${{ needs.gate.outputs.version }}
+            type=raw,value=dev
             type=sha,prefix=sha-
 
       - name: Build and push (linux/amd64 + linux/arm64)

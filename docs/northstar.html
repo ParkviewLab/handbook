@@ -223,8 +223,9 @@ footer.site{margin-top:64px;border-top:3px solid var(--ink);padding-top:20px;fon
         layout with a bare clone and one worktree per trunk; every repo has the
         same two trunks, <code>main</code> released and <code>develop</code>
         integrating, and the same prefixed ephemeral branches; every pull request
-        is squash-merged with a Conventional Commit title, which is what the
-        changelog is generated from; every release is cut by a tag; every README,
+        is merged with a merge commit that carries its Conventional Commit title
+        and number, which is what the changelog is generated from; every release
+        is cut by a tag; every README,
         licence header, and pointer file has the same place and the same form;
         and every repo wears the one brand. None of this is what a repo
         <em>does</em>. It is how a repo is laid out, tooled, licensed, and
