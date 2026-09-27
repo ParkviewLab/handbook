@@ -121,7 +121,7 @@ jobs:
         if: steps.mode.outputs.mode == 'back-merge'
         with:
           repository: ParkviewLab/dev-tools
-          ref: 9731fed1572553e368f6b2a77cc0a7d82fd94627 # v1.4.0
+          ref: 2be57e41a4c8b90d86cc4547f7637eca52bbe08b # v1.5.0
           path: dev-tools
       - name: The back-merge brings the release and nothing else
         if: steps.mode.outputs.mode == 'back-merge'
