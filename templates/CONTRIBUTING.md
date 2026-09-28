@@ -1,6 +1,6 @@
 # Contributing
 
-> Template — copy to a new repo as **`docs/CONTRIBUTING.md`**. Replace `<repo>` as needed. The authoritative, org-wide version of all of this is the [ParkviewLab handbook](https://github.com/ParkviewLab/handbook).
+> Template — copy to a new repo as **`docs/CONTRIBUTING.md`**. Replace `<repo>` as needed. The authoritative, org-wide version of all of this is the [ParkviewLab handbook](https://github.com/ParkviewLab/handbook/tree/main).
 
 This repo follows the ParkviewLab conventions. The essentials:
 

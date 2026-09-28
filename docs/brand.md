@@ -79,6 +79,8 @@ The mark is a sage cluster (a stylised parkview hedge) beside a teal node-and-ed
 
 > **Caveat — the horizontal and stacked SVGs `@import` Google Fonts** for their baked-in wordmark text. That is fine on the website (already online) but **breaks the no-network rule for standalone HTML**. For designed HTML, embed `parkview_lab_color_logo_only.svg` (pure shapes) and set the wordmark in inline Michroma text. The default scaffold shows the pattern.
 
+**In an application's header** use the official horizontal logo file, scaled: the white variant on deep teal, or the dark one on paper; never a redrawn or recoloured mark. Where the application renders that SVG, replace its Google Fonts import at render time with Michroma embedded as a data URI from `brand/fonts/`, so the header makes no network call (paper-boxing's frontend layout does this).
+
 ## Voice & tone
 
 Short, technical, unembellished. Lowercase where it reads naturally; uppercase display type for structure. No marketing adjectives. The writing matches the [AI-collaboration norms](ai-collaboration.md): no hype, no filler, say the thing. Mixed metaphors and clichés read as careless — avoid them.

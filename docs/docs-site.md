@@ -121,13 +121,13 @@ The workflow checks `dev-tools` out at a **released tag** into `dev-tools/`, a s
 
 ### What it must not do
 
-**Do not make a late tag fatal** — we got this wrong once. The script takes the newest `v*` tag *reachable from HEAD*, and cannot tell whether that tag is **this** release's or the **previous** one: a run that somehow started before the tag landed would stamp the previous release and publish successfully. That leniency is wanted, because a manual re-run sits on the changelog commit rather than on the tagged one and must still build. What the script *does* detect is a repository with **no `v*` tag at all**, which refuses to publish. If a deployment ever does stamp a stale version, re-run the workflow by hand once the tag is in place. (`git push --follow-tags` sends the branch and its tag together, so in the normal release flow the tag is on the runner before the build reads it.)
+**Do not make a late tag fatal.** The script takes the newest `v*` tag *reachable from HEAD*, and cannot tell whether that tag is **this** release's or the **previous** one: a run that somehow started before the tag landed would stamp the previous release and publish successfully. That leniency is wanted, because a manual re-run sits on the changelog commit rather than on the tagged one and must still build. What the script *does* detect is a repository with **no `v*` tag at all**, which refuses to publish. If a deployment ever does stamp a stale version, re-run the workflow by hand once the tag is in place. (`git push --follow-tags` sends the branch and its tag together, so in the normal release flow the tag is on the runner before the build reads it.)
 
 ## The two failure modes from the pilot
 
 ### A README that links to addresses the release has not published yet
 
-**The repo's README is public on GitHub as soon as the change reaches the default branch** — for a repo defaulting to `develop`, that is the moment a PR merges, long before the release that publishes the site. (A repo still defaulting to `main` is spared this one: its README goes public with the release itself.) So a README edited to point at `/downloads/` or at the documentation site shows **broken links to everyone** in the window between that merge and the release. In the pilot this cost two extra pull requests: one to hold the links at what was actually live, and one to move them forward once the site was up.
+**The repo's README is public on GitHub as soon as the change reaches the default branch** — for a repo defaulting to `develop`, that is the moment a PR merges, long before the release that publishes the site. So a README edited to point at `/downloads/` or at the documentation site shows **broken links to everyone** in the window between that merge and the release. In the pilot this cost two extra pull requests: one to hold the links at what was actually live, and one to move them forward once the site was up.
 
 **The rule: links to not-yet-published site addresses wait.** They move in a pull request merged *after* the release that publishes the site, never in the feature pull request that builds the thing they point at.
 

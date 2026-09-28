@@ -66,6 +66,7 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 
 ## 8. First release
 
-- [ ] `git bump` → `git release` → `git push --follow-tags` (from `main`).
+- [ ] In the `<repo>-main` worktree, sync both trunks and promote: `git pull --ff-only`, `git -C ../<repo>-develop pull --ff-only`, `git merge --no-ff develop`.
+- [ ] `git release` → `git push --follow-tags`. No `git bump` at a first release: the version file already names the version to ship (the templates start at `0.1.0`). See [`releases.md`](releases.md#cutting-a-release).
 - [ ] `gh run watch` until the whole workflow, including the job that creates the Release, is green.
 - [ ] `git back-merge` — it opens the back-merge PR from `back-merge-<tag>`, waits for `develop`'s required checks and merges it, then fast-forwards the `develop` worktree and lists the open working branches to bring up to date. See [`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request).

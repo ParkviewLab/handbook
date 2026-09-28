@@ -56,4 +56,4 @@ jonobones runs tiered CI: unit/lint/typecheck, an **interop** tier (round-trips 
 
 ## Visual / front-end verification
 
-For apps with a UI (conception-space, the static sites), verify by **running the app and looking** — not by asserting alone. Start the dev server and drive it via the Claude Preview MCP tools: `preview_start`, `preview_screenshot` after each visual change, `preview_click`/`preview_eval` to exercise interactions, `preview_console_logs` for warnings. Don't claim a visual change works without a screenshot. (Source: conception-space's "running and seeing" workflow.)
+For apps with a UI (conception-space, the static sites), verify by **running the app and looking** — not by asserting alone. Start the dev server, open it in Claude Code's built-in browser, take a screenshot after each visual change, exercise the interactions there, and read the console for warnings. Don't claim a visual change works without a screenshot. (Source: conception-space's "running and seeing" workflow.)

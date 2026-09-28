@@ -33,7 +33,7 @@ When intent surfaces a new principle during work, propose adding it to the north
 
 `docs/in-flight_ideas.md` is the scratchpad for **ideas under consideration** — captured, not yet committed. Each entry is a question, not a plan; don't act on one silently. When an entry grows big enough to deserve its own exploration, split it into a sibling `docs/<topic>_ideas.md` (e.g. conception-space's `hand-authoring_ideas.md`, `ai-authoring_ideas.md`); `in-flight_ideas.md` stays the index.
 
-> Some repos have an ad-hoc `humans_notes.md` (e.g. deco-assaying). Normalise these into `in-flight_ideas.md` when you touch them.
+> An ad-hoc notes file (a `humans_notes.md`, say) is normalised into `in-flight_ideas.md` when the repo is next touched.
 
 ## Discovered tangents
 
@@ -43,7 +43,7 @@ Recording is authorised in advance and interrupts nothing; saying so is required
 
 ## Documents and records
 
-A repo's Markdown is of two kinds, and the kind decides what may describe the past. A **record** does, and keeps doing so: `CHANGELOG.md`, a decision log (`docs/decisions.md`, or a dated "Decided" section), and a `<page>-why.md` sibling, which is the decision log of one page and is earned when that page's rules were chosen among alternatives worth keeping: [`agents-why.md`](agents-why.md), [`releases-why.md`](releases-why.md), [`commits-and-changelogs-why.md`](commits-and-changelogs-why.md) and [`branching-why.md`](branching-why.md). The pair is the form for a page whose rules have such a history; the page keeps every rule and every reason needed to apply one, the sibling what is needed only to reopen a decision, and each links the other. Everything else is a **current-state document** (the README, the northstar, a guide, a runbook, a contract, a design or architecture document) and describes the software and the project as they are now: no planning tense, no open question (those live in `in-flight_ideas.md`), no build history, no list of what remains, no deadline. A stated trigger for a future change ("when a second repo adopts this, the script moves to `dev-tools`") is direction, not a plan left behind, and stays until the trigger has occurred. A runbook may end with a dated list of pending operational steps (an "Open items" section: a port still published, a copy not yet made); each entry is a checkable claim that the step is still pending, so a step since done is a currency finding, and the list is not a plan. A document declares its kind by its title or its opening line; one that does not is current-state. `in-flight_ideas.md` and the `<topic>_ideas.md` notebooks are outside both kinds: they are the home of open questions, and are checked only for entries the repo or the session has since answered.
+A repo's Markdown is of two kinds, and the kind decides what may describe the past. A **record** does, and keeps doing so: `CHANGELOG.md`, a decision log (`docs/decisions.md`, or a dated "Decided" section), and a `<page>-why.md` sibling, which is the decision log of one page and is earned when that page's rules were chosen among alternatives worth keeping: [`agents-why.md`](agents-why.md), [`releases-why.md`](releases-why.md), [`commits-and-changelogs-why.md`](commits-and-changelogs-why.md) and [`branching-why.md`](branching-why.md). The pair is the form for a page whose rules have such a history; the page keeps every rule and every reason needed to apply one, the sibling what is needed only to reopen a decision, and each links the other. Everything else is a **current-state document** (the README, the northstar, a guide, a runbook, a contract, a design or architecture document) and describes the software and the project as they are now: no planning tense, no open question (those live in `in-flight_ideas.md`), no build history, no list of what remains, no deadline. A stated trigger for a future change ("when a second repo needs this script, it moves to `dev-tools`") is direction, not a plan left behind, and stays until the trigger has occurred. A runbook may end with a dated list of pending operational steps (an "Open items" section: a port still published, a copy not yet made); each entry is a checkable claim that the step is still pending, so a step since done is a currency finding, and the list is not a plan. A document declares its kind by its title or its opening line; one that does not is current-state. `in-flight_ideas.md` and the `<topic>_ideas.md` notebooks are outside both kinds: they are the home of open questions, and are checked only for entries the repo or the session has since answered.
 
 Two rules follow. A decision is recorded impersonally: the date, the decision, and the reason, never the person ("decided on 2026-09-17: nginx's own listing for a folder without an index, because a bare list of files is what one wants before an index exists"); the git history and the pull request hold who. And a document is checked for currency before it is published: before a docs PR, before a release (a release publishes `main`'s documents, on the docs site where there is one, [`docs-site.md`](docs-site.md)), and before an HTML twin is authored from it, the session dispatches `docs-currency-checker` ([`agents.md`](agents.md)). It verifies each checkable claim against the code, by execution where the stack allows it and otherwise against the implementing source, finds planning tense and answered questions, compares the documents with each other, and takes from the session the decisions made in conversation, since those are invisible in the repo until written down. Its report is a claim the session verifies; its verdict says whether the documents are publishable.
 
@@ -63,11 +63,11 @@ ParkviewLab READMEs (especially the MCP servers) share a structure:
 
 ## Designed HTML (dual-track)
 
-For high-impact documents — the northstar, manifestos, key onboarding pieces — keep an **MD canonical source** and author a **designed HTML presentation** beside it. MD wins if they drift; HTML is re-authored from MD.
+For high-impact documents — the northstar, values statements, key onboarding pieces — keep an **MD canonical source** and author a **designed HTML presentation** beside it. MD wins if they drift; HTML is re-authored from MD.
 
 There are two HTML tracks:
 
-- **Bespoke high-impact docs** (northstar, manifestos) — hand-authored layout using the brand tokens, with inline SVG where structure reads better seen than listed. The bar is this handbook's own [`northstar.html`](northstar.html) (what to study in it is listed in [`md-to-html.md`](md-to-html.md)) and jonobones's `docs/northstar.html`.
+- **Bespoke high-impact docs** (northstar, values statements) — hand-authored layout using the brand tokens, with inline SVG where structure reads better seen than listed. The bar is this handbook's own [`northstar.html`](northstar.html) (what to study in it is listed in [`md-to-html.md`](md-to-html.md)) and jonobones's `docs/northstar.html`.
 - **Other docs rendered to HTML** — also **AI-authored** from the MD (reworked for impact), *not* mechanically converted. See [`md-to-html.md`](md-to-html.md).
 
 Both tracks follow the discipline: one self-contained file, no build step, no network, responsive, faithful to the MD wording. The brand (palette + Michroma) is in [`brand.md`](brand.md); the starting scaffold is [`templates/md-to-html/default.html`](../templates/md-to-html/default.html). A project may override with its own scaffold.
@@ -84,6 +84,8 @@ Two things are outside the rule:
 - **Tag-pinned links a site generator emits** (`blob/vX.Y.Z/docs/<file>.md`), which must be absolute because the published site cannot render Markdown. See [`docs-site.md`](docs-site.md#markdown-links).
 
 Links to *other* repos are absolute, of course; the rule is about self-links.
+
+A link read on GitHub, in a README or any other Markdown document, goes to the `.md` even where a twin exists: GitHub's blob view shows an HTML file as its source. The twin is the target inside the twins themselves and on a published documentation site, where the HTML renders.
 
 ## Publishing `docs/` as a site
 

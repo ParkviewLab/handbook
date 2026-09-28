@@ -15,7 +15,7 @@ ParkviewLab engineering serves four complementary intents: facets of one purpose
 
 1. **One shape across many repos.** ParkviewLab is a *family* of repos, not a monorepo and not a pile of one-offs. They share one layout, one toolchain, one release flow, one brand — so each repo is legible the moment you open it, and the family coheres without coupling. Deviation from the common shapes must be justified and documented, and a deviation that proves a better way is carried back into the handbook.
 
-2. **Self-contained and self-describing.** A repo carries everything needed to understand, build, run, and ship it: locked dependencies, a single source of truth for its version, tag-driven releases, and documentation as a first-class artifact. Nothing load-bearing lives only in someone's memory. Try hard to avoid dependencies between repos.
+2. **Self-contained and self-describing.** A repo carries everything needed to understand, build, run, and ship it: locked dependencies, a single source of truth for its version, tag-driven releases, and documentation as a first-class artifact. Nothing essential lives only in someone's memory. Try hard to avoid dependencies between repos.
 
 3. **Legible to humans and AI alike.** Humans and AI agents are both first-class developers here. The same handbook, the same branch prefixes, the same written norms serve both — and each repo carries pointer files so an agent loads the conventions automatically.
 

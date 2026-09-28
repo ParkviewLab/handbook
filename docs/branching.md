@@ -120,4 +120,4 @@ git push origin --delete <branch>      # only if the remote ref still exists
 
 ## AI devs
 
-AI devs follow the exact same flow — an ephemeral prefixed-branch worktree, PR into `develop`. There is **no special `claude/` branch or worktree** in the new layout.
+AI devs follow the exact same flow — an ephemeral prefixed-branch worktree, PR into `develop`. There is **no special `claude/` branch or worktree**.
