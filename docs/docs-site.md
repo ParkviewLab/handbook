@@ -61,7 +61,7 @@ The workflow template is [`templates/.github/workflows/pages-docs.yml`](../templ
 
 **One committed fragment, everything else derived.** The hand-written introduction, where the repo has one, is a fragment of HTML (`site/intro.html` — paragraphs, no `<html>`/`<head>`/`<body>`); the rest of the index is read off the documents themselves at build time:
 
-- An **HTML document's** title comes from its `<title>`, and its description from `<meta name="description">` when present.
+- An **HTML document's** title comes from its `<title>`, less a leading "ParkviewLab · " (the browser tab keeps the brand; the index leaves it out, so that branded and unbranded titles read alike), and its description from `<meta name="description">` when present.
 - A **Markdown document's** title comes from its first `# ` heading.
 
 The documents are listed in five groups, in this order:
