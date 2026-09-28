@@ -4,7 +4,7 @@ SPDX-License-Identifier: CC-BY-4.0
 -->
 
 <!--
-templates/northstar.md — the blueprint for a repo's docs/northstar.md.
+templates/northstar.md: the blueprint for a repo's docs/northstar.md.
 
 Copy this file to <repo>/docs/northstar.md and replace every bracketed
 placeholder. Keep the section order: it is the structure documentation.md

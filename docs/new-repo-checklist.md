@@ -7,26 +7,26 @@ SPDX-License-Identifier: CC-BY-4.0
 
 The master sequence for bootstrapping a new ParkviewLab repo into every convention. Each step links to the doc with the detail.
 
-> **If it's a website** (static site on GitHub Pages — e.g. parkviewlab.ai), follow the lighter path in [`website.md`](website.md): contained worktrees named **`live`/`staging`** (default branch `staging`); merge-commit-only settings and branch protection as [`website.md`](website.md#ci) gives them; Pages via Actions; REUSE with `LicenseRef-AllRightsReserved` + the bundled font's license; `reuse-website.yml` + `pages-deploy.yml`; the page footers (copyright + "updated on" date) + a stamp step + a local preview script. **Skip §2 (language scaffold), §3 (targets and packaging), and §8 (first release) entirely** — a website has no version, tags, or PyPI/Docker publish; "publishing" is promoting `staging`→`live`. §1, §5 (licensing), §6 (docs), and §7 (AI pointers) still apply, adapted as `website.md` describes.
+> **If it's a website** (static site on GitHub Pages, e.g. parkviewlab.ai), follow the lighter path in [`website.md`](website.md): contained worktrees named `live`/`staging` (default branch `staging`); merge-commit-only settings and branch protection as [`website.md`](website.md#ci) gives them; Pages via Actions; REUSE with `LicenseRef-AllRightsReserved` + the bundled font's license; `reuse-website.yml` + `pages-deploy.yml`; the page footers (copyright + "updated on" date) + a stamp step + a local preview script. Skip §2 (language scaffold), §3 (targets and packaging), and §8 (first release) entirely: a website has no version, tags, or PyPI/Docker publish; "publishing" is promoting `staging`→`live`. §1, §5 (licensing), §6 (docs), and §7 (AI pointers) still apply, adapted as `website.md` describes.
 
 ## 1. Name & create
 
-- [ ] Pick a name in the house style — mineral/pigment + gerund (or `-mcp`). See [`repo-layout.md`](repo-layout.md#repo-naming).
+- [ ] Pick a name in the house style: mineral/pigment + gerund (or `-mcp`). See [`repo-layout.md`](repo-layout.md#repo-naming).
 - [ ] Create the GitHub repo under `ParkviewLab/`.
-- [ ] Set up the local **contained, repo-prefixed worktree** layout (`<repo>.git` + `<repo>-main` + `<repo>-develop`). See [`repo-layout.md`](repo-layout.md#creating-the-layout).
+- [ ] Set up the local contained, repo-prefixed worktree layout (`<repo>.git` + `<repo>-main` + `<repo>-develop`). See [`repo-layout.md`](repo-layout.md#creating-the-layout).
 - [ ] Make `develop` the GitHub default branch (PRs target integration).
-- [ ] Configure **merge-commit-only** merge settings (merge commits on; squash + rebase off; `merge_commit_title=PR_TITLE` and `merge_commit_message=PR_BODY`; auto-delete branches). See [`ci.md`](ci.md#repo-merge-settings).
+- [ ] Configure merge-commit-only merge settings (merge commits on; squash + rebase off; `merge_commit_title=PR_TITLE` and `merge_commit_message=PR_BODY`; auto-delete branches). See [`ci.md`](ci.md#repo-merge-settings).
 
 ## 2. Language scaffold
 
-> **If it's a Node repo**, use the Node stack instead of the Python one below: `package.json` from [`templates/package.json.template`](../templates/package.json.template), TypeScript + ESLint + Vitest, version read at runtime via `src/version.ts` — see [`node-tooling.md`](node-tooling.md). §3–§8 still apply, and §3 decides what the repo publishes.
+> **If it's a Node repo**, use the Node stack instead of the Python one below: `package.json` from [`templates/package.json.template`](../templates/package.json.template), TypeScript + ESLint + Vitest, version read at runtime via `src/version.ts`, see [`node-tooling.md`](node-tooling.md). §3 to §8 still apply, and §3 decides what the repo publishes.
 
-> **If it's an Electron desktop app**, use the Electron stack: the app at the repo **root** (`package.json` + `src/{main,preload,renderer}` + `electron.vite.config.js`
-> + `electron-builder.yml`), electron-vite + electron-builder, plain JS **or** TS — see [`electron-tooling.md`](electron-tooling.md). An app that ships OS installers takes the installers target in §3 and §4.
+> **If it's an Electron desktop app**, use the Electron stack: the app at the repo root (`package.json` + `src/{main,preload,renderer}` + `electron.vite.config.js`
+> + `electron-builder.yml`), electron-vite + electron-builder, plain JS or TS, see [`electron-tooling.md`](electron-tooling.md). An app that ships OS installers takes the installers target in §3 and §4.
 
-- [ ] `pyproject.toml` from [`templates/pyproject.toml.template`](../templates/pyproject.toml.template) — name, description, deps; src-layout; ruff/ty/pytest config; `.python-version` = `3.13`. See [`python-tooling.md`](python-tooling.md).
+- [ ] `pyproject.toml` from [`templates/pyproject.toml.template`](../templates/pyproject.toml.template): name, description, deps; src-layout; ruff/ty/pytest config; `.python-version` = `3.13`. See [`python-tooling.md`](python-tooling.md).
 - [ ] If it's an MCP server: the `src/<pkg>/` skeleton (`config.py`, `__main__.py`, `server.py`, `tools.py`, `schema.py`) with `/health` + `/admin/version` and `--transport`. See [`mcp-server-conventions.md`](mcp-server-conventions.md).
-- [ ] Version read from package metadata at runtime — no literal. See [`releases.md`](releases.md).
+- [ ] Version read from package metadata at runtime, no literal. See [`releases.md`](releases.md).
 - [ ] `tests/` + `conftest.py` (session-scoped client if MCP); pytest markers. See [`testing.md`](testing.md).
 
 ## 3. Targets and packaging
@@ -38,11 +38,11 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 ## 4. Changelog & CI
 
 - [ ] Nothing to copy for the changelog: the release's `changelog` job runs dev-tools' `generate-changelog` at a pinned release. See [`commits-and-changelogs.md`](commits-and-changelogs.md).
-- [ ] Workflows from [`templates/.github/workflows/`](../templates/.github/workflows/): `reuse.yml` + `version-guard.yml` (**every** repo); the test workflow of the repo's stack (`test.yml`, or `test-node.yml` / `test-electron.yml`); `license-check.yml` where the repo's license requires it; `release.yml`, assembled from the parts of the repo's targets, and optionally `dev-release.yml`, assembled from their dev parts. A documents repo has no dev workflow and no `changelog` job, and it adds `.github/release.yml` from [`templates/.github/release.yml`](../templates/.github/release.yml), which keeps the back-merge PRs out of its generated notes; it has a test workflow only where it ships code, as dev-tools does for its scripts. Pin actions exactly; GHCR tags include `latest`. See [`ci.md`](ci.md#releaseyml--on-v-tag-push).
-- [ ] **Branch protection on `develop`:** mark the workflow checks as **required status checks** (so the merge button waits for green). Nothing in the release flow needs a way round them — the promotion pushes `main`, and the back-merge arrives by a pull request — so **bind administrators** (`enforce_admins`) too, at once. See [`ci.md`](ci.md#required-checks-before-merge).
+- [ ] Workflows from [`templates/.github/workflows/`](../templates/.github/workflows/): `reuse.yml` + `version-guard.yml` (every repo); the test workflow of the repo's stack (`test.yml`, or `test-node.yml` / `test-electron.yml`); `license-check.yml` where the repo's license requires it; `release.yml`, assembled from the parts of the repo's targets, and optionally `dev-release.yml`, assembled from their dev parts. A documents repo has no dev workflow and no `changelog` job, and it adds `.github/release.yml` from [`templates/.github/release.yml`](../templates/.github/release.yml), which keeps the back-merge PRs out of its generated notes; it has a test workflow only where it ships code, as dev-tools does for its scripts. Pin actions exactly; GHCR tags include `latest`. See [`ci.md`](ci.md#releaseyml-on-v-tag-push).
+- [ ] **Branch protection on `develop`:** mark the workflow checks as required status checks (so the merge button waits for green). Nothing in the release flow needs a way round them (the promotion pushes `main`, and the back-merge arrives by a pull request), so bind administrators (`enforce_admins`) too, at once. See [`ci.md`](ci.md#required-checks-before-merge).
 - [ ] **Branch protection on `main`:** block force pushes and deletions, nothing else (no required checks or reviews: the release flow pushes directly). See [`ci.md`](ci.md#repo-merge-settings).
 - [ ] Confirm the org `ANTHROPIC_API_KEY` secret is inherited.
-- [ ] Configure one **trusted publisher** per registry target: PyPI (workflow `release.yml`, environment `pypi`) and, where the repo has dev builds, TestPyPI (`dev-release.yml`, `testpypi`); npm (`release.yml`). The image, installers and documents targets need none.
+- [ ] Configure one trusted publisher per registry target: PyPI (workflow `release.yml`, environment `pypi`) and, where the repo has dev builds, TestPyPI (`dev-release.yml`, `testpypi`); npm (`release.yml`). The image, installers and documents targets need none.
 
 ## 5. Licensing
 
@@ -52,12 +52,12 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 
 ## 6. Docs
 
-- [ ] _(optional)_ `docs/northstar.md` from [`templates/northstar.md`](../templates/northstar.md) (complementary intents → axioms → "what it is not") — the author's choice. See [`documentation.md`](documentation.md).
+- [ ] _(optional)_ `docs/northstar.md` from [`templates/northstar.md`](../templates/northstar.md) (complementary intents → axioms → "what it is not"): the author's choice. See [`documentation.md`](documentation.md).
 - [ ] Optionally an AI-authored `docs/northstar.html` per [`md-to-html.md`](md-to-html.md).
 - [ ] `docs/in-flight_ideas.md` started.
 - [ ] `docs/CONTRIBUTING.md` from [`templates/CONTRIBUTING.md`](../templates/CONTRIBUTING.md).
-- [ ] _(optional, public repos)_ Publish `docs/` as a site at `parkviewlab.github.io/<repo>/`: `pages-docs.yml` (it checks out `dev-tools` and runs its `build-pages-site`; no script of the repo's own), an optional `site/intro.html` and, for styling of the repo's own, `site/shell.html`, Pages source = Actions, and the `github-pages` environment restricted to `main`; after the release that first publishes the site, the README's `Documentation:` line in its own pull request. Record the new `site/**` tree's licensing in `REUSE.toml` (the `reuse` check fails otherwise), and author `docs/northstar.html` — without it the index opens with a Markdown link the browser shows as source text. See [`docs-site.md`](docs-site.md).
-- [ ] Visible copyright footer on published/standalone docs (HTML footers, root README, northstar) — bottom of file, consistent with the SPDX header. See [`documentation.md`](documentation.md#copyright-footers).
+- [ ] _(optional, public repos)_ Publish `docs/` as a site at `parkviewlab.github.io/<repo>/`: `pages-docs.yml` (it checks out `dev-tools` and runs its `build-pages-site`; no script of the repo's own), an optional `site/intro.html` and, for styling of the repo's own, `site/shell.html`, Pages source = Actions, and the `github-pages` environment restricted to `main`; after the release that first publishes the site, the README's `Documentation:` line in its own pull request. Record the new `site/**` tree's licensing in `REUSE.toml` (the `reuse` check fails otherwise), and author `docs/northstar.html`; without it the index opens with a Markdown link the browser shows as source text. See [`docs-site.md`](docs-site.md).
+- [ ] Visible copyright footer on published/standalone docs (HTML footers, root README, northstar): bottom of file, consistent with the SPDX header. See [`documentation.md`](documentation.md#copyright-footers).
 
 ## 7. AI pointers
 
@@ -68,4 +68,4 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 - [ ] In the `<repo>-main` worktree, sync both trunks and promote: `git pull --ff-only`, `git -C ../<repo>-develop pull --ff-only`, `git merge --no-ff develop`.
 - [ ] `git release` → `git push --follow-tags`. No `git bump` at a first release; see [`releases.md`](releases.md#cutting-a-release).
 - [ ] `gh run watch` until the whole workflow, including the job that creates the Release, is green.
-- [ ] `git back-merge` — it opens the back-merge PR from `back-merge-<tag>`, waits for `develop`'s required checks and merges it, then fast-forwards the `develop` worktree and lists the open working branches to bring up to date. See [`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request).
+- [ ] `git back-merge`: it opens the back-merge PR from `back-merge-<tag>`, waits for `develop`'s required checks and merges it, then fast-forwards the `develop` worktree and lists the open working branches to bring up to date. See [`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request).
