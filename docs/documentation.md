@@ -20,7 +20,7 @@ The reason is editability. A hard-wrapped paragraph cannot be edited by hand wit
 
 A repo may have a `docs/northstar.md`: the author's choice, not a requirement. Start one from [`templates/northstar.md`](../templates/northstar.md). When present, it's the canonical statement of the project's intent (why it exists), treated as authoritative even where it contradicts the README or the code. Structure (from jonobones and conception-space):
 
-1. **Intent**: one to several complementary intents, presented as peers (not one primary + the rest secondary). Two to four is the sweet spot.
+1. **Intent**: one to several complementary intents, presented as peers (not one primary + the rest secondary).
 2. **Axioms**: a numbered list of design principles derived from the intents. The same axioms support all the intents, from different angles.
 3. **Guiding questions** (optional): the questions the design keeps answering.
 4. **"What X is not"**: an explicit scope/non-goals section.
