@@ -19,7 +19,7 @@ ParkviewLab engineering serves five complementary intents: facets of one purpose
 
 4. **Use AI to automate the processes.** Creating a branch, committing, merging, releasing, whatever it is, if it's a process with defined steps, then teach the AI (MD files, skills, etc.) to do it for us so that it gets done with consistency. If it could apply to more than one repo then put it here in the handbook repo.
 
-5. **The environment improves itself.** The handbook is a guide, not a rulebook. It records what has been tried and found to work well, and it is how new things are done until new information shows a better way. When a person or an agent finds or invents a better way, the handbook is updated with it, and the repos it would improve adopt it.
+5. **Use experience to improve the conventions.** The handbook is a guide, not a rulebook. It records what has been tried and found to work well, and it is how new things are done until new information shows a better way. When a person or an agent finds or invents a better way, the handbook is updated with it, and the repos it would improve adopt it.
 
 ### 1. One shape across many repos
 
@@ -45,7 +45,7 @@ Any process with defined steps is a process an agent can be taught: creating a b
 
 The rule of placement is that anything that applies to more than one repo lives here, in the handbook, so that it is taught once. And the automation has an edge it does not cross: the mechanical steps are automated, and the irreversible ones, merging to a shared trunk, tagging, releasing, keep an explicit human hand (axiom 4).
 
-### 5. The environment improves itself
+### 5. Use experience to improve the conventions
 
 The handbook records the best way found so far, not the only way allowed, and a better way can come from any piece of work, raised by a person or an agent. Raising an improvement must cost little, and each route it can take is written down. A deviation that proves a better way in one repo is carried back into the handbook (intent 1). An idea found whilst working elsewhere goes to the tangent register in the org's Library, and from there to the `in-flight_ideas.md` of the repo it concerns (axiom 3). An idea that is ripe becomes a proposal, and is ruled on and built; the built proposal retires into the handbook and its why record. Where the better way is a script, it lands in `dev-tools` instead, and reaches the repos through the version each one pins. The friction met in the work is the backlog: the back-merge pull request began as friction measured in the release flow ([`branching-why.md`](branching-why.md#the-measured-problem)), and was proposed, ruled on and built.
 
