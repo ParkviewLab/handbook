@@ -11,7 +11,7 @@ This is the method. The brand tokens are in [`brand.md`](brand.md); the starting
 
 ## When to make an HTML version at all
 
-For high-impact documents — the northstar, manifestos, key onboarding or values docs — where clarity and impact matter. Routine docs (per-file READMEs, ADRs, code comments) stay Markdown. When in doubt, ask whether the visual channel would actually carry meaning the prose can't; if not, skip it.
+For high-impact documents — the northstar, key onboarding or values docs — where clarity and impact matter. Routine docs (per-file READMEs, ADRs, code comments) stay Markdown. When in doubt, ask whether the visual channel would actually carry meaning the prose can't; if not, skip it.
 
 ## The method
 

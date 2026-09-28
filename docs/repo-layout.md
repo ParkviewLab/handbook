@@ -45,12 +45,7 @@ The **two `--set-upstream-to` lines are required too**, and for a distinct reaso
 
 The **`--unset core.bare` line** hardens the repo against a config leak that would otherwise mark every worktree bare — see [Operating the layout safely](#operating-the-layout-safely) below.
 
-> **Current state / migration note.** Two earlier layouts are now deprecated:
->
-> 1. `repo_name/worktrees/{main,develop,claude}` — independent clones (not real `git worktree`s) nested under `worktrees/`, plus a permanent `claude/`.
-> 2. `repo_name/{.bare, .git, main, develop}` — a bare clone with *branch-named* children (an earlier take on this convention; tidy, but a worktree reads as a bare `main`/`develop` in window titles).
->
-> The canonical layout above replaces both — a contained, repo-prefixed `<repo>.git` + `<repo>-<branch>` worktrees — and drops the permanent `claude/`: AI devs use ordinary ephemeral working-branch worktrees like everyone else. **deco-assaying is the first repo on the new layout** (jonobones and handbook follow as the on-disk reference); the remaining older repos migrate to it as they're next touched.
+> **Earlier layouts.** Two layouts preceded this one and are superseded: independent clones nested under `repo_name/worktrees/{main,develop,claude}`, and a bare clone with branch-named children (`repo_name/{.bare, .git, main, develop}`). Every ParkviewLab repo is on the canonical layout; AI devs use ordinary ephemeral working-branch worktrees, with no permanent `claude/`.
 
 ## Operating the layout safely
 
@@ -84,7 +79,7 @@ The two permanent worktrees are read-mostly: `<repo>-main` is the release surfac
 git -C <repo>.git worktree add ../<repo>-<branch> -b <branch> develop
 ```
 
-Never edit or commit directly in the permanent checkouts. In `<repo>-main` only the release's own commits are made, the ones listed above. In `<repo>-develop` three writes are made that the handbook prescribes outside the flow ([`branching.md`](branching.md#the-two-permanent-branches)), each committed there and pushed directly: in a repository that has not switched to merge commits, the release's direct back-merge, with the commits `git dev-release` makes there until the switch ([`releases.md`](releases.md#until-a-repository-has-switched)); the repair of a version-line conflict, which `git back-merge` names as decision 6 (a) ([`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)); and the exception's direct back-merge, with, in a code repo, the dev cycle that `git dev-release --open --direct` commits after it ([`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)). See [`branching.md`](branching.md) for the branch prefixes.
+Never edit or commit directly in the permanent checkouts. In `<repo>-main` only the release's own commits are made, the ones listed above. In `<repo>-develop` three writes are made that the handbook prescribes outside the flow ([`branching.md`](branching.md#the-two-permanent-branches)), each committed there and pushed directly: in a repository that has not switched to merge commits, the release's direct back-merge, with the commits `git dev-release` makes there until the switch ([`releases.md`](releases.md#until-a-repository-has-switched)); the repair of a version-line conflict, which `git back-merge` names as the version-line repair ([`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)); and the exception's direct back-merge, with, in a code repo, the dev cycle that `git dev-release --open --direct` commits after it ([`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request)). See [`branching.md`](branching.md) for the branch prefixes.
 
 ### Ephemeral `.claude` state lives at the container root
 
@@ -93,7 +88,7 @@ AI sessions produce two kinds of `.claude` state — keep them apart:
 - **Ephemeral, not version-controlled** — a harness's own session worktree and any scratch/notes not tied to a working branch. These belong at the **container root**, `<repo>/.claude/` (a plain dir alongside `<repo>.git` and the worktrees), *not* nested inside a branch worktree. Concurrent sessions are safe: session worktrees are uniquely named and coexist as siblings, each with its own index/HEAD, and per-session transcripts/locks live under `~/.claude/projects/`.
 - **Versioned project config** — a repo's own `.claude/` (slash-commands, subagents, `settings.json`, hooks) is repo content. It stays *inside the working tree*, tracked per branch like any other source, and this rule does not touch it.
 
-This is the other half of dropping the old permanent `claude/` worktree (see the migration note above): AI devs use ordinary ephemeral working-branch worktrees, and their non-versioned session state sits at the container root rather than in a dedicated checked-out branch.
+This is the other half of dropping the old permanent `claude/` worktree (see "Earlier layouts" above): AI devs use ordinary ephemeral working-branch worktrees, and their non-versioned session state sits at the container root rather than in a dedicated checked-out branch.
 
 ## Required contents of a repo
 

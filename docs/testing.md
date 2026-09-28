@@ -13,7 +13,6 @@ testpaths = ["tests"]
 asyncio_mode = "auto"          # async tests run without per-test decorators
 markers = [
   "network: tests that require outbound network access (e.g. git clone of a public repo)",
-  "docling: tests that download/run the Docling ML model (slow, first-run download)",
   "integration: end-to-end tests against a running server",
 ]
 ```
@@ -25,11 +24,11 @@ Test files are `tests/test_<module>.py`.
 Slow or networked tests are marked so CI can skip them. CI runs the fast subset; run the full suite locally before a release.
 
 ```bash
-uv run pytest -m "not network and not docling" -q   # CI
+uv run pytest -m "not network and not integration" -q   # CI
 uv run pytest                                         # everything (local)
 ```
 
-Use `network` for anything hitting the internet, `docling` for the ML-model download path, `integration` for end-to-end server tests.
+Use `network` for anything hitting the internet and `integration` for end-to-end tests against a running server. A repo with a slow tier of its own adds its marker and excludes it in CI as well, and documents the addition: deco-assaying's `docling`, for the ML-model download path, makes its CI tier `-m "not network and not integration and not docling"`. Integration tests run locally before a release, or in a CI job of their own where the repo provides the server (paper-boxing's `integration` job).
 
 ## conftest patterns (MCP servers)
 
@@ -56,4 +55,4 @@ jonobones runs tiered CI: unit/lint/typecheck, an **interop** tier (round-trips 
 
 ## Visual / front-end verification
 
-For apps with a UI (conception-space, the static sites), verify by **running the app and looking** — not by asserting alone. Start the dev server and drive it via the Claude Preview MCP tools: `preview_start`, `preview_screenshot` after each visual change, `preview_click`/`preview_eval` to exercise interactions, `preview_console_logs` for warnings. Don't claim a visual change works without a screenshot. (Source: conception-space's "running and seeing" workflow.)
+For apps with a UI (conception-space, the static sites), verify by **running the app and looking** — not by asserting alone. Start the dev server, open it in Claude Code's built-in browser, take a screenshot after each visual change, exercise the interactions there, and read the console for warnings. Don't claim a visual change works without a screenshot. (Source: conception-space's "running and seeing" workflow.)

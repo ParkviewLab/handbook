@@ -34,7 +34,7 @@ Run a workflow with the Workflow tool when the user has asked for one: by the go
 
 - pass `model` and `effort` on every `agent()` call, and `agentType` where a definition fits: `agent(brief, {agentType: 'coder', model: 'sonnet', effort: 'high'})`, or `model: 'opus', effort: 'max'` for the escalation;
 - make verification a stage: one agent checking a batch of findings or results against their evidence, `model: 'opus', effort: 'high'`, or `effort: 'max'` where the work is high risk; not one agent per finding;
-- give agents that write in parallel disjoint files and one committer, or `isolation: 'worktree'`;
+- give agents that write in parallel disjoint files and one committer, or `isolation: 'worktree'`, and, where several add tests to one shared `tests/conftest.py`, a fixture namespace each (a name prefix or a conftest plugin file), since git merges two same-named fixtures without a conflict and one silently replaces the other;
 - have each agent write a large result to a file and return the conclusion and the path.
 
 State each stage's model and effort when starting the workflow, and verify its result as you would a subagent's.

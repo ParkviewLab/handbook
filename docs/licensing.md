@@ -95,7 +95,7 @@ A repo that wants to be **maximally reusable** can license under `MIT OR Apache-
   …followed by the standard "any contribution … shall be dual-licensed as above" clause.
 - **`LICENSING.md`** uses the permissive **"either at your option"** framing — *not* the AGPL + commercial-alternative wording from [File layout](#file-layout) above (there's no commercial alternative to sell once the code is already permissive).
 
-## This handbook eats its own dogfood
+## The handbook follows its own pattern
 
 The `handbook` repo itself follows the per-bucket pattern: `docs/**` and `README.md` are `CC-BY-4.0`, `scripts/**` and `templates/**` are `AGPL-3.0-or-later`, **`brand/logos/**` is `LicenseRef-AllRightsReserved`**, and the bundled **`brand/fonts/**` (Michroma) is `OFL-1.1`** (third-party — bundle its license, don't relabel it). Its `REUSE.toml` encodes this and `reuse lint` is green. When a repo vendors a ParkviewLab logo, that file keeps the all-rights-reserved tag.
 
