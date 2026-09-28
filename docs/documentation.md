@@ -39,7 +39,7 @@ When intent surfaces a new principle during work, propose adding it to the north
 
 Work turns up work. An idea discovered whilst doing something else (a fix belonging to another repo, a convention worth adopting, debt worth paying, a direction for a project not yet started) is either done then, in parallel, or set aside, and the ones set aside are recorded in the org's Library (BookStack), in a register named Discovered Tangents, one page per idea. The register sits outside the repos on purpose: a pull request in a foreign repo for one paragraph costs more than the idea is worth at the moment of discovery, and an idea belonging to no repo yet has no file to go in.
 
-Recording is authorised in advance and interrupts nothing; saying so is required, in one line naming the idea and its page, because the register is read to decide when and how to act. The register is the inbox, `docs/in-flight_ideas.md` is the repo's considered list, and an idea moves from the one to the other by an ordinary `doc-` pull request when the project is next worked and the idea is ripe. Ripeness is the user's call, proposed and not assumed. The procedure is the `tangent` skill; the entry's shape and its tags are in the Library librarian's definition, [`bookstack-librarian.md`](../templates/agents/bookstack-librarian.md).
+Recording is authorised in advance and interrupts nothing; saying so is required, in one line naming the idea and its page, because the register is read to decide when and how to act. The register is the inbox, `docs/in-flight_ideas.md` is the repo's considered list, and an idea moves from the one to the other by an ordinary `doc-` pull request when the project is next worked and the idea is ripe. Ripeness is the user's call, proposed and not assumed. The procedure is the `tangent` skill; the entry's shape and its tags are in the librarian's definition, [`bookstack-librarian.md`](../templates/agents/bookstack-librarian.md).
 
 ## Documents and records
 
@@ -74,7 +74,7 @@ Both tracks follow the discipline: one self-contained file, no build step, no ne
 
 ## Links between a repo's own documents
 
-**A link to a file in the repo's own tree is relative** — to the `.html` twin where one exists, otherwise to the `.md` — and never an absolute `https://github.com/ParkviewLab/<repo>/blob/…` URL to the same repo.
+**A link to a file in the repo's own tree is relative**: from inside a twin, and on a published documentation site, to the `.html` twin where one exists; from a README or any other Markdown document, to the `.md`, since GitHub's blob view shows an HTML file as its source. It is never an absolute `https://github.com/ParkviewLab/<repo>/blob/…` URL to the same repo.
 
 The reason is that the same file is read in several places. A relative link resolves in the working tree, in GitHub's blob view, and on a published documentation site alike; an absolute one always lands on whatever `main` (or the pinned ref) holds, so an author clicking through from their working copy reads a *different version* of the document than the one they are editing, and a reader of the site is taken off it.
 
@@ -84,8 +84,6 @@ Two things are outside the rule:
 - **Tag-pinned links a site generator emits** (`blob/vX.Y.Z/docs/<file>.md`), which must be absolute because the published site cannot render Markdown. See [`docs-site.md`](docs-site.md#markdown-links).
 
 Links to *other* repos are absolute, of course; the rule is about self-links.
-
-A link read on GitHub, in a README or any other Markdown document, goes to the `.md` even where a twin exists: GitHub's blob view shows an HTML file as its source. The twin is the target inside the twins themselves and on a published documentation site, where the HTML renders.
 
 ## Publishing `docs/` as a site
 

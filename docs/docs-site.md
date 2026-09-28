@@ -86,7 +86,7 @@ These generated links are the one place an absolute same-repo URL is right: they
 
 ## Links between a repo's own documents
 
-The rule — **a link to a file in the repo's own tree is relative**, to the `.html` twin where one exists, otherwise to the `.md` — is in [`documentation.md`](documentation.md#links-between-a-repos-own-documents), because it binds every repo whether or not it publishes.
+The rule that **a link to a file in the repo's own tree is relative** is in [`documentation.md`](documentation.md#links-between-a-repos-own-documents), because it binds every repo whether or not it publishes.
 
 It matters more on a published site. The same document is then readable in three places (a working tree, GitHub's blob view, the site), and only a relative link resolves correctly in all three; an absolute one takes a reader of the site back to GitHub, out of the version they were reading. The one exception is the tag-pinned link above, which the build emits precisely because the site cannot render Markdown.
 

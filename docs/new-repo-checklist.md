@@ -7,8 +7,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 The master sequence for bootstrapping a new ParkviewLab repo into every convention. Each step links to the doc with the detail.
 
-> **If it's a website** (static site on GitHub Pages — e.g. parkviewlab.ai), follow the lighter path in [`website.md`](website.md): contained worktrees named **`live`/`staging`** (default branch `staging`); merge-commit-only settings; `staging` protected with `reuse` required and administrators bound, `live` against force pushes and deletion; Pages via Actions; REUSE with `LicenseRef-AllRightsReserved` + the bundled font's license; `reuse-website.yml`
-> + `pages-deploy.yml`; the page footers (copyright + "updated on" date) + a stamp step + a local preview script. **Skip §2 (language scaffold), §3 (targets and packaging), and §8 (first release) entirely** — a website has no version, tags, or PyPI/Docker publish; "publishing" is promoting `staging`→`live`. §1, §5 (licensing), §6 (docs), and §7 (AI pointers) still apply, adapted as `website.md` describes.
+> **If it's a website** (static site on GitHub Pages — e.g. parkviewlab.ai), follow the lighter path in [`website.md`](website.md): contained worktrees named **`live`/`staging`** (default branch `staging`); merge-commit-only settings and branch protection as [`website.md`](website.md#ci) gives them; Pages via Actions; REUSE with `LicenseRef-AllRightsReserved` + the bundled font's license; `reuse-website.yml` + `pages-deploy.yml`; the page footers (copyright + "updated on" date) + a stamp step + a local preview script. **Skip §2 (language scaffold), §3 (targets and packaging), and §8 (first release) entirely** — a website has no version, tags, or PyPI/Docker publish; "publishing" is promoting `staging`→`live`. §1, §5 (licensing), §6 (docs), and §7 (AI pointers) still apply, adapted as `website.md` describes.
 
 ## 1. Name & create
 
@@ -67,6 +66,6 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 ## 8. First release
 
 - [ ] In the `<repo>-main` worktree, sync both trunks and promote: `git pull --ff-only`, `git -C ../<repo>-develop pull --ff-only`, `git merge --no-ff develop`.
-- [ ] `git release` → `git push --follow-tags`. No `git bump` at a first release: the version file already names the version to ship (the templates start at `0.1.0`). See [`releases.md`](releases.md#cutting-a-release).
+- [ ] `git release` → `git push --follow-tags`. No `git bump` at a first release; see [`releases.md`](releases.md#cutting-a-release).
 - [ ] `gh run watch` until the whole workflow, including the job that creates the Release, is green.
 - [ ] `git back-merge` — it opens the back-merge PR from `back-merge-<tag>`, waits for `develop`'s required checks and merges it, then fast-forwards the `develop` worktree and lists the open working branches to bring up to date. See [`releases.md`](releases.md#the-releases-last-step-the-back-merge-pull-request).

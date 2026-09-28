@@ -98,7 +98,7 @@ Be honest about what the shared token is: a **pre-OAuth, localhost-only placehol
 That is adequate for a server bound to `127.0.0.1` on a single-user machine. It is **not** adequate for anything reachable from a network the operator does not control. Do not expose one of these servers publicly without a real OAuth 2.1 resource server in front of it, per the specification's authorization requirements.
 
 - **Default the bind to `127.0.0.1`.** `HOST` stays env-driven, since a container must bind `0.0.0.0` to be reachable, but the default someone gets without thinking about it should be the safe one.
-- **An unconfigured token means read-only.** With no token set, a server serves its read-only tools and refuses writes, deletes and admin changes, for the reason the bind defaults to `127.0.0.1`: the default someone gets without thinking about it is the safe one. Full access without a token, for single-user development, is set explicitly through the server's scope, and the README's Configuration table says so. A server that still treats an unset token as full access (smalt-mcp does) is a documented deviation, brought to the rule when it is next worked on.
+- **An unconfigured token means read-only.** With no token set, a server serves its read-only tools and refuses writes, deletes and admin changes, for the reason the bind defaults to `127.0.0.1`: the default someone gets without thinking about it is the safe one. With no token, the server's scope is capped at read-only whatever its default. A server that still treats an unset token as full access (smalt-mcp does) deviates from this rule until it is next worked on.
 
 ## Middleware & misc
 

@@ -1,6 +1,6 @@
 ---
 name: tangent
-description: Record a tangential idea discovered whilst working on something else into the Library's Discovered Tangents register, or list the open tangents for a repo. Use when work turns up something that should be done but not now (a fix belonging to another repo, a convention worth adopting, a piece of technical debt, an idea for a project not yet started), and at the start of work on a repo to see what was set aside earlier.
+description: Record a tangential idea discovered whilst working on something else into the Discovered Tangents register of the Library (BookStack), or list the open tangents for a repo. Use when work turns up something that should be done but not now (a fix belonging to another repo, a convention worth adopting, a piece of technical debt, an idea for a project not yet started), and at the start of work on a repo to see what was set aside earlier.
 ---
 
 # Tangent
@@ -22,7 +22,7 @@ Several tangents found in one stretch of work are filed in one dispatch, as seve
 
 ## List the open ones
 
-At the start of work on a repo, and whenever asked, dispatch the Library librarian for the open entries whose `target` tag is that repo, and give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in the register is acted upon silently.
+At the start of work on a repo, and whenever asked, dispatch the librarian for the open entries whose `target` tag is that repo, and give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in the register is acted upon silently.
 
 ## Promote one
 

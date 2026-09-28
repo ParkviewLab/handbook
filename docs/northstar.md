@@ -59,7 +59,7 @@ The same axioms support all four intents, from different angles.
 
 2. **Convention over configuration.** Same layout, tooling, and release flow in every repo. A new repo should be boring. Deviations are documented, not improvised.
 
-3. **Write it down.** If a practice matters, if a concept should be explained, it's in the handbook — or in a repo's `docs` directory. Like `northstar.md` or `in-flight_ideas.md` — not just in a head or a chat log. An idea found whilst working elsewhere, or one that belongs to no repo yet, goes to the org's Library register as an inbox, and reaches that repo's `in-flight_ideas.md` by pull request when the repo is next worked; the Library is never the only home of anything a repo's reader needs. Read `docs/documentation.md` in this repo for further explanation.
+3. **Write it down.** If a practice matters, if a concept should be explained, it's in the handbook — or in a repo's `docs` directory. Like `northstar.md` or `in-flight_ideas.md` — not just in a head or a chat log. An idea found whilst working elsewhere, or one that belongs to no repo yet, goes to a register in the org's Library as an inbox, and reaches that repo's `in-flight_ideas.md` by pull request when the repo is next worked; the Library is never the only home of anything a repo's reader needs. Read `docs/documentation.md` in this repo for further explanation.
 
 4. **Automate the mechanical; gate the irreversible.** Changelogs and releases are scripted and verified by a CI gate — *and* merging to a shared trunk, tagging, and releasing still require an explicit human hand.
 
