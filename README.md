@@ -63,7 +63,7 @@ Start with [`docs/northstar.md`](docs/northstar.md) (or the designed [`docs/nort
 
 - **Starting a repo?** Follow [new-repo-checklist.md](docs/new-repo-checklist.md).
 - **An AI dev?** Read [ai-collaboration.md](docs/ai-collaboration.md) and the repo's `docs/northstar.md`; then [agents.md](docs/agents.md) (the agent set and the dispatch rule) and [parallel-work.md](docs/parallel-work.md) (the structures of dispatched work).
-- **Changing a convention?** Change it here first, then propagate (re-run the sync script; re-copy the affected template). This handbook is the single source of truth; if a repo disagrees with it, the handbook wins until updated.
+- **Changing a convention?** Change it here first, then propagate (re-run the sync script; re-assemble the release workflows; release `dev-tools` where a script changed; re-copy any other affected template). This handbook is the single source of truth; if a repo disagrees with it, the handbook wins until updated.
 
 ## Contributing
 
