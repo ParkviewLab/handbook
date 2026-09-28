@@ -7,11 +7,9 @@ SPDX-License-Identifier: CC-BY-4.0
 
 The conventions defined in the other documents in this handbook are downstream of these intents; when a convention and an intent conflict, the intent wins and the convention needs to be fixed. A change of intent is made here first, in the same pull request as the convention that follows it, so that no disagreement is left standing by accident.
 
-The handbook is a guide, not a rulebook. It records what has been tried and found to work well, and it is how new things are done until new information shows a better way. When a better way is found or invented, the handbook is updated with it, and the repos it would improve adopt it.
-
 ## Intents
 
-ParkviewLab engineering serves four complementary intents: facets of one purpose, presented as peers rather than as one primary and three secondary, and mutually reinforcing.
+ParkviewLab engineering serves five complementary intents: facets of one purpose, presented as peers rather than as one primary and four secondary, and mutually reinforcing.
 
 1. **One shape across many repos.** ParkviewLab is a *family* of repos, not a monorepo and not a pile of one-offs. They share one layout, one toolchain, one release flow, one brand, so each repo is legible the moment you open it, and the family coheres without coupling. Deviation from the common shapes must be justified and documented, and a deviation that proves a better way is carried back into the handbook.
 
@@ -20,6 +18,8 @@ ParkviewLab engineering serves four complementary intents: facets of one purpose
 3. **Legible to humans and AI alike.** Humans and AI agents are both first-class developers here. The same handbook, the same branch prefixes, the same written norms serve both, and each repo carries pointer files so an agent loads the conventions automatically.
 
 4. **Use AI to automate the processes.** Creating a branch, committing, merging, releasing, whatever it is, if it's a process with defined steps, then teach the AI (MD files, skills, etc.) to do it for us so that it gets done with consistency. If it could apply to more than one repo then put it here in the handbook repo.
+
+5. **Use experience to improve the conventions.** The handbook is a guide, not a rulebook. It records what has been tried and found to work well, and it is how new things are done until new information shows a better way. When a person or an agent finds or invents a better way, the handbook is updated with it, and the repos it would improve adopt it.
 
 ### 1. One shape across many repos
 
@@ -45,15 +45,23 @@ Any process with defined steps is a process an agent can be taught: creating a b
 
 The rule of placement is that anything that applies to more than one repo lives here, in the handbook, so that it is taught once. And the automation has an edge it does not cross: the mechanical steps are automated, and the irreversible ones, merging to a shared trunk, tagging, releasing, keep an explicit human hand (axiom 4).
 
-### How the four reinforce each other
+### 5. Use experience to improve the conventions
+
+The handbook records the best way found so far, not the only way allowed, and a better way can come from any piece of work, raised by a person or an agent. Raising an improvement must cost little, and each route it can take is written down. A deviation that proves a better way in one repo is carried back into the handbook (intent 1). An idea found whilst working elsewhere goes to the tangent register in the org's Library, and from there to the `in-flight_ideas.md` of the repo it concerns (axiom 3). An idea that is ripe becomes a proposal, and is ruled on and built; the built proposal retires into the handbook and its why record. Where the better way is a script, it lands in `dev-tools` instead, and reaches the repos through the version each one pins. The friction met in the work is the backlog: the back-merge pull request began as friction measured in the release flow ([`branching-why.md`](branching-why.md#the-measured-problem)), and was proposed, ruled on and built.
+
+A released change reaches the repos it would improve from the shared sources by three channels (the pointer-file sync, the workflow assembly, the pinned `dev-tools`), each repo taking it at its next piece of work or, when the change warrants it, in every repo it improves at once, one pull request each. A guide that is never updated hardens into a rulebook that its readers work around, and the workarounds are the pile of one-offs that intent 1 rules out.
+
+### How the five reinforce each other
 
 Each intent makes another possible. One shape (1) is only worth having if each repo in the family is complete in itself (2); a family of half-described repos would share a layout and nothing else. Legibility (3) follows from both: a reader, of either kind, understands a repo quickly because it looks like the others and describes itself. And automation (4) is possible only because the processes are written down (3): an agent can run a release exactly because the release flow is a page and a helper, not a memory.
 
 Intents 1 and 2 meet at one point: N repos means N copies of the conventions to keep honest. The resolution is *shared* sources (this handbook and `dev-tools`) so the convention has one home even when it lives in many repos. The org's Library (BookStack) is a third shared source, holding the org's registers and what belongs to no repo; a convention never lives there. Intent 4 stops where axiom 4 begins: the mechanical steps are automated, and merging, tagging, and releasing keep an explicit human hand, asked for per action rather than inferred.
 
+Intent 5 rests on intents 3, 1 and 4: a better way can be carried back only because the old way is written down (intent 3) in a shared source (axiom 1), and it reaches the repos it would improve because they share a shape (intent 1) and the automation carries it (intent 4). In turn it keeps the shape worth sharing, since one shape (1) that is revised whenever a repo proves a better one does not harden into a rule that the family works around.
+
 ## Axioms
 
-The same axioms support all four intents, from different angles.
+The same axioms support all five intents, from different angles.
 
 1. **One source of truth.** A fact stated twice is a fact that will drift. Prefer one source + derivation over two copies kept in sync by discipline. The version, each convention, the brand: each lives in exactly one place. Everything else *derives* from it (runtime version from package metadata; the changelog from commits; pointer files from templates).
 
@@ -71,6 +79,7 @@ When making a decision, these are the questions to keep answering:
 - Is there exactly one source of truth for this fact, and does everything else derive from it?
 - If this practice matters, is it written down where the next person will find it?
 - Is this a process with defined steps, and if so, has it been taught rather than repeated by hand?
+- When a better way is found, has it been carried back into the handbook, and adopted where it improves a repo?
 
 ## What ParkviewLab engineering is not
 
