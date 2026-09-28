@@ -48,7 +48,7 @@ git merge --ff-only staging
 git push                     # push to live → fires the deploy workflow
 ```
 
-No tag, no bump, no back-merge. To roll back, promote the previous commit (or `git revert` on `live` and push).
+No tag, no bump, no back-merge. To roll back, revert the change by a pull request into `staging` (GitHub's Revert button on the merged pull request, or `git revert -m 1 <merge>` on a working branch), and promote as above once it has merged: `live` refuses a push that moves it backwards, and a revert made on `live` itself would leave `live` holding a commit `staging` lacks, so the next fast-forward promotion would fail.
 
 ### On-disk layout
 
@@ -124,7 +124,7 @@ echo | openssl s_client -connect www.<domain>:443 -servername www.<domain> 2>/de
 
 Only **`reuse`** ([`ci.md`](ci.md)) — REUSE/SPDX compliance, the one check that applies to any repo. Use the website variant ([`templates/.github/workflows/reuse-website.yml`](../templates/.github/workflows/reuse-website.yml)), identical to `reuse.yml` but triggering on `[live, staging]`. No `test.yml`, `version-guard.yml`, `license-check.yml`, or `release.yml`.
 
-**Branch protection:** `staging` requires the `reuse` check on an up-to-date branch and binds administrators, as `develop` does ([`ci.md`](ci.md#required-checks-before-merge)); `live` is protected against force pushes and deletion and nothing more, so the one-step promote stays a push. The merge settings are a code repo's ([`ci.md`](ci.md#repo-merge-settings)).
+**Branch protection:** `staging` requires the `reuse` check on an up-to-date branch, and binds administrators as `develop` does ([`ci.md`](ci.md#required-checks-before-merge)); `live` is protected against force pushes and deletion and nothing more, so the one-step promote stays a push. The merge settings are a code repo's ([`ci.md`](ci.md#repo-merge-settings)).
 
 ## Licensing
 

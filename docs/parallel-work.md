@@ -36,7 +36,7 @@ A workflow is a script that Claude Code's Workflow tool runs in the coordinator'
 
 - Every `agent()` call passes `model` and `effort`, and `agentType` where a definition fits; left out, they fall back to the session's, which need not be the step's ([`agents.md`](agents.md#using-them)).
 - Verification is a stage of the script: one agent checks a batch of findings or results against their evidence, on Opus at `high`, or at `max` where the work is high risk. A fresh agent per finding is not used ([the dispatch rule](agents.md#the-dispatch-rule)).
-- Agents that write in parallel get disjoint files and one committer, or `isolation: 'worktree'`. Where several add tests to one shared `tests/conftest.py`, each takes a fixture namespace of its own (a name prefix, or a conftest plugin file per component) given in its brief: git merges two fixtures of the same name without a conflict, and one silently replaces the other.
+- Agents that write in parallel get disjoint files and one committer, or `isolation: 'worktree'`. Where several add tests to one shared `tests/conftest.py`, each takes a fixture namespace of its own (a name prefix, or a conftest plugin file per component) given in its brief: git can merge two fixtures of the same name without a conflict, and one then silently replaces the other.
 - An agent writes a large result to a file and returns the conclusion and the path.
 - The coordinator names each stage's model and effort when it starts the workflow, and verifies the result as it would a subagent's.
 

@@ -28,7 +28,7 @@ uv run pytest -m "not network and not integration" -q   # CI
 uv run pytest                                         # everything (local)
 ```
 
-Use `network` for anything hitting the internet and `integration` for end-to-end tests against a running server. A repo with a slow tier of its own adds its marker and excludes it in CI as well, and documents the addition: deco-assaying's `docling`, for the ML-model download path, makes its CI tier `-m "not network and not integration and not docling"`. Integration tests run locally before a release, or in a CI job of their own where the repo provides the server (paper-boxing's `integration` job).
+Use `network` for anything hitting the internet and `integration` for end-to-end tests against a running server. A repo with a slow tier of its own adds its marker and excludes it in CI as well, and documents the addition: flint-slating's `docling`, for the Docling model's download path, is such a tier; with it, the CI tier is `-m "not network and not integration and not docling"`. Integration tests run locally before a release, or in a CI job of their own where the repo provides the server (paper-boxing's `integration` job).
 
 ## conftest patterns (MCP servers)
 
@@ -55,4 +55,4 @@ jonobones runs tiered CI: unit/lint/typecheck, an **interop** tier (round-trips 
 
 ## Visual / front-end verification
 
-For apps with a UI (conception-space, the static sites), verify by **running the app and looking** — not by asserting alone. Start the dev server, open it in Claude Code's built-in browser, take a screenshot after each visual change, exercise the interactions there, and read the console for warnings. Don't claim a visual change works without a screenshot. (Source: conception-space's "running and seeing" workflow.)
+For apps with a UI (conception-space, the static sites), verify by **running the app and looking** — not by asserting alone. Start the dev server, open it in the Claude desktop app's browser pane, take a screenshot after each visual change, exercise the interactions there, and read the console for warnings. Don't claim a visual change works without a screenshot. (Source: conception-space's "running and seeing" workflow.)
