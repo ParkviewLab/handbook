@@ -35,7 +35,7 @@ uvx --from "reuse[charset-normalizer]" reuse lint
 
 ## Copyright statements: SPDX header vs. visible footer
 
-Two different things, two different audiences, keep them straight:
+Two different things, two different audiences; keep them straight:
 
 <!-- REUSE-IgnoreStart -->
 - **The SPDX header is the copyright statement of record, and the only one REUSE cares about.** `SPDX-FileCopyrightText:` + `SPDX-License-Identifier:` in the top comment (or `.license` / `REUSE.toml`) is what `reuse lint` checks. Every file has this.
@@ -81,9 +81,7 @@ A repo that wants to be maximally reusable can license under `MIT OR Apache-2.0`
   ```bash
   uvx --from "reuse[charset-normalizer]" reuse download MIT Apache-2.0
   ```
-- **Uniform per-file SPDX:** every source file carries
-  <!-- REUSE-IgnoreStart -->`SPDX-License-Identifier: MIT OR Apache-2.0`<!-- REUSE-IgnoreEnd --> (uppercase `OR`). No per-bucket split;
-  one identifier everywhere. `REUSE.toml` keeps a single catch-all annotation for the files that can't hold a comment header (dotfiles, the lockfile, the version pin).
+- **Uniform per-file SPDX:** every source file carries <!-- REUSE-IgnoreStart -->`SPDX-License-Identifier: MIT OR Apache-2.0`<!-- REUSE-IgnoreEnd --> (uppercase `OR`). No per-bucket split; one identifier everywhere. `REUSE.toml` keeps a single catch-all annotation for the files that can't hold a comment header (dotfiles, the lockfile, the version pin).
 - **`pyproject.toml` (PEP 639):**
   ```toml
   license = "MIT OR Apache-2.0"

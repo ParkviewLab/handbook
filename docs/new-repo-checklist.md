@@ -19,10 +19,9 @@ The master sequence for bootstrapping a new ParkviewLab repo into every conventi
 
 ## 2. Language scaffold
 
-> **If it's a Node repo**, use the Node stack instead of the Python one below: `package.json` from [`templates/package.json.template`](../templates/package.json.template), TypeScript + ESLint + Vitest, version read at runtime via `src/version.ts`, see [`node-tooling.md`](node-tooling.md). §3 to §8 still apply, and §3 decides what the repo publishes.
+> **If it's a Node repo**, use the Node stack instead of the Python one below: `package.json` from [`templates/package.json.template`](../templates/package.json.template), TypeScript + ESLint + Vitest, version read at runtime via `src/version.ts`; see [`node-tooling.md`](node-tooling.md). §3 to §8 still apply, and §3 decides what the repo publishes.
 
-> **If it's an Electron desktop app**, use the Electron stack: the app at the repo root (`package.json` + `src/{main,preload,renderer}` + `electron.vite.config.js`
-> + `electron-builder.yml`), electron-vite + electron-builder, plain JS or TS, see [`electron-tooling.md`](electron-tooling.md). An app that ships OS installers takes the installers target in §3 and §4.
+> **If it's an Electron desktop app**, use the Electron stack: the app at the repo root (`package.json` + `src/{main,preload,renderer}` + `electron.vite.config.js` + `electron-builder.yml`), electron-vite + electron-builder, plain JS or TS; see [`electron-tooling.md`](electron-tooling.md). An app that ships OS installers takes the installers target in §3 and §4.
 
 - [ ] `pyproject.toml` from [`templates/pyproject.toml.template`](../templates/pyproject.toml.template): name, description, deps; src-layout; ruff/ty/pytest config; `.python-version` = `3.13`. See [`python-tooling.md`](python-tooling.md).
 - [ ] If it's an MCP server: the `src/<pkg>/` skeleton (`config.py`, `__main__.py`, `server.py`, `tools.py`, `schema.py`) with `/health` + `/admin/version` and `--transport`. See [`mcp-server-conventions.md`](mcp-server-conventions.md).

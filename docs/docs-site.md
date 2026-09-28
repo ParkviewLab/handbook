@@ -21,7 +21,7 @@ The hand-built pages and their assets live under `site/` in the repo (`site/intr
 
 ## Published from `main` only
 
-This is the decision the rest follows from. The workflow triggers on push to `main` and checks `main` out explicitly (`ref: main`), and the `github-pages` environment's deployment branch policy lists `main` and nothing else, a repository setting, changed once. A `workflow_dispatch` run from another branch therefore cannot publish it.
+This is the decision the rest follows from. The workflow triggers on push to `main` and checks `main` out explicitly (`ref: main`), and the `github-pages` environment's deployment branch policy lists `main` and nothing else (a repository setting, changed once). A `workflow_dispatch` run from another branch therefore cannot publish it.
 
 Because `main` advances only at a release ([`branching.md`](branching.md)), what the site says is what the newest release ships. That is the point: a visitor reading the documentation site is reading the documentation for the version they can download.
 

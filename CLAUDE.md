@@ -13,7 +13,7 @@ This repo follows the [ParkviewLab handbook](https://github.com/ParkviewLab/hand
 - Work in an ephemeral, prefixed worktree off `develop` (`feature-`/`fix-`/`doc-`/…); don't commit on `develop`/`main` directly. Open a PR into `develop`.
 - PRs into `develop` are merged with a merge commit titled with the PR title and number, so the PR title carries the Conventional Commit prefix (`feat:`/`fix:`/`docs:`/…) the changelog is generated from.
 
-**Everything else lives in the handbook** (don't rely on memory): branching, commits & changelogs, releases, Python tooling, CI, licensing, and the full communication norms: see <https://github.com/ParkviewLab/handbook/tree/main/docs>.
+**Everything else lives in the handbook** (don't rely on memory): branching, commits & changelogs, releases, Python tooling, CI, licensing, and the full communication norms; see <https://github.com/ParkviewLab/handbook/tree/main/docs>.
 <!-- PARKVIEWLAB:END -->
 
 <!-- Repo-specific guidance below this line is preserved by the sync script: add anything particular to this repo here. -->

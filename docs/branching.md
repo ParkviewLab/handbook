@@ -101,9 +101,9 @@ The release flow already syncs both trunks before promoting: a stale local `deve
 
 ### Remove the worktree and delete the branch
 
-Do this when no further work on that branch is expected; keep the worktree when it is. Leaving one isn't free: each worktree carries its own installed dependencies (`uv sync` / `npm ci`), hundreds of megabytes routinely, 241 MB of `node_modules` in the case that prompted this rule.
+Do this when no further work on that branch is expected; keep the worktree when it is. Leaving one isn't free: each worktree carries its own installed dependencies (`uv sync` / `npm ci`), hundreds of megabytes routinely (241 MB of `node_modules` in the case that prompted this rule).
 
-> **The ancestry test answers the question.** A merge commit keeps both parents, so once the PR has merged the branch tip is an ancestor of `develop`, and `git merge-base --is-ancestor` answers exactly what is asked: did this branch's work land? The exception is a branch whose PR was squash-merged before its repo's switch to merge commits ([`releases.md`](releases.md#until-a-repository-has-switched)): the squash is a *fresh* commit, so that tip is never an ancestor of the trunk, and neither the ancestry test nor `git branch -d` says whether the work landed. **Verify such a branch from its pull request** (`gh pr view <n> --json state,mergedAt`: "MERGED" with a date).
+> **The ancestry test answers the question.** A merge commit keeps both parents, so once the PR has merged the branch tip is an ancestor of `develop`, and `git merge-base --is-ancestor` answers exactly what is asked: did this branch's work land? The exception is a branch whose PR was squash-merged before its repo's switch to merge commits ([`releases.md`](releases.md#until-a-repository-has-switched)): the squash is a *fresh* commit, so that tip is never an ancestor of the trunk, and neither the ancestry test nor `git branch -d` says whether the work landed. Verify such a branch from its pull request (`gh pr view <n> --json state,mergedAt`: "MERGED" with a date).
 
 ```bash
 # from the develop worktree, with the trunk already synced:

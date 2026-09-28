@@ -84,7 +84,7 @@ The custom domain is the apex (`parkviewlab.ai`), set in Pages settings; the `CN
 Two records, both DNS-only:
 
 - **Apex**: four `A` records to GitHub's Pages IPs (`185.199.108.153` to `185.199.111.153`).
-- **`www`**, a `CNAME` to `parkviewlab.github.io`: the org Pages host, the *same target for every ParkviewLab domain*. It is not `<domain>.github.io`: there is no `zoestum` GitHub account; `zoestum.ai`'s repo lives under the ParkviewLab org too. The repo's Settings → Pages page says it outright: "serve your site from a domain other than `parkviewlab.github.io`."
+- **`www`**: a `CNAME` to `parkviewlab.github.io` (the org Pages host, the *same target for every ParkviewLab domain*). It is not `<domain>.github.io`: there is no `zoestum` GitHub account; `zoestum.ai`'s repo lives under the ParkviewLab org too. The repo's Settings → Pages page says it outright: "serve your site from a domain other than `parkviewlab.github.io`."
 
 GitHub then issues a single Let's Encrypt certificate covering both the apex and `www`, and `www` 301-redirects to the bare apex.
 
@@ -98,7 +98,7 @@ gh api repos/ParkviewLab/<repo>/pages --jq '.https_certificate | {state, domains
 # fixed:  {"state":"approved","domains":["<domain>","www.<domain>"]}
 ```
 
-> **The fix is to LOAD the repo's Settings → Pages page in a browser, not the REST API.** GitHub re-evaluates whether `www` needs a certificate *every time that page loads*; the API `cname` remove/re-add (`PUT .../pages`) does not re-derive `www`, and leaves the cert stuck in `dns_changed` for hours. One page load flips it to `approved` for both names within minutes; the live cert follows after CDN propagation. *Then* tick Enforce HTTPS, only once `www` actually serves.
+> **The fix is to LOAD the repo's Settings → Pages page in a browser, not the REST API.** GitHub re-evaluates whether `www` needs a certificate *every time that page loads*; the API `cname` remove/re-add (`PUT .../pages`) does not re-derive `www`, and leaves the cert stuck in `dns_changed` for hours. One page load flips it to `approved` for both names within minutes; the live cert follows after CDN propagation. *Then*, only once `www` actually serves, tick "Enforce HTTPS".
 
 So the two-step recovery when `www` is stuck is:
 

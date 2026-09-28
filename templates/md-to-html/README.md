@@ -5,7 +5,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # MD → HTML default scaffold
 
-`default.html` is the org default starting point for a designed HTML rendering of a Markdown document. It is not a converter target: there is no build step that injects content into it. ParkviewLab HTML is authored, by an AI or a human, who reads the Markdown and reworks it for visual impact. See [`docs/md-to-html.md`](../../docs/md-to-html.md) for the method and [`docs/brand.md`](../../docs/brand.md) for the brand tokens.
+`default.html` is the org default starting point for a designed HTML rendering of a Markdown document. It is not a converter target: there is no build step that injects content into it. ParkviewLab HTML is authored by an AI or a human who reads the Markdown and reworks it for visual impact. See [`docs/md-to-html.md`](../../docs/md-to-html.md) for the method and [`docs/brand.md`](../../docs/brand.md) for the brand tokens.
 
 ## What the scaffold gives you
 

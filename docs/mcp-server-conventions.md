@@ -36,7 +36,7 @@ else:
     uvicorn.run("<pkg>.server:app", host=HOST, port=PORT)
 ```
 
-> The `StreamableHTTPSessionManager` **hard-errors if `run()` is called twice**: this shapes the test fixtures (see [`testing.md`](testing.md)).
+> The `StreamableHTTPSessionManager` hard-errors if `run()` is called twice: this shapes the test fixtures (see [`testing.md`](testing.md)).
 
 ### The path is `/mcp`, not `/sse`
 

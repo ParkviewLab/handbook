@@ -55,7 +55,7 @@ ParkviewLab READMEs (especially the MCP servers) share a structure:
 
 1. Title + one-line description (what it does, what it feeds), then, for a repo that publishes its `docs/` as a site, one line on its own: `Documentation: https://parkviewlab.github.io/<repo>/` (the newest release's documentation). When it goes in is in [`docs-site.md`](docs-site.md#enabling-it-on-a-repo).
 2. Status (version, surface completeness, related repos).
-3. The run section for the repo's publish targets, see [`packaging-and-deployment.md`](packaging-and-deployment.md).
+3. The run section for the repo's publish targets (see [`packaging-and-deployment.md`](packaging-and-deployment.md)).
 4. Endpoints.
 5. MCP tools, grouped by permission tier.
 6. Configuration: an env-var table with defaults.
