@@ -11,7 +11,7 @@ It is a record, so it describes the past and keeps doing so ([`documentation.md`
 
 ## 2026-09-18: a release carries the jobs of what its product publishes
 
-The ruling of 18 September 2026: a repository's release carries exactly the jobs of what its product publishes. Its language does not decide them, and no single template does. There are five publish targets, and dev builds follow the same targets and no others, so a product uses TestPyPI if and only if it publishes to PyPI. [`releases.md`](releases.md#what-a-release-publishes) states the rule; [`ci.md`](ci.md#releaseyml--on-v-tag-push) gives the parts and the assembly.
+The ruling of 18 September 2026: a repository's release carries exactly the jobs of what its product publishes. Its language does not decide them, and no single template does. There are five publish targets, and dev builds follow the same targets and no others, so a product uses TestPyPI if and only if it publishes to PyPI. [`releases.md`](releases.md#what-a-release-publishes) states the rule; [`ci.md`](ci.md#releaseyml-on-v-tag-push) gives the parts and the assembly.
 
 What the handbook had said instead was chosen by stack: four release templates (`release.yml` for Python, `release-node.yml`, `release-electron.yml`, `release-txt.yml`) and two dev templates, with a repository that published less trimming its copy by hand. Only one such trim was documented, the deletion of the `docker` job. An audit of `docs/`, `templates/`, the README and the handbook's own release workflow at v0.24.0 found thirty-seven passages that tied a release to a stack rather than to what the product publishes.
 
@@ -37,7 +37,7 @@ npm has no dev counterpart, as documents have none. The reading first put, a dev
 
 ### The assembly is judged, not scripted (T4)
 
-Each repository's `release.yml` and `dev-release.yml` are assembled by the recipe in [`ci.md`](ci.md#releaseyml--on-v-tag-push), starting from the parts and adapting them to the repository at hand. An assembler script with a check mode was set aside, and no in-flight entry was opened for one: the adaptation is judgement, and a script that could not make it would only move the judgement to whoever read its report.
+Each repository's `release.yml` and `dev-release.yml` are assembled by the recipe in [`ci.md`](ci.md#releaseyml-on-v-tag-push), starting from the parts and adapting them to the repository at hand. An assembler script with a check mode was set aside, and no in-flight entry was opened for one: the adaptation is judgement, and a script that could not make it would only move the judgement to whoever read its report.
 
 A difference from a part is therefore judged rather than forbidden, in the ruling's words: "when drift is improvement then it is good and should be adopted where it is an improvement". Each difference is stated in the repository's pull request with its reason; a need of that repository alone is documented in the repository as its slot; a difference that improves the part is carried back into the handbook's part by a handbook pull request, and the other repositories take it at their next re-assembly where it improves them. Only a mistaken or unexplained difference is corrected. `actionlint` checks every assembly, and `convention-auditor` reports each undocumented difference for that judgement rather than as a defect.
 

@@ -15,7 +15,7 @@ The repo worktree (absolute path); the documents to check, which by default are 
 
 ## Classification first
 
-Where this definition and the handbook section differ, the handbook section governs. Decide for each document whether it is a **record** or a **current-state document**, because the rule differs.
+Where this definition and the handbook section differ, the handbook section governs. Decide for each document whether it is a record or a current-state document, because the rule differs.
 
 - A record describes the past and may keep doing so: `CHANGELOG.md`, a decision log (`docs/decisions.md` or a dated "Decided" section), a `<page>-why.md` sibling, and a runbook's dated "Open items" section. A record is checked for internal consistency and for its dates (each entry carries one, and they are in order); its past tense is not a finding.
 - `in-flight_ideas.md` and the `<topic>_ideas.md` notebooks are outside both kinds: the home of open questions, checked only for entries the repo or the caller has since answered.
@@ -39,6 +39,6 @@ You can read the org's Library (BookStack), and only read it: `bookstack_search`
 
 ## Report
 
-Per document, in the order given (for the default set, `README.md`, then `docs/` alphabetically): each stale, wrong or unverifiable claim, with the line, the claim quoted, the evidence (the command and its result, or the file and line that shows otherwise) and the fix, marked **stale** (true once, false now), **wrong** (never true as written), or **unverifiable** (with the command that would settle it). Then cross-document disagreements, each with both texts and the one the code supports. Then unrecorded decisions. Then a coverage statement in a few lines: what was verified consistent and how, so the caller knows what was checked without re-doing it. Then one line: **publishable**, **publishable after the listed fixes**, or **not publishable** (a wrong or stale statement about behaviour or published state that a reader would act on).
+Per document, in the order given (for the default set, `README.md`, then `docs/` alphabetically): each stale, wrong or unverifiable claim, with the line, the claim quoted, the evidence (the command and its result, or the file and line that shows otherwise) and the fix, marked stale (true once, false now), wrong (never true as written), or unverifiable (with the command that would settle it). Then cross-document disagreements, each with both texts and the one the code supports. Then unrecorded decisions. Then a coverage statement in a few lines: what was verified consistent and how, so the caller knows what was checked without re-doing it. Then one line: publishable, publishable after the listed fixes, or not publishable (a wrong or stale statement about behaviour or published state that a reader would act on).
 
 State what you could not check and why. Do not pad: a document with nothing stale gets one line and its place in the coverage statement.

@@ -5,11 +5,11 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # ParkviewLab handbook
 
-The engineering handbook for the **[ParkviewLab](https://github.com/ParkviewLab)** GitHub org — the conventions, procedures, and methods we use when building software here. It is written for **human and AI developers alike**.
+The engineering handbook for the [ParkviewLab](https://github.com/ParkviewLab) GitHub org: the conventions, procedures, and methods we use when building software here. It is written for human and AI developers alike.
 
-> 📌 **Use the released conventions on [`main`](https://github.com/ParkviewLab/handbook/tree/main)** (or a [`vX.Y.Z`](https://github.com/ParkviewLab/handbook/tags) tag). This default view is **`develop`** — the integration branch, which may be ahead of the last release. Current version: [`VERSION.txt`](VERSION.txt).
+> 📌 **Use the released conventions on [`main`](https://github.com/ParkviewLab/handbook/tree/main)** (or a [`vX.Y.Z`](https://github.com/ParkviewLab/handbook/tags) tag). This default view is `develop`: the integration branch, which may be ahead of the last release. Current version: [`VERSION.txt`](VERSION.txt).
 
-Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/northstar.html`](docs/northstar.html)) — *why* we build the way we do. Everything else is downstream of it.
+Start with [`docs/northstar.md`](docs/northstar.md) (or the designed [`docs/northstar.html`](docs/northstar.html)): *why* we build the way we do. Everything else is downstream of it.
 
 ## The docs
 
@@ -28,12 +28,12 @@ Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/
 | [electron-tooling.md](docs/electron-tooling.md) | electron-vite + electron-builder, cross-platform desktop installers |
 | [mcp-server-conventions.md](docs/mcp-server-conventions.md) | The shared Python MCP server architecture |
 | [docs-site.md](docs/docs-site.md) | Publishing a repo's own `docs/` as a GitHub Pages site from `main` |
-| [website.md](docs/website.md) | Website repos: `live`/`staging`, Pages-via-Actions deploy, custom-domain HTTPS, page footers — the lighter profile |
+| [website.md](docs/website.md) | Website repos: `live`/`staging`, Pages-via-Actions deploy, custom-domain HTTPS, page footers (the lighter profile) |
 | [testing.md](docs/testing.md) | pytest markers/tiers, conftest patterns, visual verification |
 | [packaging-and-deployment.md](docs/packaging-and-deployment.md) | Dockerfile, compose, the README's run section for each set of targets |
 | [licensing.md](docs/licensing.md) | REUSE/SPDX, per-bucket licensing, `LICENSING.md` |
 | [documentation.md](docs/documentation.md) | `docs/` convention, northstar structure, README shape, dual-track HTML |
-| [md-to-html.md](docs/md-to-html.md) | How to **author** (not convert) designed HTML from Markdown |
+| [md-to-html.md](docs/md-to-html.md) | How to author (not convert) designed HTML from Markdown |
 | [brand.md](docs/brand.md) | Palette, fonts, logos, voice |
 | [ci.md](docs/ci.md) | The workflows, the release parts and how a release is assembled from them, org secrets, action pinning, `dev-tools` |
 | [ai-collaboration.md](docs/ai-collaboration.md) | The behavioural contract for AI devs |
@@ -44,15 +44,15 @@ Start with **[`docs/northstar.md`](docs/northstar.md)** (or the designed [`docs/
 
 ## Templates & tooling
 
-- **[`templates/`](templates/)** — copy-paste sources kept identical across repos: `pyproject.toml.template`/`package.json.template`, `electron-builder.yml`, `CONTRIBUTING.md`, the `.github/workflows/` (with the `release/` and `dev-release/` parts each repo's workflows are assembled from), the `LICENSING.md`/`REUSE.toml` templates, the `AGENTS.md`/`CLAUDE.md` pointer templates, the [`md-to-html/`](templates/md-to-html/) default HTML scaffold, the [`agents/`](templates/agents/) agent definitions, and the [`skills/`](templates/skills/) `dispatch` and `tangent` skills.
-- **[`brand/`](brand/)** — canonical logos (all rights reserved) + the Michroma font (`OFL-1.1`); see [licensing.md](docs/licensing.md).
-- **[`scripts/sync-agent-files.sh`](scripts/sync-agent-files.sh)** — writes the `AGENTS.md` + `CLAUDE.md` pointer files into every repo from the templates:
+- **[`templates/`](templates/)**: copy-paste sources kept identical across repos: `pyproject.toml.template`/`package.json.template`, `electron-builder.yml`, `CONTRIBUTING.md`, the `.github/workflows/` (with the `release/` and `dev-release/` parts each repo's workflows are assembled from), the `LICENSING.md`/`REUSE.toml` templates, the `AGENTS.md`/`CLAUDE.md` pointer templates, the [`md-to-html/`](templates/md-to-html/) default HTML scaffold, the [`agents/`](templates/agents/) agent definitions, and the [`skills/`](templates/skills/) `dispatch` and `tangent` skills.
+- **[`brand/`](brand/)**: canonical logos (all rights reserved) + the Michroma font (`OFL-1.1`); see [licensing.md](docs/licensing.md).
+- **[`scripts/sync-agent-files.sh`](scripts/sync-agent-files.sh)**: writes the `AGENTS.md` + `CLAUDE.md` pointer files into every repo from the templates:
 
   ```bash
   scripts/sync-agent-files.sh --dry-run   # preview
   scripts/sync-agent-files.sh             # apply across the org
   ```
-- **[`scripts/install-agents.sh`](scripts/install-agents.sh)** — links `templates/agents/*.md` and `templates/skills/<name>/` into `~/.claude/agents/` and `~/.claude/skills/`, from the released handbook by default:
+- **[`scripts/install-agents.sh`](scripts/install-agents.sh)**: links `templates/agents/*.md` and `templates/skills/<name>/` into `~/.claude/agents/` and `~/.claude/skills/`, from the released handbook by default:
 
   ```bash
   scripts/install-agents.sh --dry-run   # preview
