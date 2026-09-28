@@ -5,16 +5,16 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Node tooling
 
-The ParkviewLab Node stack is **npm + TypeScript + ESLint + Vitest**, on **Node 24+**, with a `src/` layout compiled to `dist/`. Every Node repo's `package.json` is nearly identical — start from the template ([`package.json.template`](../templates/package.json.template)) and change only the name/description/deps. **jonobones** is the reference implementation.
+The ParkviewLab Node stack is npm + TypeScript + ESLint + Vitest, on Node 24+, with a `src/` layout compiled to `dist/`. Every Node repo's `package.json` is nearly identical: start from the template ([`package.json.template`](../templates/package.json.template)) and change only the name/description/deps. jonobones is the reference implementation.
 
 ## The stack
 
-- **[npm](https://docs.npmjs.com/)** — package manager and runner. `package-lock.json` is **committed** (reproducible builds; see [`ci.md`](ci.md)). `npm ci` installs; `npm run <script>` runs. Each worktree gets its own `node_modules` (run `npm ci` per worktree).
-- **[TypeScript](https://www.typescriptlang.org/)** — strict mode, `NodeNext` modules; `tsc` builds (`tsconfig.build.json`) and type-checks (`tsc --noEmit`).
-- **[ESLint](https://eslint.org/)** — flat config (`eslint.config.js`).
-- **[Vitest](https://vitest.dev/)** — tests (see [`testing.md`](testing.md)).
+- **[npm](https://docs.npmjs.com/):** package manager and runner. `package-lock.json` is committed (reproducible builds; see [`ci.md`](ci.md)). `npm ci` installs; `npm run <script>` runs. Each worktree gets its own `node_modules` (run `npm ci` per worktree).
+- **[TypeScript](https://www.typescriptlang.org/):** strict mode, `NodeNext` modules; `tsc` builds (`tsconfig.build.json`) and type-checks (`tsc --noEmit`).
+- **[ESLint](https://eslint.org/):** flat config (`eslint.config.js`).
+- **[Vitest](https://vitest.dev/):** tests (see [`testing.md`](testing.md)).
 - **`engines.node`** pins `>=24`; ES modules (`"type": "module"`).
-- Where a Node product publishes an image, that image bases on **`node:24-slim`** (multi-stage) — see [`packaging-and-deployment.md`](packaging-and-deployment.md).
+- Where a Node product publishes an image, that image bases on `node:24-slim` (multi-stage); see [`packaging-and-deployment.md`](packaging-and-deployment.md).
 
 ## Canonical `package.json` shape
 
@@ -45,20 +45,20 @@ Source: jonobones's `package.json`.
 
 ### The settings that are fixed across repos
 
-- **Version is the single source of truth in `package.json` `version`** — read at runtime, never hard-coded and never typed on a `git tag` line. The canonical read (jonobones's `src/version.ts`):
+- **Version is the single source of truth in `package.json` `version`:** read at runtime, never hard-coded and never typed on a `git tag` line. The canonical read (jonobones's `src/version.ts`):
   ```ts
   import { createRequire } from 'node:module';
   const pkg = createRequire(import.meta.url)('../package.json') as { version: string };
   export const VERSION = pkg.version;
   ```
-  Bump/release with the SoT-aware `git bump` / `git release` — see [`releases.md`](releases.md).
+  Bump/release with the SoT-aware `git bump` / `git release`; see [`releases.md`](releases.md).
 - **`"type": "module"`**, `engines.node = ">=24"`, `src/` → `dist/` (`tsc`), `bin/` for CLIs.
-- **License + `author`** per [`licensing.md`](licensing.md). SPDX headers go on `.ts` / `.mjs` / `.js` with `//` comments; JSON files (`package.json`, `tsconfig.json`, the lockfile) can't take comments — cover them in `REUSE.toml`.
+- **License + `author`** per [`licensing.md`](licensing.md). SPDX headers go on `.ts` / `.mjs` / `.js` with `//` comments; JSON files (`package.json`, `tsconfig.json`, the lockfile) can't take comments: cover them in `REUSE.toml`.
 
 ## CI & release
 
-- **CI** — [`test-node.yml`](../templates/.github/workflows/test-node.yml): a `node-version` matrix runs `npm ci` · `npm run typecheck` · `npm run lint` · `npm test`. `reuse.yml` + `version-guard.yml` apply unchanged (the version guard already understands `package.json`). Repos may add tiers — jonobones adds `interop` / `docker` / `e2e` (see [`testing.md`](testing.md)).
-- **Release** — `release.yml`, assembled from the parts of the repo's publish targets and not from the stack (see [`ci.md`](ci.md#releaseyml--on-v-tag-push)). A package on npm takes the `npm` part: **npm trusted publishing (OIDC)**, with an optional second **scoped-alias** name (`@org/<pkg>`, as jonobones does with `jonobones` + `@parkviewlab/jonobones`; the step is commented out in the part). An image takes the `docker` part. The gate (tag == `package.json` version, reachable from `main`, strictly greater than the previous tag) and the `changelog` job are the same parts every release carries.
+- **CI:** [`test-node.yml`](../templates/.github/workflows/test-node.yml): a `node-version` matrix runs `npm ci` · `npm run typecheck` · `npm run lint` · `npm test`. `reuse.yml` + `version-guard.yml` apply unchanged (the version guard already understands `package.json`). Repos may add tiers: jonobones adds `interop` / `docker` / `e2e` (see [`testing.md`](testing.md)).
+- **Release:** `release.yml`, assembled from the parts of the repo's publish targets and not from the stack (see [`ci.md`](ci.md#releaseyml-on-v-tag-push)). A package on npm takes the `npm` part: npm trusted publishing (OIDC), with an optional second scoped-alias name (`@org/<pkg>`, as jonobones does with `jonobones` + `@parkviewlab/jonobones`; the step is commented out in the part). An image takes the `docker` part. The gate (tag == `package.json` version, reachable from `main`, strictly greater than the previous tag) and the `changelog` job are the same parts every release carries.
 - The changelog automation is language-agnostic: the `changelog` job runs dev-tools' shared `generate-changelog` at a pinned release, which reads `package.json` as well as `pyproject.toml` and `Cargo.toml`, and nothing is copied into the repo (see [`commits-and-changelogs.md`](commits-and-changelogs.md)).
 
 ## Everyday commands

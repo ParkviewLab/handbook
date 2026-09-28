@@ -5,7 +5,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Testing
 
-Python projects test with **pytest**. Config lives in `[tool.pytest.ini_options]` (see [`python-tooling.md`](python-tooling.md)):
+Python projects test with pytest. Config lives in `[tool.pytest.ini_options]` (see [`python-tooling.md`](python-tooling.md)):
 
 ```toml
 [tool.pytest.ini_options]
@@ -19,7 +19,7 @@ markers = [
 
 Test files are `tests/test_<module>.py`.
 
-## Marker tiers — fast CI, full local
+## Marker tiers: fast CI, full local
 
 Slow or networked tests are marked so CI can skip them. CI runs the fast subset; run the full suite locally before a release.
 
@@ -32,7 +32,7 @@ Use `network` for anything hitting the internet and `integration` for end-to-end
 
 ## conftest patterns (MCP servers)
 
-The Streamable-HTTP transport's `StreamableHTTPSessionManager` **hard-errors if `run()` is called twice**, and the FastAPI lifespan calls `run()`. So:
+The Streamable-HTTP transport's `StreamableHTTPSessionManager` hard-errors if `run()` is called twice, and the FastAPI lifespan calls `run()`. So:
 
 - **One session-scoped `mcp_client` `TestClient`** lives in `conftest.py`; every test module that touches the MCP endpoint reuses it (don't open a second `with TestClient(app)` per module).
 - **Set env vars before importing the server module.** `server.py` constructs its `App()`/config at import time, so the fixture sets `SMALT_DIR`, `EMBEDDING_PROVIDER=fake`, scope, etc. *before* `from <pkg>.server import app`.
@@ -45,14 +45,14 @@ The Streamable-HTTP transport's `StreamableHTTPSessionManager` **hard-errors if 
   with TestClient(app) as c:
       yield c
   ```
-- **Generate test data in-memory / in `tmp_path`** — no committed binary fixtures. smalt-mcp seeds a tiny deterministic store (a handful of pages covering each type) and uses a `fake` embedder to avoid a model download.
+- **Generate test data in-memory / in `tmp_path`**: no committed binary fixtures. smalt-mcp seeds a tiny deterministic store (a handful of pages covering each type) and uses a `fake` embedder to avoid a model download.
 
 Source: `smalt-mcp/.../tests/conftest.py` (the reload guard + seeded store); `deco-assaying/.../tests/conftest.py` (the single session-scoped client).
 
 ## Node (jonobones) test tiers
 
-jonobones runs tiered CI: unit/lint/typecheck, an **interop** tier (round-trips against the official Joplin CLI), a docker image-boot check, and an **e2e** tier that boots a real Joplin Server in Docker. Locally, e2e needs Docker + the joplin CLI (`JOPLIN_CLI_BIN`). See jonobones's `docs/testing.md`.
+jonobones runs tiered CI: unit/lint/typecheck, an interop tier (round-trips against the official Joplin CLI), a docker image-boot check, and an e2e tier that boots a real Joplin Server in Docker. Locally, e2e needs Docker + the joplin CLI (`JOPLIN_CLI_BIN`). See jonobones's `docs/testing.md`.
 
 ## Visual / front-end verification
 
-For apps with a UI (conception-space, the static sites), verify by **running the app and looking** — not by asserting alone. Start the dev server, open it in the Claude desktop app's browser pane, take a screenshot after each visual change, exercise the interactions there, and read the console for warnings. Don't claim a visual change works without a screenshot. (Source: conception-space's "running and seeing" workflow.)
+For apps with a UI (conception-space, the static sites), verify by running the app and looking, not by asserting alone. Start the dev server, open it in the Claude desktop app's browser pane, take a screenshot after each visual change, exercise the interactions there, and read the console for warnings. Don't claim a visual change works without a screenshot. (Source: conception-space's "running and seeing" workflow.)

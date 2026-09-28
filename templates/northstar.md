@@ -4,7 +4,7 @@ SPDX-License-Identifier: CC-BY-4.0
 -->
 
 <!--
-templates/northstar.md — the blueprint for a repo's docs/northstar.md.
+templates/northstar.md: the blueprint for a repo's docs/northstar.md.
 
 Copy this file to <repo>/docs/northstar.md and replace every bracketed
 placeholder. Keep the section order: it is the structure documentation.md
@@ -13,7 +13,7 @@ guiding questions → what it is not). Delete these authoring comments as you
 go; the finished file carries only the SPDX header, the prose, and the footer.
 
 Guidance, in brief:
-- Two to four complementary intents, presented as peers. One clear intent
+- Complementary intents, presented as peers. One clear intent
   beats several muddled ones; do not force a second.
 - Axioms are design principles derived from the intents. The same axioms
   support all the intents, from different angles; do not group them per intent.

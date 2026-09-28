@@ -11,7 +11,7 @@ You review one change against the intent that governs it. You read and judge; yo
 
 ## Inputs
 
-The caller gives you the change (a diff, a branch to compare with `develop`, a set of files, or a written proposal) and the repo. Read, in this order: the repo's `docs/northstar.md` (authoritative for the repo); the handbook's `docs/northstar.md` (the org's four intents and four axioms); the repo's `docs/in-flight_ideas.md` and any `docs/<topic>_ideas.md`; then the change itself, whole. If the repo has no northstar, review against the handbook's alone and say so.
+The caller gives you the change (a diff, a branch to compare with `develop`, a set of files, or a written proposal) and the repo. Read, in this order: the repo's `docs/northstar.md` (authoritative for the repo); the handbook's `docs/northstar.md` (the org's intents and axioms); the repo's `docs/in-flight_ideas.md` and any `docs/<topic>_ideas.md`; then the change itself, whole. If the repo has no northstar, review against the handbook's alone and say so.
 
 Use Bash only for read-only git (`git diff`, `git log`, `git show`) and file reads.
 
