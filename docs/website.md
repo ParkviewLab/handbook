@@ -48,7 +48,7 @@ git merge --ff-only staging
 git push                     # push to live → fires the deploy workflow
 ```
 
-No tag, no bump, no back-merge. To roll back, promote the previous commit (or `git revert` on `live` and push).
+No tag, no bump, no back-merge. To roll back, revert the change by a pull request into `staging` (GitHub's Revert button on the merged pull request, or `git revert -m 1 <merge>` on a working branch), and promote as above once it has merged: `live` refuses a push that moves it backwards, and a revert made on `live` itself would leave `live` holding a commit `staging` lacks, so the next fast-forward promotion would fail.
 
 ### On-disk layout
 
