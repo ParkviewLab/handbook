@@ -155,7 +155,7 @@ Part 4 is organized around two pillars that follow from this:
 - Pillar A, accelerate the shared loop with low friction: any human or AI can open any repo and move at once, conventions auto-loaded, mechanical steps automated, irreversible steps gated. The proposals under A are where friction still leaks (version drift, hand-maintained condensations, missing release provenance, no dependency automation, the visionOS gaps, MCP currency).
 - Pillar B, a self-improvement governance loop: an explicit, lightweight lifecycle that carries an improvement from raised to debated to decided to recorded, with humans and AIs as symmetric participants and a durable trail. Today the org has capture (`in-flight_ideas.md`), intent (`northstar.md`), and a propagation rule ("change the handbook first, then sync"), but no defined propose-debate-decide-record lifecycle and no affordance for an agent to file or argue a proposal mid-work the way a human opens an issue. The fitting shapes are a small RFC/proposal process and Architecture Decision Records, adapted so an agent is first-class, plus a friction-capture channel.
 
-This principle follows from and sharpens northstar intents 3 (legible to humans and AI alike) and 4 (use AI to automate the processes); Part 4 includes a proposal to add it to the northstar as a candidate fifth intent ("the environment improves itself"), rather than acting on it silently.
+This principle follows from and sharpens northstar intents 3 (legible to humans and AI alike) and 4 (use AI to automate the processes); Part 4 includes a proposal to add it to the northstar as a candidate fifth intent ("the environment improves itself"), rather than acting on it silently (adopted as the fifth intent on 2026-09-27).
 
 ## Part 3 — Web research findings
 
@@ -315,7 +315,7 @@ On whether to combine or reorganize `handbook` and `dev-tools`, and what new hum
 
 ### Priority summary
 
-P1 (high value, low regret): A1, A2, A3, A4, A7, A8, A9, A10, A11, A13, A24, A25, B1, B2, C7a. P2: A5, A12, A14, A15, A16, A17, A18, A22, A23 (landed in part), A26, B3, B4 (landed in part), B5, B7, C1, C3, C6, C7b, D1 (D1 decided: keep two trunks; remaining work is automating the cascade). P3: A6, A19, A20, A21, B6, C2, C4, C5, C7c.
+P1 (high value, low regret): A1, A2, A3, A4, A7, A8, A9, A10, A11, A13, A24, A25, B1 (adopted 2026-09-27), B2, C7a. P2: A5, A12, A14, A15, A16, A17, A18, A22, A23 (landed in part), A26, B3, B4 (landed in part), B5, B7, C1, C3, C6, C7b, D1 (D1 decided: keep two trunks; remaining work is automating the cascade). P3: A6, A19, A20, A21, B6, C2, C4, C5, C7c.
 
 A natural first wave is the supply-chain and one-source-of-truth P1/S cluster (A1+A2, A3+A4, A7, A8, A9) plus the two governance foundations (B1, B2): all low-regret, mutually reinforcing, and each an instance of a pattern the org already trusts.
 
