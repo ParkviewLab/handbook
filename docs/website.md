@@ -16,7 +16,7 @@ It is a deliberately **lighter** profile than that of a repo which publishes a p
 **Keep** (the universal conventions — see the linked docs):
 
 - The contained, repo-prefixed **worktree layout** ([`repo-layout.md`](repo-layout.md)).
-- **Two trunks** + a one-step publish (below).
+- **Two trunks** + a one-step publish (below), with `staging` protected as `develop` is.
 - **REUSE/SPDX licensing** ([`licensing.md`](licensing.md)).
 - **`AGENTS.md` + `CLAUDE.md`** pointers (`scripts/sync-agent-files.sh`).
 - The **brand** — palette, Michroma, logos ([`brand.md`](brand.md)).
@@ -37,7 +37,7 @@ Website repos name their two trunks for what they *are*, not the generic `main`/
 
 > Website repos are the one place we diverge from the org-wide `main`/`develop` names. The deploy semantics are clearer this way, and the divergence is contained to this profile (its workflow templates trigger on `live`/`staging`, and `sync-agent-files.sh` knows the `*-staging`/`*-live` worktree names).
 
-**Working branches are optional.** Mandating a prefixed branch + PR for a typo on a few static pages is friction without payoff. Commit small edits straight to `staging`; use a prefixed worktree branch (`feature-`/`doc-`/… → PR into `staging`) only for a real redesign. See [`branching.md`](branching.md) for the prefixes when you do.
+**Every change reaches `staging` by a pull request** from a prefixed working branch (`feature-`/`doc-`/…), as in a code repo ([`branching.md`](branching.md)): `staging` is protected with its check required and administrators bound, so nothing is pushed to it directly, a typo's fix included.
 
 **Publishing is one step: promote `staging` → `live`.** That promotion *is* the "release", and it triggers the deploy:
 
@@ -124,7 +124,7 @@ echo | openssl s_client -connect www.<domain>:443 -servername www.<domain> 2>/de
 
 Only **`reuse`** ([`ci.md`](ci.md)) — REUSE/SPDX compliance, the one check that applies to any repo. Use the website variant ([`templates/.github/workflows/reuse-website.yml`](../templates/.github/workflows/reuse-website.yml)), identical to `reuse.yml` but triggering on `[live, staging]`. No `test.yml`, `version-guard.yml`, `license-check.yml`, or `release.yml`.
 
-Branch protection is **light or omitted** — for a solo maintainer who wants easy edits, requiring the `reuse` check on `staging` (admins bypass, no required PR) is plenty. Leave `live` pushable so the one-step promote isn't blocked.
+**Branch protection:** `staging` requires the `reuse` check on an up-to-date branch and binds administrators, as every protected trunk does ([`ci.md`](ci.md#required-checks-before-merge)); `live` is protected against force pushes and deletion and nothing more, so the one-step promote stays a push. The merge settings are a code repo's: merge commits only, titled with the pull request's title and number, branches deleted on merge ([`ci.md`](ci.md#repo-merge-settings)).
 
 ## Licensing
 
