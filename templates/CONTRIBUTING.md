@@ -1,6 +1,6 @@
 # Contributing
 
-> Template — copy to a new repo as **`docs/CONTRIBUTING.md`**. Replace `<repo>` as needed. The authoritative, org-wide version of all of this is the [ParkviewLab handbook](https://github.com/ParkviewLab/handbook).
+> Template — copy to a new repo as **`docs/CONTRIBUTING.md`**. Replace `<repo>` as needed. The authoritative, org-wide version of all of this is the [ParkviewLab handbook](https://github.com/ParkviewLab/handbook/tree/main).
 
 This repo follows the ParkviewLab conventions. The essentials:
 
@@ -36,7 +36,7 @@ uv sync
 uv run ruff check src tests
 uv run ruff format --check src tests
 uv run ty check
-uv run pytest -m "not network and not docling" -q
+uv run pytest -m "not network and not integration" -q
 uvx --from "reuse[charset-normalizer]" reuse lint
 ```
 

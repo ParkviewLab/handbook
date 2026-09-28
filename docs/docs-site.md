@@ -61,7 +61,7 @@ The workflow template is [`templates/.github/workflows/pages-docs.yml`](../templ
 
 **One committed fragment, everything else derived.** The hand-written introduction, where the repo has one, is a fragment of HTML (`site/intro.html` — paragraphs, no `<html>`/`<head>`/`<body>`); the rest of the index is read off the documents themselves at build time:
 
-- An **HTML document's** title comes from its `<title>`, and its description from `<meta name="description">` when present.
+- An **HTML document's** title comes from its `<title>`, less a leading "ParkviewLab · " (the browser tab keeps the brand; the index leaves it out, so that branded and unbranded titles read alike), and its description from `<meta name="description">` when present.
 - A **Markdown document's** title comes from its first `# ` heading.
 
 The documents are listed in five groups, in this order:
@@ -86,7 +86,7 @@ These generated links are the one place an absolute same-repo URL is right: they
 
 ## Links between a repo's own documents
 
-The rule — **a link to a file in the repo's own tree is relative**, to the `.html` twin where one exists, otherwise to the `.md` — is in [`documentation.md`](documentation.md#links-between-a-repos-own-documents), because it binds every repo whether or not it publishes.
+The rule that **a link to a file in the repo's own tree is relative** is in [`documentation.md`](documentation.md#links-between-a-repos-own-documents), because it binds every repo whether or not it publishes.
 
 It matters more on a published site. The same document is then readable in three places (a working tree, GitHub's blob view, the site), and only a relative link resolves correctly in all three; an absolute one takes a reader of the site back to GitHub, out of the version they were reading. The one exception is the tag-pinned link above, which the build emits precisely because the site cannot render Markdown.
 
@@ -121,13 +121,13 @@ The workflow checks `dev-tools` out at a **released tag** into `dev-tools/`, a s
 
 ### What it must not do
 
-**Do not make a late tag fatal** — we got this wrong once. The script takes the newest `v*` tag *reachable from HEAD*, and cannot tell whether that tag is **this** release's or the **previous** one: a run that somehow started before the tag landed would stamp the previous release and publish successfully. That leniency is wanted, because a manual re-run sits on the changelog commit rather than on the tagged one and must still build. What the script *does* detect is a repository with **no `v*` tag at all**, which refuses to publish. If a deployment ever does stamp a stale version, re-run the workflow by hand once the tag is in place. (`git push --follow-tags` sends the branch and its tag together, so in the normal release flow the tag is on the runner before the build reads it.)
+**Do not make a late tag fatal.** The script takes the newest `v*` tag *reachable from HEAD*, and cannot tell whether that tag is **this** release's or the **previous** one: a run that somehow started before the tag landed would stamp the previous release and publish successfully. That leniency is wanted, because a manual re-run sits on the changelog commit rather than on the tagged one and must still build. What the script *does* detect is a repository with **no `v*` tag at all**, which refuses to publish. If a deployment ever does stamp a stale version, re-run the workflow by hand once the tag is in place. (`git push --follow-tags` sends the branch and its tag together, so in the normal release flow the tag is on the runner before the build reads it.)
 
 ## The two failure modes from the pilot
 
 ### A README that links to addresses the release has not published yet
 
-**The repo's README is public on GitHub as soon as the change reaches the default branch** — for a repo defaulting to `develop`, that is the moment a PR merges, long before the release that publishes the site. (A repo still defaulting to `main` is spared this one: its README goes public with the release itself.) So a README edited to point at `/downloads/` or at the documentation site shows **broken links to everyone** in the window between that merge and the release. In the pilot this cost two extra pull requests: one to hold the links at what was actually live, and one to move them forward once the site was up.
+**The repo's README is public on GitHub as soon as the change reaches the default branch** — for a repo defaulting to `develop`, that is the moment a PR merges, long before the release that publishes the site. So a README edited to point at `/downloads/` or at the documentation site shows **broken links to everyone** in the window between that merge and the release. In the pilot this cost two extra pull requests: one to hold the links at what was actually live, and one to move them forward once the site was up.
 
 **The rule: links to not-yet-published site addresses wait.** They move in a pull request merged *after* the release that publishes the site, never in the feature pull request that builds the thing they point at.
 

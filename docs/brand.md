@@ -67,17 +67,21 @@ Michroma is for display sizes only (headings, labels). Body copy is the system s
 
 ## Logos
 
-Three variants live in [`brand/logos/`](../brand/logos/):
+Five variants live in [`brand/logos/`](../brand/logos/):
 
 | File | When to use |
 |---|---|
 | `parkview_lab_color_horizontal_dark.svg` | Wide contexts — site header, doc header bar. Mark + "PARKVIEW / LAB" wordmark. |
 | `parkview_lab_color_stacked_dark.svg` | Square-ish contexts — cards, social, narrow columns. |
+| `parkview_lab_bw_horizontal_white.svg` | An application's header on deep teal: a greyscale mark with the wordmark in white. |
+| `parkview_lab_bw_horizontal_dark.svg` | An application's header on paper: a greyscale mark with the wordmark in dark ink. |
 | `parkview_lab_color_logo_only.svg` | The mark alone — favicons, tight corners, **and any self-contained HTML** (it has no font dependency; pair it with an inline Michroma wordmark). |
 
-The mark is a sage cluster (a stylised parkview hedge) beside a teal node-and-edge figure (the "lab" — a graph/molecule). The colours are exactly `--sage` (`#90b095`), `--teal` (`#00C2C7`), and `--teal-deep` (`#004f52`).
+The mark is a sage cluster (a stylised parkview hedge) beside a teal node-and-edge figure (the "lab" — a graph/molecule). In the colour variants the colours are exactly `--sage` (`#90b095`), `--teal` (`#00C2C7`), and `--teal-deep` (`#004f52`).
 
 > **Caveat — the horizontal and stacked SVGs `@import` Google Fonts** for their baked-in wordmark text. That is fine on the website (already online) but **breaks the no-network rule for standalone HTML**. For designed HTML, embed `parkview_lab_color_logo_only.svg` (pure shapes) and set the wordmark in inline Michroma text. The default scaffold shows the pattern.
+
+**In an application's header** use an official horizontal logo file, scaled: `parkview_lab_bw_horizontal_white.svg` on deep teal, or `parkview_lab_bw_horizontal_dark.svg` on paper; never a redrawn or recoloured mark. Where the application renders that SVG, replace its Google Fonts import at render time with Michroma embedded as a data URI from `brand/fonts/`, so the header makes no network call (paper-boxing's frontend layout does this).
 
 ## Voice & tone
 
