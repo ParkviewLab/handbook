@@ -34,7 +34,7 @@ Run a workflow with the Workflow tool when the user has asked for one: by the go
 
 - pass `model` and `effort` on every `agent()` call, and `agentType` where a definition fits: `agent(brief, {agentType: 'coder', model: 'sonnet', effort: 'high'})`, or `model: 'opus', effort: 'max'` for the escalation;
 - make verification a stage: one agent checking a batch of findings or results against their evidence, `model: 'opus', effort: 'high'`, or `effort: 'max'` where the work is high risk; not one agent per finding;
-- give agents that write in parallel disjoint files and one committer, or `isolation: 'worktree'`, and, where several add tests to one shared `tests/conftest.py`, a fixture namespace each (a name prefix or a conftest plugin file), since git merges two same-named fixtures without a conflict and one silently replaces the other;
+- give agents that write in parallel disjoint files and one committer, or `isolation: 'worktree'`, and, where several add tests to one shared `tests/conftest.py`, a fixture namespace each (a name prefix or a conftest plugin file), since git can merge two same-named fixtures without a conflict, and one then silently replaces the other;
 - have each agent write a large result to a file and return the conclusion and the path.
 
 State each stage's model and effort when starting the workflow, and verify its result as you would a subagent's.
@@ -51,7 +51,7 @@ For each repo, in order:
    claude --add-dir <org root>/handbook/handbook-main --bg --name <repo>-<prefix>-<topic> --agent coder --model sonnet --effort high --permission-mode auto "<brief>"
    ```
 
-   Where the task looks as if it needs Opus, the same command with `--model opus --effort max`. `--add-dir` takes a list of directories, so it comes first; a brief placed after it is read as a directory. The brief states the task, the librarian's rules, and the stopping rule: local checks green, push after each commit, never touch the version file, never merge, do not open the PR, and finish with a report that proposes the PR title (with its Conventional Commit prefix) and body.
+   Where the task looks as if it needs Opus, the same command with `--model opus --effort max`. `--add-dir` takes a list of directories, so it comes first; a brief placed after it is read as a directory. The brief states the task, the librarian's rules, and the stopping rule: local checks green, push after each commit, never touch the version file, commit and push only its own branch (never `develop` or `main`), never merge, do not open the PR, and finish with a report that proposes the PR title (with its Conventional Commit prefix) and body.
 4. Subscribe once to the worker's idle notice (SendMessage to its name with `notify_when_idle: true` and no message), then move on. Do not poll.
 5. On the notice, verify independently: `git -C <worktree> log origin/<branch> --oneline`, the checks (run them here and read the output; `checks-runner` where that output is large or a failure needs diagnosis, or the worker's report against `gh run list`), `git diff develop -- <version file>` empty, no merge into a trunk. Read the worker's transcript with `claude logs <id>` if the notice is not enough, or send it a question by name.
 6. Open the pull request into `develop` yourself, with the prefixed title: `gh pr create --base develop --title "<prefix>: ..." --body "..."`. Give the user the link. Merging is the user's.
