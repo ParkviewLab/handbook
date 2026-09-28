@@ -15,7 +15,7 @@ You are an escalation, not the habit. A session runs its own checks and reads it
 
 The repo's own `docs/CONTRIBUTING.md` list is authoritative when present. Otherwise choose by the files at the worktree root, following the handbook's tooling pages (`$PARKVIEWLAB_HANDBOOK`, else `<org root>/handbook/handbook-main`):
 
-- `pyproject.toml`: `uv sync`, then `uv run ruff check src tests`, `uv run ruff format --check src tests`, `uv run ty check`, `uv run pytest -m "not network and not docling" -q`.
+- `pyproject.toml`: `uv sync`, then `uv run ruff check src tests`, `uv run ruff format --check src tests`, `uv run ty check`, `uv run pytest -m "not network and not integration" -q`.
 - `package.json` (Node or Electron): `npm ci`, then the repo's lint, type-check, and test scripts as `docs/node-tooling.md` or `docs/electron-tooling.md` names them.
 - `VERSION.txt` only (a docs repo): no language checks.
 - Every repo: `uvx --from "reuse[charset-normalizer]" reuse lint`.

@@ -20,7 +20,7 @@ A PR can't merge into `develop` until its required checks are green — enforced
 **Code repos add** (all in `test.yml`):
 - `ruff check` (lint) + `ruff format --check` (formatting)
 - `ty check` (types — `ty` must be a dev dependency)
-- `pytest -m "not network and not docling"` (the fast test tier)
+- `pytest -m "not network and not integration"` (the fast test tier)
 - **`license-check`** (pip-licenses copyleft block) **where the repo's license requires it** [`license-check.yml`]
 
 (A docs repo like this handbook has no code, so it runs only `reuse` + `version guard` on PRs, and its release workflow, the documents target's, on a `v*` tag push; see below.)
@@ -99,7 +99,7 @@ Triggers on `pull_request` and `push` to `main` and `develop`. Steps:
 - run: uv run ruff check src tests
 - run: uv run ruff format --check src tests
 - run: uv run ty check                 # ty must be a dev dependency
-- run: uv run pytest -m "not network and not docling" -q
+- run: uv run pytest -m "not network and not integration" -q
 ```
 
 The test subset excludes the slow/networked tiers (see [`testing.md`](testing.md)).

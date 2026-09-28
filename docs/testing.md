@@ -13,7 +13,6 @@ testpaths = ["tests"]
 asyncio_mode = "auto"          # async tests run without per-test decorators
 markers = [
   "network: tests that require outbound network access (e.g. git clone of a public repo)",
-  "docling: tests that download/run the Docling ML model (slow, first-run download)",
   "integration: end-to-end tests against a running server",
 ]
 ```
@@ -25,11 +24,11 @@ Test files are `tests/test_<module>.py`.
 Slow or networked tests are marked so CI can skip them. CI runs the fast subset; run the full suite locally before a release.
 
 ```bash
-uv run pytest -m "not network and not docling" -q   # CI
+uv run pytest -m "not network and not integration" -q   # CI
 uv run pytest                                         # everything (local)
 ```
 
-Use `network` for anything hitting the internet, `docling` for the ML-model download path, `integration` for end-to-end server tests.
+Use `network` for anything hitting the internet and `integration` for end-to-end tests against a running server. A repo with a slow tier of its own adds its marker and excludes it in CI as well, and documents the addition: deco-assaying's `docling`, for the ML-model download path, makes its CI tier `-m "not network and not integration and not docling"`. Integration tests run locally before a release, or in a CI job of their own where the repo provides the server (paper-boxing's `integration` job).
 
 ## conftest patterns (MCP servers)
 

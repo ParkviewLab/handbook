@@ -82,7 +82,7 @@ uv sync                                   # install deps into this worktree's en
 uv run ruff check src tests               # lint (CI runs this)
 uv run ruff format src tests              # format
 uv run ty check                           # type-check
-uv run pytest -m "not network and not docling" -q   # the CI test subset
+uv run pytest -m "not network and not integration" -q   # the CI test subset
 ```
 
 The `version`/release commands (`git bump`, `git release`) are in [`releases.md`](releases.md). Most repos are MCP servers — their structure is in [`mcp-server-conventions.md`](mcp-server-conventions.md).

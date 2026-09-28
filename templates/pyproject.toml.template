@@ -33,8 +33,7 @@ testpaths = ["tests"]
 asyncio_mode = "auto"
 markers = [
     "network: tests that require outbound network access",
-    # "docling: tests that download/run the Docling ML model (slow)",
-    # "integration: end-to-end tests against a running server",
+    "integration: end-to-end tests against a running server",
 ]
 
 [tool.ruff]

@@ -36,7 +36,7 @@ uv sync
 uv run ruff check src tests
 uv run ruff format --check src tests
 uv run ty check
-uv run pytest -m "not network and not docling" -q
+uv run pytest -m "not network and not integration" -q
 uvx --from "reuse[charset-normalizer]" reuse lint
 ```
 
