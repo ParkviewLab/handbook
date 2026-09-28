@@ -9,9 +9,6 @@ SPDX-License-Identifier: CC-BY-4.0
 
 > This is the condensed, scannable index. The detail, research, and rationale behind every entry live in the sibling notebook [`handbook-improvements_ideas.md`](handbook-improvements_ideas.md); the bracketed tags (e.g. `[B1, P1]`) point into its Part 4.
 
-## The environment improves itself (a possible fifth northstar intent)
-Should the northstar name, as a peer intent, that both human and AI developers can raise, debate, and land improvements to the shared tools and processes through a defined low-friction loop, and that the friction they hit becomes the backlog? [B1, P1] The back-merge pull request is an instance of that loop, and of what it costs: friction measured ([`branching-why.md`](branching-why.md#the-measured-problem)), proposed, ruled on, and built.
-
 ## Many agents under one hand (a possible facet of intent 4)
 The northstar speaks of "an agent" in the singular. `parallel-work.md` now describes one session coordinating several workers across several repos, under the same contract, with the human hand asked for per action and never supplied by another agent or session. Is that a facet of purpose that intent 4 should name (with the rule that a step whose outcome must be identical every time is scripted, whilst a step that needs judgement is delegated to an agent), or is it mechanism only? Raised by the northstar review of the agent set, 2026-09-13. Evidence of 2026-09-27: GitHub attributes an agent's push to the owner's account, so the hand this entry speaks of cannot be told from the owner's own on the record.
 
