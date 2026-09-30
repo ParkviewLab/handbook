@@ -5,7 +5,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # MCP server conventions
 
-Most ParkviewLab repos are Python MCP servers (deco-assaying, smalt-mcp, flint-slating, ebony-enriching) and they share one architecture. This documents it so a new server starts from the same shape. It builds on [`python-tooling.md`](python-tooling.md).
+Four of ParkviewLab's Python MCP servers (deco-assaying, smalt-mcp, flint-slating, ebony-enriching) share one architecture. This documents it so a new server starts from the same shape. It builds on [`python-tooling.md`](python-tooling.md).
 
 ## Stack
 
@@ -93,12 +93,12 @@ Servers gate their tools behind a scope set at startup from an env var, as an `E
 
 ## Auth model
 
-Be honest about what the shared token is: a pre-OAuth, localhost-only placeholder, not an authentication system. It is one static secret compared for equality, with no rotation, no per-client identity, no expiry, and no audience binding.
+Be honest about what the shared token is: a pre-OAuth, localhost-only placeholder, not an authentication system. It is one static secret, with no rotation, no per-client identity, no expiry and no audience binding, and no server compares it with anything a client presents.
 
 That is adequate for a server bound to `127.0.0.1` on a single-user machine. It is not adequate for anything reachable from a network the operator does not control. Do not expose one of these servers publicly without a real OAuth 2.1 resource server in front of it, per the specification's authorization requirements.
 
 - **Default the bind to `127.0.0.1`.** `HOST` stays env-driven, since a container must bind `0.0.0.0` to be reachable, but the default someone gets without thinking about it should be the safe one.
-- **An unconfigured token means read-only.** With no token set, a server serves its read-only tools and refuses writes, deletes and admin changes, for the reason the bind defaults to `127.0.0.1`: the default someone gets without thinking about it is the safe one. With no token, the server's scope is capped at read-only whatever its default. smalt-mcp and ebony-enriching follow this rule (`SMALT_INTERNAL_TOKEN`, `EBONY_INTERNAL_TOKEN`). No server in the family checks an incoming token yet: a configured token only lifts the cap, and every client is then served the configured scope.
+- **An unconfigured token means read-only.** With no token set, a server serves its read-only tools and refuses writes, deletes and admin changes, for the reason the bind defaults to `127.0.0.1`: the default someone gets without thinking about it is the safe one. With no token, the server's scope is capped at read-only whatever its default. smalt-mcp and ebony-enriching follow this rule (`SMALT_INTERNAL_TOKEN`, `EBONY_INTERNAL_TOKEN`). None of the four checks an incoming token: a configured token only lifts the cap, and every client is then served the configured scope.
 
 ## Middleware & misc
 
