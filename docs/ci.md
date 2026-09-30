@@ -21,7 +21,7 @@ A PR can't merge into `develop` until its required checks are green, enforced by
 - `ruff check` (lint) + `ruff format --check` (formatting)
 - `ty check` (types; `ty` must be a dev dependency)
 - `pytest -m "not network and not integration"` (the fast test tier)
-- **`license-check`** (pip-licenses copyleft block) where the repo's license requires it [`license-check.yml`]
+- **`licenses`** (`license-check.yml`: a pip-licenses copyleft block) where the repo's license requires it [`license-check.yml`]
 
 (A docs repo like this handbook has no code, so it runs only `reuse` + `version guard` on PRs, and its release workflow, the documents target's, on a `v*` tag push; see below.)
 

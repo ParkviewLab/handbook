@@ -41,7 +41,7 @@ __version__ = VERSION
 __all__ = ["VERSION", "__version__"]
 ```
 
-Source: `deco-assaying/.../config.py` + `__init__.py` (mirrored in smalt-mcp, flint-slating, ebony-enriching). The `/health` and `/admin/version` endpoints surface this same `VERSION` (see [`mcp-server-conventions.md`](mcp-server-conventions.md)).
+Source: `deco-assaying/.../config.py` + `__init__.py` (its `config.py` mirrored in smalt-mcp, flint-slating, ebony-enriching). The `/health` and `/admin/version` endpoints surface this same `VERSION` (see [`mcp-server-conventions.md`](mcp-server-conventions.md)).
 
 **Node:** read `package.json` at runtime:
 
