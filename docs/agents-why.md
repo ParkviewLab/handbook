@@ -111,6 +111,10 @@ The alternatives set aside. A fixed cheaper default for the session (Sonnet at `
 
 What the change costs, stated so that it can be reopened. The session's context now holds what the agents used to carry, so a long day compacts sooner, and the handbook librarian matters more than before rather than less. The measure of whether the change was right is the next cross-repository build: the real-merges rollout touches every repository twice, and under the old rules each pass cost about 40 agents.
 
+## 2026-10-03: the coders may message the session that started them
+
+The parallel-work steps had the coordinator "subscribe once to the worker's idle notice" without naming how, and had a worker's report read from its session. On 2026-10-03, during the hazel-tracking Phase 1 build, two background coders finished and their notices never came, because the coordinator had not subscribed; their reports then had to be read from `claude logs`, terminal stream and all. Tested the same day on Claude Code v2.1.278 with three throwaway background sessions on Haiku: one started with no `--agent` listed the sessions and delivered a message to the coordinator; one started with `--agent coder` reported that it had no `ListAgents` or `SendMessage`, the definition's `tools` list excluding them like any other tool; a copy of the coder with the two tools added to its list delivered its message. The subscription itself, `SendMessage` with `notify_when_idle: true`, delivered its notice each time. The coder and `coder-max` therefore carry the two tools, the brief tells the worker to send its report to the coordinator, and step 4 names the subscription. Set aside: reading every report from `claude logs`, which works but returns the terminal stream rather than the text.
+
 ## Decision record
 
 | Date | Decision | Ruling |
@@ -164,3 +168,4 @@ What the change costs, stated so that it can be reopened. The session's context 
 | 2026-09-19 | How the change ships | One release carrying the whole change, the practice having already run a build |
 | 2026-09-19 | Verification of findings | One batch read by the session, not a fresh agent per finding |
 | 2026-09-19 | Cross-repo propagation of the workflows | A dev-tools command with a check mode, reversing T4 of the release-by-target rulings |
+| 2026-10-03 | The coders' cross-session messaging | `SendMessage` and `ListAgents` added to `coder` and `coder-max`, so that a background coder sends its report to the coordinator; the coordinator subscribes to its idle notice with `notify_when_idle` |
