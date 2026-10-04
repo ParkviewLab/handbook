@@ -22,8 +22,8 @@ Several tangents found in one stretch of work are filed in one dispatch, as seve
 
 ## List the open ones
 
-At the start of work on a repo, and whenever asked, dispatch the librarian for the open entries whose `target` tag is that repo, and give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in the register is acted upon silently.
+At the start of work on a repo, and whenever asked, dispatch the librarian for the entries in Discovered Tangents whose `target` tag is that repo (that book holds only the open ones), and give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in the register is acted upon silently.
 
 ## Promote one
 
-An idea whose design is clear, whose trade-offs are understood and whose fit with the repo's northstar is good is ripe for its repo's `docs/in-flight_ideas.md`, and from there for a plan. Ripeness is the user's call: propose the promotion, with the reason, and wait. On the go-ahead, the entry moves into that repo's `docs/in-flight_ideas.md` in an ordinary `doc-` branch and pull request, and the librarian is then dispatched to set the entry's disposition to promoted, naming that pull request. The entry stays in the register as the record of where the idea came from.
+An idea whose design is clear, whose trade-offs are understood and whose fit with the repo's northstar is good is ripe for its repo's `docs/in-flight_ideas.md`, and from there for a plan. Ripeness is the user's call: propose the promotion, with the reason, and wait. On the go-ahead, the entry moves into that repo's `docs/in-flight_ideas.md` in an ordinary `doc-` branch and pull request, and the librarian is then dispatched to set the entry's disposition to promoted, naming that pull request. Setting a disposition moves the page to the book Handled Tangents, where it stays as the record of where the idea came from; the same move follows when an entry is set to done or dropped.
