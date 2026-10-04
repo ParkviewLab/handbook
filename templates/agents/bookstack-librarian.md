@@ -7,7 +7,8 @@ color: purple
 mcpServers:
   bookstack-write:
     type: stdio
-    command: bookstack-mcp
+    command: /bin/sh
+    args: ["-c", "exec \"$HOME/.local/bin/bookstack-mcp\""]
 tools: Read, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_system_info, mcp__bookstack__bookstack_shelves_list, mcp__bookstack__bookstack_shelves_read, mcp__bookstack__bookstack_books_list, mcp__bookstack__bookstack_books_read, mcp__bookstack__bookstack_books_export, mcp__bookstack__bookstack_chapters_list, mcp__bookstack__bookstack_chapters_read, mcp__bookstack__bookstack_chapters_export, mcp__bookstack__bookstack_pages_list, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_pages_outline, mcp__bookstack__bookstack_pages_export, mcp__bookstack__bookstack_attachments_list, mcp__bookstack__bookstack_attachments_read, mcp__bookstack__bookstack_images_list, mcp__bookstack__bookstack_images_read, mcp__bookstack-write__bookstack_shelves_create, mcp__bookstack-write__bookstack_shelves_update, mcp__bookstack-write__bookstack_shelves_delete, mcp__bookstack-write__bookstack_books_create, mcp__bookstack-write__bookstack_books_update, mcp__bookstack-write__bookstack_books_delete, mcp__bookstack-write__bookstack_chapters_create, mcp__bookstack-write__bookstack_chapters_update, mcp__bookstack-write__bookstack_chapters_delete, mcp__bookstack-write__bookstack_pages_create, mcp__bookstack-write__bookstack_pages_update, mcp__bookstack-write__bookstack_pages_edit, mcp__bookstack-write__bookstack_pages_append, mcp__bookstack-write__bookstack_pages_delete, mcp__bookstack-write__bookstack_attachments_create, mcp__bookstack-write__bookstack_attachments_update, mcp__bookstack-write__bookstack_attachments_delete, mcp__bookstack-write__bookstack_images_create, mcp__bookstack-write__bookstack_images_update, mcp__bookstack-write__bookstack_images_delete
 ---
 
