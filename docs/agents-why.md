@@ -117,7 +117,7 @@ Step 4 of `parallel-work.md` had the coordinator "subscribe once to the worker's
 
 ## 2026-10-03: a skill for writing plans
 
-The `write-plan` skill, with two sentences added to the plan paragraph of [`agents.md`](agents.md#the-dispatch-rule) and one to [`documentation.md`](documentation.md#discovered-tangents).
+The `write-plan` skill, with three sentences added to the plan paragraph of [`agents.md`](agents.md#the-dispatch-rule) and one to [`documentation.md`](documentation.md#discovered-tangents).
 
 Two rules about plans existed only in sessions' memories: that the open entries of Discovered Tangents are searched whilst a plan is written, so that a plan which carries out an entry closes it and a related entry is decided rather than discovered later; and that every decision is settled with the user, in prose, before the go-ahead. The rules now sit beside the plan rule, and the skill carries the procedure, pointing to them, as the dispatch skill does for its rule. A skill and not an agent, because a plan's decisions are settled in conversation with the user, which a subagent cannot hold; the `tangent` skill was not extended, because its description does not match the writing of a plan and so would not be offered then. The name is `write-plan` rather than `plan`, so as not to collide with a built-in `/plan` command for entering plan mode, which Claude Code is understood to have (not verified when the name was chosen).
 
@@ -176,4 +176,4 @@ Two rules about plans existed only in sessions' memories: that the open entries 
 | 2026-09-19 | Cross-repo propagation of the workflows | A dev-tools command with a check mode, reversing T4 of the release-by-target rulings |
 | 2026-10-03 | The writers' cross-session messaging | `SendMessage` and `ListAgents` added to the four writing definitions (`coder`, `coder-max`, `mechanical-coder`, `html-author`), so that a background worker sends its report to the coordinator; the read-only definitions keep their lists, for now; the coordinator subscribes to a worker's idle notice with `notify_when_idle` |
 | 2026-10-03 | Where a closed tangent is kept | Moved by the librarian to a second book, Handled Tangents, into the chapter named as the one it left, so that Discovered Tangents shows only the tangents not yet dealt with; reverses the 2026-09-17 rule that a promoted or dropped entry stays in Discovered Tangents |
-| 2026-10-03 | Where the plan-writing conventions live | In the plan paragraph of `agents.md` (the Discovered Tangents check and settled decisions) with a `write-plan` skill as the procedure; a planning agent declined, since a subagent cannot converse with the user |
+| 2026-10-03 | Where the plan-writing conventions live | In the plan paragraph of `agents.md` (the Discovered Tangents check and settled decisions) with a `write-plan` skill as the procedure; an agent in place of the skill declined, since a subagent cannot converse with the user |
