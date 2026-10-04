@@ -1,6 +1,6 @@
 # Contributing
 
-> Template: copy to a new repo as `docs/CONTRIBUTING.md`. Replace `<repo>` as needed. The authoritative, org-wide version of all of this is the [ParkviewLab handbook](https://github.com/ParkviewLab/handbook/tree/main).
+> Template: copy to a new repo as `docs/CONTRIBUTING.md`. The authoritative, org-wide version of all of this is the [ParkviewLab handbook](https://github.com/ParkviewLab/handbook/tree/main).
 
 This repo follows the ParkviewLab conventions. The essentials:
 
@@ -43,7 +43,7 @@ uv run pytest -m "not network and not integration" -q
 uvx --from "reuse[charset-normalizer]" reuse lint
 ```
 
-A PR can't be merged until the required checks pass on a branch up to date with `develop` (lint, format, types, tests, REUSE, the version guard; see the handbook's `ci.md`); administrators are bound too. Push after each commit. See also `python-tooling.md` and `testing.md`.
+A PR can't be merged until the required checks pass on a branch up to date with `develop` (lint, format, types, tests, REUSE, the version guard; see the handbook's `ci.md`); administrators are bound too. Push the branch when it is created, then after each commit. See also `python-tooling.md` and `testing.md`.
 
 ## Versioning
 
