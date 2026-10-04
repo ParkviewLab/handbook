@@ -44,7 +44,7 @@ Start with [`docs/northstar.md`](docs/northstar.md) (or the designed [`docs/nort
 
 ## Templates & tooling
 
-- **[`templates/`](templates/)**: copy-paste sources kept identical across repos: `pyproject.toml.template`/`package.json.template`, `electron-builder.yml`, `CONTRIBUTING.md`, the `.github/workflows/` (with the `release/` and `dev-release/` parts each repo's workflows are assembled from), the `LICENSING.md`/`REUSE.toml` templates, the `AGENTS.md`/`CLAUDE.md` pointer templates, the [`md-to-html/`](templates/md-to-html/) default HTML scaffold, the [`agents/`](templates/agents/) agent definitions, and the [`skills/`](templates/skills/) `dispatch` and `tangent` skills.
+- **[`templates/`](templates/)**: copy-paste sources kept identical across repos: `pyproject.toml.template`/`package.json.template`, `electron-builder.yml`, `CONTRIBUTING.md`, the `.github/workflows/` (with the `release/` and `dev-release/` parts each repo's workflows are assembled from), the `LICENSING.md`/`REUSE.toml` templates, the `AGENTS.md`/`CLAUDE.md` pointer templates, the [`md-to-html/`](templates/md-to-html/) default HTML scaffold, the [`agents/`](templates/agents/) agent definitions, and the [`skills/`](templates/skills/) `dispatch`, `tangent` and `write-plan` skills.
 - **[`brand/`](brand/)**: canonical logos (all rights reserved) + the Michroma font (`OFL-1.1`); see [licensing.md](docs/licensing.md).
 - **[`scripts/sync-agent-files.sh`](scripts/sync-agent-files.sh)**: writes the `AGENTS.md` + `CLAUDE.md` pointer files into every repo from the templates:
 
