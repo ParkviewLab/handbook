@@ -5,7 +5,7 @@ description: Write a plan the ParkviewLab way: put it where the user keeps plans
 
 # Write a plan
 
-A task that is not fully specified is planned before it is executed. The rule is the plan paragraph of the handbook's `docs/agents.md` ("The dispatch rule"); this skill is its procedure, and where the two differ the rule wins. The plan is written by the main session, not by an agent: settling its decisions takes conversation with the user, which a subagent cannot hold.
+A task that is not fully specified is planned before it is executed. The rule is the plan paragraph of the handbook's `docs/agents.md` ("The dispatch rule"); this skill is its procedure, and where the two differ the rule wins. The main session settles the plan's decisions itself, even where it has dispatched a planning agent to draft the plan, as the rule allows: settling them takes conversation with the user, which a subagent cannot hold.
 
 ## Where the plan goes
 
