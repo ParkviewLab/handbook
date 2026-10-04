@@ -78,7 +78,7 @@ Exploration, planning, and correctness review stay with Claude Code's built-in a
 
 Four of the reviewers read documents, and no one of them covers another's concern. `docs-reviewer` checks form and rules; `html-drift-checker` checks a Markdown document against its twin; `northstar-reviewer` checks intent; `docs-currency-checker` checks whether what a document says is what the code does and what was decided. A document can pass the first three and still describe a route that was renamed, a question that was answered, or a build phase that ended. Which of them runs is decided by what the change touches, as the design rules below state, not by the set being complete. It distinguishes a record (a changelog, a dated decision log), which may describe the past, from a current-state document, which may not ([`documentation.md`](documentation.md#documents-and-records)), and it takes from the session the decisions made in conversation, because those are invisible in the repo until someone writes them down.
 
-The Library's writer is of a different kind. `bookstack-librarian` is the only writer to the org's Library among sessions and agents (whether a person writing in the Library's own interface is bound by it is an open question, in [`in-flight_ideas.md`](in-flight_ideas.md)): a session that wants a page created, changed or deleted dispatches it with the content, and it resolves the target, chooses the edit method and orders the calls. Its effort is `high` rather than `max` because the content is the caller's and the librarian decides only how, and because its report is verified like any other. Besides its definition it needs one thing, and so does every other definition, since each holds the Library's read tools: an MCP server registered in Claude Code as `bookstack`, pointing at the org's Library. That registration names a host, so it is documented with the service in the lab's operations repository and not here. The librarian needs a second: an executable at `~/.local/bin/bookstack-mcp`, which starts the same server, started through `/bin/sh` because an application launched from the Dock does not inherit the shell's `PATH`, because the librarian writes through a connection of its own, `bookstack-write`, declared in its definition's `mcpServers` field; Claude Code opens that connection when the librarian starts and closes it when the librarian finishes, and the parent conversation never holds its tools. The command, like the registration, names a host, and is documented in the same place. Where it is absent the entry is simply not granted and the agent runs without it, so a machine on which the `bookstack` server is not registered loses the librarian and leaves every other definition's Library section inert rather than failing (observed on v2.1.273, in sessions where that server had not connected). It also keeps the Library's two registers, the Library Catalog (one entry per book, classified by subject, form and status, the terms growing only on the user's ruling) and Discovered Tangents (one page per idea set aside whilst working on something else, [`documentation.md`](documentation.md#discovered-tangents)), whose closed entries it moves to Handled Tangents. The monopoly is enforced by Claude Code's permission rules, set as [Installation](#installation) gives them: the librarian's write tools are allowed, so that the auto-mode classifier never weighs a write the caller has decided on, and the shared connection's write tools are denied, so that no session or other agent can write; deletion is allowed to no one, and so comes to the user each time. It holds, besides, because no other definition holds a Library write tool (the rule below on MCP tools; every other definition holds `bookstack_search`, `bookstack_books_read` and `bookstack_pages_read` and no other Library tool, so any agent can follow a citation itself whilst every change still goes through one hand) and because the Library's librarian opens every invocation by reconciling the catalog against the book list, so a book created, renamed or deleted directly is caught at the next dispatch, though a page written inside an existing book is not. On a machine where the deny rules are not set, a session with a reason to write directly says so and asks, unless the user has given standing authorisation for that kind of entry, as for the tangent register.
+The Library's writer is of a different kind. `bookstack-librarian` is the only writer to the org's Library among sessions and agents (whether a person writing in the Library's own interface is bound by it is an open question, in [`in-flight_ideas.md`](in-flight_ideas.md)): a session that wants a page created, changed or deleted dispatches it with the content, and it resolves the target, chooses the edit method and orders the calls. Its effort is `high` rather than `max` because the content is the caller's and the librarian decides only how, and because its report is verified like any other. Besides its definition it needs one thing, and so does every other definition, since each holds the Library's read tools: an MCP server registered in Claude Code as `bookstack`, pointing at the org's Library. That registration names a host, so it is documented with the service in the lab's operations repository and not here. Where it is absent the entry is simply not granted and the agent runs without it, so a machine on which the `bookstack` server is not registered loses the librarian and leaves every other definition's Library section inert rather than failing (observed on v2.1.273, in sessions where that server had not connected). It also keeps the Library's two registers, the Library Catalog (one entry per book, classified by subject, form and status, the terms growing only on the user's ruling) and Discovered Tangents (one page per idea set aside whilst working on something else, [`documentation.md`](documentation.md#discovered-tangents)), whose closed entries it moves to Handled Tangents. The monopoly rests on this page rather than on a hook, and it holds because no other definition holds a Library write tool (the rule below on MCP tools; every other definition holds `bookstack_search`, `bookstack_books_read` and `bookstack_pages_read` and no other Library tool, so any agent can follow a citation itself whilst every change still goes through one hand) and because the Library's librarian opens every invocation by reconciling the catalog against the book list, so a book created, renamed or deleted directly is caught at the next dispatch, though a page written inside an existing book is not. A session with a reason to write directly says so and asks, unless the user has given standing authorisation for that kind of entry, as for the tangent register.
 
 ## Design rules
 
@@ -113,53 +113,6 @@ scripts/install-agents.sh             # link into ~/.claude/agents and ~/.claude
 ```
 
 The installer links to the released handbook (the sibling `handbook-main` worktree) by default, so an edited definition is picked up on the next `git pull` of `main` with no re-run; a brand-new file needs one more run. A session started after that run can use a new agent at once; one already running may not offer it for some minutes, although a new skill reaches it at once (v2.1.273: on 2026-09-18 a fresh headless session dispatched an agent created 18 seconds earlier, whilst on 2026-09-17 a running session could not dispatch a new agent for a few minutes; the delay was not measured). Dispatch a new agent from a session started after the installer ran. `--copy` copies instead of linking; `--source DIR` installs from another checkout; `--uninstall` removes the links. Claude Code discovers agents and skills through symlinked directories and symlinked files alike (verified on v2.1.270).
-
-The librarian's writes need permission rules in `~/.claude/settings.json`, beside any already there. The allow rules name the librarian's create and update tools, which only its own connection carries; the deny rules name the write tools of the shared connection, `bookstack`; neither names a delete tool, which therefore asks each time (in auto mode, the classifier weighs it). A rule names each tool in full, as a definition's `tools` list does, so that a write the server adds later is granted to no one until it is named here.
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "mcp__bookstack-write__bookstack_shelves_create",
-      "mcp__bookstack-write__bookstack_shelves_update",
-      "mcp__bookstack-write__bookstack_books_create",
-      "mcp__bookstack-write__bookstack_books_update",
-      "mcp__bookstack-write__bookstack_chapters_create",
-      "mcp__bookstack-write__bookstack_chapters_update",
-      "mcp__bookstack-write__bookstack_pages_create",
-      "mcp__bookstack-write__bookstack_pages_update",
-      "mcp__bookstack-write__bookstack_pages_edit",
-      "mcp__bookstack-write__bookstack_pages_append",
-      "mcp__bookstack-write__bookstack_attachments_create",
-      "mcp__bookstack-write__bookstack_attachments_update",
-      "mcp__bookstack-write__bookstack_images_create",
-      "mcp__bookstack-write__bookstack_images_update"
-    ],
-    "deny": [
-      "mcp__bookstack__bookstack_shelves_create",
-      "mcp__bookstack__bookstack_shelves_update",
-      "mcp__bookstack__bookstack_shelves_delete",
-      "mcp__bookstack__bookstack_books_create",
-      "mcp__bookstack__bookstack_books_update",
-      "mcp__bookstack__bookstack_books_delete",
-      "mcp__bookstack__bookstack_chapters_create",
-      "mcp__bookstack__bookstack_chapters_update",
-      "mcp__bookstack__bookstack_chapters_delete",
-      "mcp__bookstack__bookstack_pages_create",
-      "mcp__bookstack__bookstack_pages_update",
-      "mcp__bookstack__bookstack_pages_edit",
-      "mcp__bookstack__bookstack_pages_append",
-      "mcp__bookstack__bookstack_pages_delete",
-      "mcp__bookstack__bookstack_attachments_create",
-      "mcp__bookstack__bookstack_attachments_update",
-      "mcp__bookstack__bookstack_attachments_delete",
-      "mcp__bookstack__bookstack_images_create",
-      "mcp__bookstack__bookstack_images_update",
-      "mcp__bookstack__bookstack_images_delete"
-    ]
-  }
-}
-```
 
 ## Changing the set
 
