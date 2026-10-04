@@ -1,6 +1,6 @@
 # Contributing
 
-> Template: copy to a new repo as `docs/CONTRIBUTING.md`. Replace `<repo>` as needed. The authoritative, org-wide version of all of this is the [ParkviewLab handbook](https://github.com/ParkviewLab/handbook/tree/main).
+> Template: copy to a new repo as `docs/CONTRIBUTING.md`. The authoritative, org-wide version of all of this is the [ParkviewLab handbook](https://github.com/ParkviewLab/handbook/tree/main).
 
 This repo follows the ParkviewLab conventions. The essentials:
 
@@ -12,20 +12,23 @@ This repo follows the ParkviewLab conventions. The essentials:
 
 ## Commit / PR-title convention (this is what the changelog reads)
 
-Because a PR is merged with a merge commit titled `<PR title> (#N)`, the PR title becomes the commit subject, and the changelog is generated from it (by dev-tools' shared `generate-changelog`, which lists every merged PR by its title, under the section its type names). Prefix every PR title with a [Conventional Commit](https://www.conventionalcommits.org/) type:
+Because a PR is merged with a merge commit titled `<PR title> (#N)`, the PR title becomes the commit subject, and the changelog is generated from it (by dev-tools' shared `generate-changelog`, which lists every merged PR by its title, under the group its type names). Prefix every PR title with a [Conventional Commit](https://www.conventionalcommits.org/) type:
 
-| Prefix | CHANGELOG section | Notes |
+| Title | Group in the notes | Notes |
 |---|---|---|
+| any type with `!` after it (`feat!:`), or a breaking-change footer | Breaking changes | listed there once, whatever its type |
 | `feat:` | Features | user-visible |
 | `fix:` | Bug fixes | user-visible |
 | `perf:` | Performance | user-visible |
 | `refactor:` | Refactor | |
 | `docs:` | Docs | |
 | `test:` | Tests | |
-| `revert:` | Reverts | |
-| `chore:` / `ci:` / `build:` / `style:` | Maintenance | |
+| `revert:` | Reverts | GitHub's Revert button titles a PR `Revert "…"`, which has no type |
+| `build:` / `chore:` / `ci:` / `style:` | Maintenance | |
+| any other title | Other changes | the whole title |
+| a commit with no pull request | Direct commits | its subject and short hash |
 
-A `!` after the type (`feat!:`), or a `BREAKING CHANGE:` footer in the PR's description, lists the PR under Breaking changes instead. A PR title without a recognised prefix is listed whole under Other changes, which says nothing about what kind of change it is. So: prefix it. A commit that reaches a release without a PR is listed under Direct commits.
+A `BREAKING CHANGE:` footer belongs in the PR's description, which becomes the merge commit's message. A title without a recognised type is listed under Other changes, where its place says nothing about what kind of change it is. So: prefix it. See the handbook's `commits-and-changelogs.md`.
 
 ## Local checks before opening a PR
 
@@ -40,7 +43,7 @@ uv run pytest -m "not network and not integration" -q
 uvx --from "reuse[charset-normalizer]" reuse lint
 ```
 
-A PR can't be merged until the required checks pass (lint, format, types, tests, REUSE, the version guard; see the handbook's `ci.md`). Push after each commit. See also `python-tooling.md` and `testing.md`.
+A PR can't be merged until the required checks pass on a branch up to date with `develop` (lint, format, types, tests, REUSE, the version guard; see the handbook's `ci.md`); administrators are bound too. Push the branch when it is created, then after each commit. See also `python-tooling.md` and `testing.md`.
 
 ## Versioning
 
@@ -48,4 +51,4 @@ The version lives in `pyproject.toml` only; never hard-code it elsewhere, and ne
 
 ## AI contributors
 
-If the repo has a `docs/northstar.md`, read it first; and follow the behavioural contract in the handbook's `ai-collaboration.md` (notably: merging/tagging/releasing need an explicit, per-release go-ahead). The northstar leads: a change that alters intent amends it in the same PR, and an unintended disagreement between it and the code is a defect in the code.
+If the repo has a `docs/northstar.md`, read it first; and follow the behavioural contract in the handbook's `ai-collaboration.md` (notably: merging a feature pull request is the user's action, and tagging and releasing need an explicit, per-release go-ahead). The northstar leads: a change that alters intent amends it in the same PR, and an unintended disagreement between it and the code is a defect in the code.
