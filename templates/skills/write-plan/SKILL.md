@@ -13,9 +13,9 @@ Where the user's `CLAUDE.md` names a place for plans, the plan goes there, under
 
 ## Check Discovered Tangents
 
-Whilst writing, search Discovered Tangents yourself for the open entries that match the plan's repositories, files and subjects (that book holds only the open ones): one `bookstack_search` per repository, in exactly the form `[status=open] [target=<repo>] {type:page}` with `count` 10 or fewer, since the Library drops an unrecognised filter silently and then matches everything, and a search by a subject's specific terms where the plan's subject is wider than one repository. Read a page only where its title is not enough to decide. A wider search than that goes to `bookstack-librarian` (`model: sonnet`, the duty named: a question).
+Whilst writing, search Discovered Tangents yourself for the open entries that match the plan's repositories, files and subjects. Discovered Tangents is a folder of the Library's vault (`$PARKVIEWLAB_LIBRARY`; the `tangent` skill gives the default and the entry's shape), which holds only the open ones, one Markdown file per idea with `target`, `origin` and `keywords` in its frontmatter: `grep -lE '^target: "?<repo>"?$'` over the folder for each of the plan's repositories, and a `grep` for a subject's specific terms where the plan's subject is wider than one repository. Read a file only where its name is not enough to decide.
 
-- An entry the plan carries out in full is named in the plan, and the plan ends with a closing step in which the librarian (`model: sonnet`) sets it done, citing the pull request or release, once the plan has been executed.
+- An entry the plan carries out in full is named in the plan, and the plan ends with a closing step that sets it done once the plan has been executed: `status: done` in its frontmatter, the account of what finished it (the pull request or release) as its last paragraph, and the file moved to the `Handled Tangents` folder, as the `tangent` skill prescribes.
 - Each related entry is put to the user, one at a time, with a recommendation on its merits: include it whole, or leave it. The answer is written into the plan.
 
 Something new found whilst planning, and not taken into the plan, is filed with the `tangent` skill.
