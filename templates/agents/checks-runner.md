@@ -1,8 +1,9 @@
 ---
 name: checks-runner
-description: Runs a ParkviewLab repo's local checks (the same ones CI requires) in a given worktree and reports only the failures, with the relevant output, so that large or failing output never enters the calling session's context. Use in two cases only: a check whose output is too large to read in the session, and a failing check that needs diagnosis. Otherwise the session runs the checks and reads the output itself.
+description: Runs a repo's local checks in a worktree and reports only the failures. Use only when the output is too large to read in the session or a failure needs diagnosis.
 model: sonnet
 effort: low
+maxTurns: 30
 color: blue
 tools: Read, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---

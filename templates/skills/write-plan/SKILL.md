@@ -13,9 +13,9 @@ Where the user's `CLAUDE.md` names a place for plans, the plan goes there, under
 
 ## Check Discovered Tangents
 
-Whilst writing, dispatch `bookstack-librarian` for the open entries of Discovered Tangents that match the plan's files, repositories and subjects (that book holds only the open ones).
+Whilst writing, search Discovered Tangents yourself for the open entries that match the plan's repositories, files and subjects (that book holds only the open ones): one `bookstack_search` per repository, in exactly the form `[status=open] [target=<repo>] {type:page}` with `count` 10 or fewer, since the Library drops an unrecognised filter silently and then matches everything, and a search by a subject's specific terms where the plan's subject is wider than one repository. Read a page only where its title is not enough to decide. A wider search than that goes to `bookstack-librarian` (`model: sonnet`, the duty named: a question).
 
-- An entry the plan carries out in full is named in the plan, and the plan ends with a closing step in which the librarian sets it done, citing the pull request or release, once the plan has been executed.
+- An entry the plan carries out in full is named in the plan, and the plan ends with a closing step in which the librarian (`model: sonnet`) sets it done, citing the pull request or release, once the plan has been executed.
 - Each related entry is put to the user, one at a time, with a recommendation on its merits: include it whole, or leave it. The answer is written into the plan.
 
 Something new found whilst planning, and not taken into the plan, is filed with the `tangent` skill.

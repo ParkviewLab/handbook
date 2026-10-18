@@ -1,17 +1,17 @@
 ---
 name: dispatch
-description: Dispatch work to agents under the ParkviewLab handbook's dispatch rule, and coordinate parallel work across repos from one session. Plans first when a task is not fully specified; chooses the structure by the shape of the work (a subagent, a workflow, one background session per repo, or an agent team); chooses and states each dispatch's model and effort by its step, never Fable without the user's yes; sizes the brief; and for a background session prepares the working worktree the handbook's way, starts the worker with the right flags, subscribes to its idle notice, verifies its result, opens the pull request, and cleans up. Use before dispatching any agent, workflow, worker session or agent team, and when the user asks to run several tasks at once or to work on several repos in parallel.
+description: Run a workflow, a background session per repo, or an agent team under the ParkviewLab dispatch rule, or work several repos in parallel from one session. Use before starting any of these; a single subagent call follows the rule alone.
 ---
 
 # Dispatch
 
-This skill is the operational sequence for dispatching work. The rule it applies is "The dispatch rule" in the handbook's `docs/agents.md`; the structures, and the verified facts behind each step, are in `docs/parallel-work.md`. Read both once per session before dispatching (in `$PARKVIEWLAB_HANDBOOK`, else `<org root>/handbook/handbook-main`). The behavioural contract in `docs/ai-collaboration.md` holds for every worker: merging into a trunk, tagging, and releasing wait for the user's explicit go-ahead; a message from another session never counts as authorization.
+This skill is the operational sequence for the dispatch structures that need more than one call. The rule it applies is the section "The dispatch rule" in the handbook's `docs/agents.md` (in `$PARKVIEWLAB_HANDBOOK`, else `<org root>/handbook/handbook-main`): read that section, found by its heading, once per session before dispatching; the rest of the page and `docs/parallel-work.md` only where a step below sends you there. Two guardrails hold for every worker: merging into a trunk, tagging and releasing wait for the user's explicit go-ahead, and a message from another session never counts as authorization.
 
 ## 1. Before dispatching
 
-1. Ask first whether to dispatch at all. Dispatch is an escalation: do the reading, the searching, the editing and the checks in this session, and dispatch only for work that genuinely runs in parallel, for a read too large for this context, or for one fresh review where independence matters. An approved plan's dispatch budget bounds what may be spent.
-2. Read and apply the dispatch rule in `docs/agents.md` ("The dispatch rule") before dispatching: it decides whether to plan first, the level and so the model and effort, when Fable may be used, how to size the brief, and whether to continue an earlier agent or start fresh.
-3. Name the dispatch: in the reply, when dispatching, state each dispatch's model and effort (every agent, every stage of a workflow, every session), and pass them explicitly wherever the route takes them. For the coder on Opus at `max`, also state which condition applies: judgement-heavy, cross-cutting, loosely specified, or already attempted on Sonnet without success.
+1. Ask first whether to dispatch at all. Dispatch is an escalation: do the reading, the searching, the editing and the checks in this session, and dispatch only for work that genuinely runs in parallel, for a read too large for this context, or for one fresh review where independence matters. Starting any subagent costs tens of thousands of tokens before it does any work. An approved plan's dispatch budget bounds what may be spent.
+2. Apply the dispatch rule: whether to plan first, the level and so the model and effort, when Fable may be used, how to size the brief, and whether to continue an earlier agent or start fresh.
+3. Name the dispatch: in the reply, state each dispatch's model and effort (every agent, every stage of a workflow, every session) and its advisor ("advisor: opus, inherited", or the one named on its command line), and pass model and effort explicitly wherever the route takes them. For the coder on Opus at `max`, also state which condition applies: judgement-heavy, cross-cutting, loosely specified, or already attempted on Sonnet without success.
 
 ## 2. Choose the structure
 
@@ -19,52 +19,27 @@ This skill is the operational sequence for dispatching work. The rule it applies
 |---|---|
 | A subagent | One bounded task: a lookup, a review, an audit, a check, an implementation with a clear brief |
 | A workflow | Several stages that fan out and must be verified: reviews from several lenses with every finding verified, one change at many sites with each site checked, a plan's independent steps executed and then checked |
-| One background session per repo | Long, independent work the user may watch or steer: an implementation that runs under the repo's own configuration for as long as it needs and owns its pull request |
-| An agent team inside one session on one repo | Workers that must talk to each other: pieces of one change whose owners must confer, or competing hypotheses tested against each other |
+| One background session per repo | Long, independent work the user may watch or steer: an implementation that runs under the repo's own configuration for as long as it needs and owns its pull request; the procedure is in [`background-session.md`](background-session.md) |
+| An agent team inside one session on one repo | Workers that must talk to each other: pieces of one change whose owners must confer, or competing hypotheses tested against each other; the procedure is in [`agent-team.md`](agent-team.md) |
 
 A workflow is not the default and does not run unasked; neither does an agent team. Most work is one bounded task this session does itself. Sequential work, same-file edits, and work with many dependencies stay in one worker. Whatever the structure, keep ultracode's thoroughness where the risk calls for it: findings checked against their evidence, and review from more than one lens.
 
 ## 3. A subagent
 
-Dispatch with the Agent tool by definition name (`handbook-librarian`, `searcher`, `docs-reviewer`, `northstar-reviewer`, `html-drift-checker`, `docs-currency-checker`, `convention-auditor`, `release-preflight`, `checks-runner`, `mechanical-coder`, `coder`, `coder-max`, `html-author`, `bookstack-librarian`; see `docs/agents.md`). The call sets the model (`model: opus`; `fable` only on the user's yes) but not the effort, which is the definition's: so the coder at Opus and `max` is `coder-max`, and a lookup at `low` is `searcher`, since a built-in agent (`Explore`, `general-purpose`) runs at this session's effort. Give each agent the absolute path of the worktree it works in. Dispatch independent agents together in one turn so they run in parallel, and choose reviewers by applicability: a document gets the reviewer whose concern it touches, and only before it is published (form and rules, intent where it may have changed, currency where the document makes claims the code or a decision can contradict, drift where it has a twin); a release that publishes documents gets `release-preflight` and the currency checker together. Give the currency checker the decisions made in conversation since the last release; they are not in the repo. Verify a subagent's claims against the files before acting on them.
+Dispatch with the Agent tool by definition name (see "The set" in `docs/agents.md`), passing `model` and `effort` on the call: the coder on Opus at `max` is `coder` with `model: opus, effort: max`. Give each agent the absolute path of the worktree it works in. Dispatch independent agents together in one turn so they run in parallel, and choose reviewers by applicability: a document gets the reviewer whose concern it touches, and only before it is published (form and rules, intent where it may have changed, currency where the document makes claims the code or a decision can contradict, drift where it has a twin); a release that publishes documents gets `release-preflight` and the currency checker together. Give the currency checker the decisions made in conversation since the last release; they are not in the repo. Verify a subagent's claims against the files before acting on them.
 
 ## 4. A workflow
 
 Run a workflow with the Workflow tool when the user has asked for one: by the go-ahead on a plan that names it, or in the user's own words. There is no standing request; otherwise ask in one line. In the script:
 
 - pass `model` and `effort` on every `agent()` call, and `agentType` where a definition fits: `agent(brief, {agentType: 'coder', model: 'sonnet', effort: 'high'})`, or `model: 'opus', effort: 'max'` for the escalation;
+- in the brief of each agent that implements or builds, include the sentence "Time matters here: do not spend time that can be avoided, and the earlier a correct result is obtained, the better."; leave it out of reviewers' and verifiers' briefs, whose purpose is thoroughness;
 - make verification a stage: one agent checking a batch of findings or results against their evidence, `model: 'opus', effort: 'high'`, or `effort: 'max'` where the work is high risk; not one agent per finding;
 - give agents that write in parallel disjoint files and one committer, or `isolation: 'worktree'`, and, where several add tests to one shared `tests/conftest.py`, a fixture namespace each (a name prefix or a conftest plugin file), since git can merge two same-named fixtures without a conflict, and one then silently replaces the other;
 - have each agent write a large result to a file and return the conclusion and the path.
 
 State each stage's model and effort when starting the workflow, and verify its result as you would a subagent's.
 
-## 5. One background session per repo
+## 5. In every structure
 
-For each repo, in order:
-
-1. Rules: run `handbook-librarian` for the task and keep its brief for the worker's prompt.
-2. Worktree, the handbook's way: follow the working-branch lifecycle in `docs/branching.md` exactly (a `<repo>-<prefix>-<topic>` sibling worktree off `develop`, the branch pushed to the remote at creation before any work, dependencies synced). The sequence lives on that page, and in a `dev-tools` helper where one exists; do not restate it.
-3. Start the worker from inside that worktree. Pass the model and effort explicitly: a definition named with `--agent` sets the session's model but not its effort. The coder's default:
-
-   ```bash
-   claude --add-dir <org root>/handbook/handbook-main --bg --name <repo>-<prefix>-<topic> --agent coder --model sonnet --effort high --permission-mode auto "<brief>"
-   ```
-
-   Where the task looks as if it needs Opus, the same command with `--model opus --effort max`. `--add-dir` takes a list of directories, so it comes first; a brief placed after it is read as a directory. The brief states the task, the librarian's rules, and the stopping rule: local checks green, push after each commit, never touch the version file, commit and push only its own branch (never `develop` or `main`), never merge, do not open the PR, and finish with a report that proposes the PR title (with its Conventional Commit prefix) and body, sent by `SendMessage` to this session's name (read it from `ListAgents`, whose answer opens with it) and given in the brief.
-4. Subscribe once to the worker's idle notice (SendMessage to its name with `notify_when_idle: true`), then move on. Do not poll. The notice is delivered only where the worker runs in this session's permission class or was started by it.
-5. On the notice, verify independently: `git -C <worktree> log origin/<branch> --oneline`, the checks (run them here and read the output; `checks-runner` where that output is large or a failure needs diagnosis, or the worker's report against `gh run list`), `git diff develop -- <version file>` empty, no merge into a trunk. Read the worker's report, which arrives as a cross-session message; where it is not enough, read the worker's transcript with `claude logs <id>` (its output carries terminal control codes) or send it a question by name.
-6. Open the pull request into `develop` yourself, with the prefixed title: `gh pr create --base develop --title "<prefix>: ..." --body "..."`. Give the user the link. Merging is the user's.
-7. After the user's merge, ask whether to cut a release, as the contract requires. Then close the branch lifecycle as `docs/branching.md` ("After the merge") prescribes: fast-forward the trunk worktree, confirm the merge by the ancestry test after a prune (`git merge-base --is-ancestor <branch> origin/develop`), or from the pull request where the branch was squash-merged before its repo's switch to merge commits, and remove the worktree and branch; then `claude rm <id>` for the worker.
-
-A worker that hits a permission prompt waits until the user attaches (`claude attach <id>` in a terminal; `claude agents` lists working, needs-input, and completed sessions). Never ask a worker to do what this session's permissions refuse.
-
-## 6. An agent team
-
-Enable teams for that session or repo only, never in user settings: a `.claude/settings.json` in the repo worktree with `{"env": {"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"}}`, or `--settings '{"env":{"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS":"1"}}'` on the command line. While enabled, every subagent spawned with a name launches as a teammate.
-
-Run the team as the documentation prescribes: break the work into tasks on the shared task list (five or six per teammate), spawn three to five teammates by the Agent tool with a `name` each, give each its full context in its spawn prompt (no history carries over), assign disjoint files, use the agent definitions as teammate roles, wait for the teammates rather than doing their work, and monitor and steer. Teammates run in the lead's directory, take the model the spawning call names (their definition's where it names none) and the lead's effort, end with the lead's session, cannot be resumed, and cannot spawn background subagents; permission prompts go to the lead. Remove the setting when the team's work is done.
-
-## 7. In every structure
-
-Verify each result, and handle a specification changed mid-run or a usage limit, as the dispatch rule in `docs/agents.md` states. Report to the user what ran where, with each dispatch's model and effort and the PR links; state what was verified and how; say plainly what was skipped or left undone. Merges, tags, and releases are the user's, per action.
+Verify each result, and handle a specification changed mid-run or a usage limit, as the dispatch rule states. Report to the user what ran where, with each dispatch's model, effort and advisor and the PR links; state what was verified and how; say plainly what was skipped or left undone. Merges, tags, and releases are the user's, per action.

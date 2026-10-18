@@ -1,6 +1,6 @@
 ---
 name: northstar-reviewer
-description: Evaluates a change, a proposal, or an in-flight idea against the repo's northstar (intents, axioms, guiding questions, "what it is not") and the handbook's northstar, and reports conflicts, whether the change alters intent (and so must amend the northstar in the same PR), and which in-flight ideas it touches. Read-only. Use before implementing a design change and when reviewing a PR that touches docs, architecture, or process.
+description: Judges a change or proposal against the repo's and the handbook's northstar and says whether it alters intent. Read-only. Use before a design change.
 model: opus
 effort: max
 color: purple

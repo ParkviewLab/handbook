@@ -1,6 +1,6 @@
 ---
 name: docs-reviewer
-description: Reviews a documentation change (a diff, a branch, or a set of files) against the handbook's writing and documentation rules and the repo's own conventions, and reports every violation with its fix. Read-only. Use before opening or updating a docs PR in any ParkviewLab repo.
+description: Reviews a documentation change against the handbook's writing and documentation rules and reports each violation with its fix. Read-only. Use before a docs PR.
 model: opus
 effort: high
 color: pink

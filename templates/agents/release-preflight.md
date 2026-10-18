@@ -1,6 +1,6 @@
 ---
 name: release-preflight
-description: Runs the handbook's release preflight for one repo and proposes the bump kind with a one-line rationale. It never bumps, tags, merges, or pushes. Use when a release is being considered, before any release command is run.
+description: Runs the handbook's release preflight for one repo and proposes the bump kind. Never bumps, tags, merges or pushes. Use before any release.
 model: opus
 effort: high
 color: orange
