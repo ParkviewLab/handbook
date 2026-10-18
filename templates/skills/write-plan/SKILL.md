@@ -26,7 +26,7 @@ The plan the user approves holds no open decision. Put each one to the user befo
 
 ## Dispatch budget
 
-State the budget `docs/agents-and-dispatch.md` requires (the greatest number of agents, the greatest number of review rounds per phase, and the conditions on which the work stops and asks), and name each dispatch with its model and effort. Fable, a workflow and an agent team each need what that rule requires; the rule is not restated here.
+State the budget `docs/agents-and-dispatch.md` requires (the greatest number of agents, the greatest number of review rounds per phase, and the conditions on which the work stops and asks), and name each dispatch with its model, effort and advisor. Fable, a workflow and an agent team each need what that rule requires; the rule is not restated here.
 
 ## Scope
 

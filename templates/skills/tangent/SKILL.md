@@ -22,7 +22,7 @@ Several tangents found in one stretch of work are filed in one dispatch, as seve
 
 ## List the open ones
 
-At the start of work on a repo, and whenever asked, search for them yourself, in exactly this form, since the Library drops an unrecognised filter silently and then matches everything: `bookstack_search` with the query `[status=open] [target=<repo>] {type:page}` and `count` 5 or fewer (Discovered Tangents holds only the open ones; read a page only where its title is not enough). Give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in the register is acted upon silently.
+At the start of work on a repo, and whenever asked, search for them yourself, in exactly this form, since the Library drops an unrecognised filter silently and then matches everything: `bookstack_search` with the query `[status=open] [target=<repo>] {type:page}` and `count` 5 or fewer (Discovered Tangents holds only the open ones; read a page only where its title is not enough). Give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in Discovered Tangents is acted upon silently.
 
 ## Promote one
 

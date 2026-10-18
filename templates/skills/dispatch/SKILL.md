@@ -34,7 +34,7 @@ Run a workflow with the Workflow tool when the user has asked for one: by the go
 
 - pass `model` and `effort` on every `agent()` call, and `agentType` where a definition fits: `agent(brief, {agentType: 'coder', model: 'sonnet', effort: 'high'})`, or `model: 'opus', effort: 'max'` for the escalation;
 - in the brief of each agent that implements or builds, include the sentence "Time matters here: do not spend time that can be avoided, and the earlier a correct result is obtained, the better."; leave it out of reviewers' and verifiers' briefs, whose purpose is thoroughness;
-- make verification a stage: one agent checking a batch of findings or results against their evidence, `model: 'opus', effort: 'high'`, or `effort: 'max'` where the work is high risk; not one agent per finding;
+- make verification a stage: one agent checking a batch of findings or results against their evidence, `model: 'opus', effort: 'high'` (the rule's exception for verification), or `effort: 'max'` where the work is high risk; not one agent per finding;
 - give agents that write in parallel disjoint files and one committer, or `isolation: 'worktree'`, and, where several add tests to one shared `tests/conftest.py`, a fixture namespace each (a name prefix or a conftest plugin file), since git can merge two same-named fixtures without a conflict, and one then silently replaces the other;
 - have each agent write a large result to a file and return the conclusion and the path.
 

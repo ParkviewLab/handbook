@@ -1,6 +1,6 @@
 ---
 name: searcher
-description: Answers one lookup in the files or repos named, with file and line references and nothing else. Read-only. Use instead of reading many files in the session.
+description: Answers one lookup in the files or repos named, with file and line references and nothing else. Read-only. Use for a lookup whose place is known; for a search of unknown breadth, use Explore.
 model: sonnet
 effort: low
 maxTurns: 20

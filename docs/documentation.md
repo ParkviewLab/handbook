@@ -9,6 +9,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 - **`README.md`** stays in the repo root: the standard entry point.
 - **`docs/`** holds everything else of substance: `northstar.md`, `in-flight_ideas.md`, design docs, language references, and the HTML siblings of any of these.
+- No file under `docs/` is named so that it case-folds to `agents.md` or `claude.md`: on a case-insensitive filesystem Claude Code reads such a file as an instruction file and loads it into the context of every session that reads a file in that directory ([`agents-and-dispatch-why.md`](agents-and-dispatch-why.md)).
 
 ## Line feeds in markdown
 
