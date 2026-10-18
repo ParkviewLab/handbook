@@ -17,24 +17,23 @@ One file, `Discovered Tangents/<title>.md`, the title a short noun phrase naming
 
 ```
 ---
-status: open
-origin: <repo where it was discovered>
-target: <repo it concerns, or none>
+status: "open"
+origin: "<repo where it was discovered>"
+target: "<repo it concerns, or none>"
 discovered: <YYYY-MM-DD>
 keywords:
-  - <a specific it names>
-  - <another>
+  - "<a specific it names>"
+  - "<another>"
 ---
 
 <the idea in one paragraph, in the words used when it arose>
 
-Origin: <repo>, <branch, pull request or task>
-Discovered: <date>
+Origin: <the branch, pull request or task where it arose>
 Set aside because: <the reason>
 What it would take: <agent time, with the waits named, where an estimate can be given>
 ```
 
-`status` takes `open`, `done`, `promoted` or `dropped`; a `promoted` entry also carries `destination: in-flight` (the repo's `docs/in-flight_ideas.md`) or `destination: proposal`. The properties are what a Base in Obsidian and a `grep` in a session both read, so they are kept exact: quoted where the value has a space, one keyword per line.
+`status` takes `open`, `done`, `promoted` or `dropped`; a `promoted` entry also carries `destination: "in-flight"` (the repo's `docs/in-flight_ideas.md`) or `destination: "proposal"`. The properties are what a Base in Obsidian and a `grep` in a session both read, so they are kept exact: every string value in double quotes, the date bare, one keyword per line. The body holds only what the frontmatter does not: the repository and the date are properties, not lines.
 
 ## Record one
 
@@ -47,7 +46,7 @@ Several tangents found in one stretch of work are several files, not one file wi
 
 ## List the open ones
 
-At the start of work on a repo, and whenever asked: `grep -l '^target: "<repo>"' "$LIBRARY/Discovered Tangents"/*.md` (the folder holds only the open ones), then the file names and, where a name is not enough, the first paragraph. Give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in Discovered Tangents is acted upon silently.
+At the start of work on a repo, and whenever asked: `grep -lE '^target: "?<repo>"?$' "${PARKVIEWLAB_LIBRARY:-$HOME/dev/ObsidianVaults/LibraryVault}/Discovered Tangents"/*.md` (the folder holds only the open ones), then the file names and, where a name is not enough, the first paragraph. Give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in Discovered Tangents is acted upon silently.
 
 ## Close one
 
