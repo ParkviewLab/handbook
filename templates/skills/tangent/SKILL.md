@@ -38,7 +38,7 @@ What it would take: <agent time, with the waits named, where an estimate can be 
 ## Record one
 
 1. Decide that it belongs here. It does if it is work that should be done and is not being done now. It does not if you can simply do it as part of the current task, if it is a defect in the change you are making (fix it), if it is a preference about how to work (that is a memory), or if the target repo's `docs/in-flight_ideas.md` already states it: read that file first when the idea concerns a repo you have open.
-2. Look for a near-duplicate: `grep -il --exclude='000 - *'` over the folder for the entry's two or three most specific terms, reading a hit only where its name suggests the same idea. An entry that states the same idea is updated with the new origin and any new reasoning, not written twice, and the line to the user says which you did.
+2. Look for a near-duplicate: `grep -il --exclude='00 - *'` over the folder for the entry's two or three most specific terms, reading a hit only where its name suggests the same idea. An entry that states the same idea is updated with the new origin and any new reasoning, not written twice, and the line to the user says which you did.
 3. Write the file in the shape above. Only this session knows the substance, so nothing here is delegated.
 4. Tell the user, as above.
 
