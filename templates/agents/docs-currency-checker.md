@@ -1,8 +1,9 @@
 ---
 name: docs-currency-checker
-description: Verifies that a repo's documents are current before they are published. It checks every checkable claim (routes, status codes, ports, variables and their defaults, limits, commands, paths, image names, counts, versions) against the code, by execution wherever the stack allows it and otherwise against the implementing source; it finds planning tense, closed questions, build history and "what remains" lists in documents that describe the present; it checks the documents against the decisions the caller supplies and against each other. Records (a changelog, a dated decision log) may describe the past and are checked only for consistency. Read-only. Use before opening a docs PR, before a release (a release publishes main's documents on the docs site), and before an HTML twin is authored from a document.
+description: Checks that a repo's documents are current: claims against the code, tense against the repo's state, text against the decisions supplied. Read-only. Use before a docs PR or release.
 model: opus
 effort: max
+maxTurns: 150
 color: yellow
 tools: Read, Grep, Glob, Bash, ToolSearch, mcp__bookstack__bookstack_search, mcp__bookstack__bookstack_pages_read, mcp__bookstack__bookstack_books_read
 ---

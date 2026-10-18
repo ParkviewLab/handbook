@@ -1,6 +1,6 @@
 ---
 name: html-drift-checker
-description: Compares a Markdown document with its designed HTML twin and reports drift (missing or altered wording, sections present in one and absent from the other, discipline violations such as a network fetch, a missing responsive rule, or a Markdown link that points absolutely at a file in the repo's own tree), with the Markdown as the canonical side. Read-only. Use after editing a document that has an HTML sibling, and before a pull request that touches either.
+description: Compares a Markdown document with its HTML twin and reports drift and discipline violations, the Markdown canonical. Read-only. Use after editing either.
 model: sonnet
 effort: high
 color: blue
