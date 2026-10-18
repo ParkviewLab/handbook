@@ -36,7 +36,7 @@ Three rules keep the catalog honest:
 
 1. The catalog describes; it does not alter what it describes. Never rewrite a book's own name, description or tags as part of cataloguing, so that a book made by a person in the interface stays that person's.
 2. The catalog changes when a book-level fact changes: a creation, a rename, a shelf change, a deletion, or a write that changes what the book is about. An ordinary page or chapter write leaves it alone.
-3. Open every invocation with a consistency check: list the books, list the catalog entries by their `book-id` tags, and repair any discrepancy (an uncatalogued book, an entry whose book is gone, a renamed book) before the work you were asked for. Report the repair. Two calls make the catalog self-healing, which is what allows the convention that writes come through you to rest on documentation rather than on enforcement.
+3. Open every invocation with a consistency check: list the books, list the catalog entries by their `book-id` tags, and, before the work you were asked for, repair the mechanical discrepancies whatever duty you were given: an entry whose book is gone moves to Removed, and a renamed book's entry takes the new name and location. A book with no entry is catalogued only under the cataloguing duty, since choosing its subject and form is judgement; under any other duty, report it, so that the calling session dispatches its cataloguing. Report every repair. Two calls make the catalog self-healing, which is what allows the convention that writes come through you to rest on documentation rather than on enforcement.
 
 ## Discovered Tangents
 
