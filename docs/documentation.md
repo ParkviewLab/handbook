@@ -38,7 +38,7 @@ When intent surfaces a new principle during work, propose adding it to the north
 
 ## The Library
 
-The org's Library is an Obsidian vault of Markdown notes on every workstation (`$PARKVIEWLAB_LIBRARY`, else `~/dev/ObsidianVaults/LibraryVault`); a session reads and writes it as files, with no agent or server between. The lab's operations repository gives each machine's path, the sync and the backup. It holds the org's registers and what belongs to no repo, never a convention.
+The org's Library is an Obsidian vault of Markdown notes on every workstation (`$PARKVIEWLAB_LIBRARY`, else `~/dev/ObsidianVaults/LibraryVault`); a session reads and writes it as files. The lab's operations repository gives each machine's path, the sync and the backup. It holds the org's registers and what belongs to no repo.
 
 A vault is a library when it has this shape:
 
