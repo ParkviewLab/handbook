@@ -38,13 +38,13 @@ When intent surfaces a new principle during work, propose adding it to the north
 
 ## The Library
 
-The org's Library is an Obsidian vault of Markdown notes on every workstation (`$PARKVIEWLAB_LIBRARY`, else `~/dev/ObsidianVaults/LibraryVault`), synced by Syncthing; a session reads and writes it as files, with no agent or server between. The lab's operations repository says where it lives and how it is synced and backed up. It holds the org's registers and what belongs to no repo, never a convention.
+The org's Library is an Obsidian vault of Markdown notes on every workstation (`$PARKVIEWLAB_LIBRARY`, else `~/dev/ObsidianVaults/LibraryVault`); a session reads and writes it as files, with no agent or server between. The lab's operations repository gives each machine's path, the sync and the backup. It holds the org's registers and what belongs to no repo, never a convention.
 
 A vault is a library when it has this shape:
 
-- **Folders.** A collection at the top; books in a collection; chapters in a book; a section in a chapter; a sub-section in a section, at any depth. A collection never holds chapters; a book never holds collections. `attachments/` at the top holds the files notes link to, mirroring the collections, and is outside the shape.
-- **Notes.** Every file is a note. A note at the top is a library note; one in a collection folder, about the collection as a whole, a collection note.
-- **Folder description notes.** Every folder should have one, named `000 - <folder name>` with the folder's name in `aliases`. A book's carries `subject`, `form` and `status`, from the Library's vocabulary page, and `keywords` at its author's choice; no other note carries them.
+- **Folders.** A collection at the top; books in a collection; chapters in a book; a section in a chapter; any folder deeper, a sub-section. A folder's level is its depth, never a property. A collection never holds chapters; a book never holds collections. `attachments/` at the top holds the files notes link to, mirroring the collections, and is outside the shape.
+- **Notes.** Every Markdown file is a note. A note at the top is a library note; one in a collection folder, about the collection as a whole, a collection note.
+- **Folder description notes.** Every folder should have one, named `000 - <folder name>` with the folder's name in `aliases`. A book's carries `subject`, `form` and `status`, from the Library's vocabulary, and `keywords` at its author's choice; no other folder description note carries them.
 - **Catalog.** The `Library Catalog` collection holds the vocabulary, a `Removed` book (one note per removed book, `status: completed` or `withdrawn`), and a Base that computes the catalog from the books' folder description notes. A new term is added to the vocabulary only on the user's ruling.
 
 ## Discovered tangents
