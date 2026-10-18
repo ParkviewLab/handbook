@@ -37,8 +37,8 @@ Start with [`docs/northstar.md`](docs/northstar.md) (or the designed [`docs/nort
 | [brand.md](docs/brand.md) | Palette, fonts, logos, voice |
 | [ci.md](docs/ci.md) | The workflows, the release parts and how a release is assembled from them, org secrets, action pinning, `dev-tools` |
 | [ai-collaboration.md](docs/ai-collaboration.md) | The behavioural contract for AI devs |
-| [agents.md](docs/agents.md) | The agent definitions (fourteen, each with its model and effort), the dispatch rule (models and effort by the step, planning, verification), user-level installation |
-| [agents-why.md](docs/agents-why.md) | Why the set is as it is: the evidence, the alternatives set aside, and the dated rulings |
+| [agents-and-dispatch.md](docs/agents-and-dispatch.md) | The agent definitions (fourteen, each with its model and effort), the dispatch rule (models and effort by the step, planning, verification), user-level installation |
+| [agents-and-dispatch-why.md](docs/agents-and-dispatch-why.md) | Why the set is as it is: the evidence, the alternatives set aside, and the dated rulings |
 | [parallel-work.md](docs/parallel-work.md) | The four structures of dispatched work, chosen by its shape: a subagent, a workflow, one background session per repo, an agent team; the dispatch lifecycle |
 | [new-repo-checklist.md](docs/new-repo-checklist.md) | The master bootstrap checklist |
 
@@ -62,7 +62,7 @@ Start with [`docs/northstar.md`](docs/northstar.md) (or the designed [`docs/nort
 ## How to use this handbook
 
 - **Starting a repo?** Follow [new-repo-checklist.md](docs/new-repo-checklist.md).
-- **An AI dev?** Read [ai-collaboration.md](docs/ai-collaboration.md) and the repo's `docs/northstar.md`; then [agents.md](docs/agents.md) (the agent set and the dispatch rule) and [parallel-work.md](docs/parallel-work.md) (the structures of dispatched work).
+- **An AI dev?** Read [ai-collaboration.md](docs/ai-collaboration.md) and the repo's `docs/northstar.md`; then [agents-and-dispatch.md](docs/agents-and-dispatch.md) (the agent set and the dispatch rule) and [parallel-work.md](docs/parallel-work.md) (the structures of dispatched work).
 - **Changing a convention?** Change it here first, then propagate (re-run the sync script; re-assemble the release workflows; release `dev-tools` where a script changed; re-copy any other affected template). This handbook is the single source of truth; if a repo disagrees with it, the handbook wins until updated.
 
 ## Contributing

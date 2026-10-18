@@ -5,7 +5,7 @@ description: Write a plan the ParkviewLab way: put it where the user keeps plans
 
 # Write a plan
 
-A task that is not fully specified is planned before it is executed. The rule is the plan paragraph of the handbook's `docs/agents.md` ("The dispatch rule"); this skill is its procedure, and where the two differ the rule wins. The main session settles the plan's decisions itself, even where it has dispatched a planning agent to draft the plan, as the rule allows: settling them takes conversation with the user, which a subagent cannot hold.
+A task that is not fully specified is planned before it is executed. The rule is the plan paragraph of the handbook's `docs/agents-and-dispatch.md` ("The dispatch rule"); this skill is its procedure, and where the two differ the rule wins. The main session settles the plan's decisions itself, even where it has dispatched a planning agent to draft the plan, as the rule allows: settling them takes conversation with the user, which a subagent cannot hold.
 
 ## Where the plan goes
 
@@ -26,7 +26,7 @@ The plan the user approves holds no open decision. Put each one to the user befo
 
 ## Dispatch budget
 
-State the budget `docs/agents.md` requires (the greatest number of agents, the greatest number of review rounds per phase, and the conditions on which the work stops and asks), and name each dispatch with its model and effort. Fable, a workflow and an agent team each need what that rule requires; the rule is not restated here.
+State the budget `docs/agents-and-dispatch.md` requires (the greatest number of agents, the greatest number of review rounds per phase, and the conditions on which the work stops and asks), and name each dispatch with its model and effort. Fable, a workflow and an agent team each need what that rule requires; the rule is not restated here.
 
 ## Scope
 
