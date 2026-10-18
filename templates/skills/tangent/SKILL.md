@@ -5,7 +5,7 @@ description: Record a tangential idea discovered whilst working on something els
 
 # Tangent
 
-Work turns up work. An idea discovered whilst doing something else is either done then, in parallel, or set aside; the ones set aside are recorded here, because otherwise they are lost. Discovered Tangents is a folder of the org's Library, which is an Obsidian vault of Markdown files on every workstation (`$PARKVIEWLAB_LIBRARY` if set, otherwise `~/dev/ObsidianVaults/LibraryVault`), one file per idea; it is the inbox that feeds a repo's `docs/in-flight_ideas.md`. The convention it serves is in the handbook's `docs/documentation.md` ("Discovered tangents"). A session reads and writes the Library as it reads and writes any file: no agent and no server stands between.
+Work turns up work. An idea discovered whilst doing something else is either done then, in parallel, or set aside; the ones set aside are recorded here, because otherwise they are lost. Discovered Tangents is a folder of the org's Library, which is an Obsidian vault of Markdown files on every workstation (`$PARKVIEWLAB_LIBRARY` if set, otherwise `~/dev/ObsidianVaults/LibraryVault`), one file per idea; it is the inbox that feeds a repo's `docs/in-flight_ideas.md`. The convention it serves is in the handbook's `docs/documentation.md` ("Discovered tangents"). A session reads and writes the Library as it reads and writes any file: no agent and no server stands between. A session started outside the vault's tree (in a repository worktree, say) reaches it only if the vault is among the session's directories; where a write would be put to the user, the vault is added to the session's directories once, on each workstation, as the lab's workstation runbook says.
 
 ## Recording is authorised; telling the user is required
 
@@ -38,7 +38,7 @@ What it would take: <agent time, with the waits named, where an estimate can be 
 ## Record one
 
 1. Decide that it belongs here. It does if it is work that should be done and is not being done now. It does not if you can simply do it as part of the current task, if it is a defect in the change you are making (fix it), if it is a preference about how to work (that is a memory), or if the target repo's `docs/in-flight_ideas.md` already states it: read that file first when the idea concerns a repo you have open.
-2. Look for a near-duplicate: `grep -il` over the folder for the entry's two or three most specific terms, reading a hit only where its name suggests the same idea. An entry that states the same idea is updated with the new origin and any new reasoning, not written twice, and the line to the user says which you did.
+2. Look for a near-duplicate: `grep -il --exclude=README.md` over the folder for the entry's two or three most specific terms, reading a hit only where its name suggests the same idea. An entry that states the same idea is updated with the new origin and any new reasoning, not written twice, and the line to the user says which you did.
 3. Write the file in the shape above. Only this session knows the substance, so nothing here is delegated.
 4. Tell the user, as above.
 

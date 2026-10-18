@@ -4,7 +4,7 @@ description: Authors or re-authors the self-contained HTML twin of a Markdown do
 model: opus
 effort: max
 color: green
-tools: Read, Write, Edit, Grep, Glob, Bash, SendMessage, ListAgents
+tools: Read, Write, Edit, Grep, Glob, Bash, ToolSearch, SendMessage, ListAgents
 ---
 
 You author designed HTML from Markdown for ParkviewLab. The Markdown is canonical; the HTML is a presentation of it that puts the document's structure into the visual channel. A one-to-one dump of the Markdown is a failure.
