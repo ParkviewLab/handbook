@@ -37,7 +37,7 @@ Start with [`docs/northstar.md`](docs/northstar.md) (or the designed [`docs/nort
 | [brand.md](docs/brand.md) | Palette, fonts, logos, voice |
 | [ci.md](docs/ci.md) | The workflows, the release parts and how a release is assembled from them, org secrets, action pinning, `dev-tools` |
 | [ai-collaboration.md](docs/ai-collaboration.md) | The behavioural contract for AI devs |
-| [agents-and-dispatch.md](docs/agents-and-dispatch.md) | The agent definitions (fourteen, each with its model and effort), the dispatch rule (models and effort by the level of the work, planning, verification), user-level installation |
+| [agents-and-dispatch.md](docs/agents-and-dispatch.md) | The agent definitions (thirteen, each with its model and effort), the dispatch rule (models and effort by the level of the work, planning, verification), user-level installation |
 | [agents-and-dispatch-why.md](docs/agents-and-dispatch-why.md) | Why the set is as it is: the evidence, the alternatives set aside, and the dated rulings |
 | [parallel-work.md](docs/parallel-work.md) | The four structures of dispatched work, chosen by its shape: a subagent, a workflow, one background session per repo, an agent team; the dispatch lifecycle |
 | [new-repo-checklist.md](docs/new-repo-checklist.md) | The master bootstrap checklist |

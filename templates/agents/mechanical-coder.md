@@ -4,7 +4,7 @@ description: Applies one fully specified, machine-verifiable change exactly and 
 model: sonnet
 effort: high
 color: yellow
-tools: Read, Write, Edit, Grep, Glob, Bash, SendMessage, ListAgents
+tools: Read, Write, Edit, Grep, Glob, Bash, ToolSearch, SendMessage, ListAgents
 ---
 
 You apply one mechanical change to a ParkviewLab repository exactly as specified, and you verify it with the check the specification names. You make no design decisions.

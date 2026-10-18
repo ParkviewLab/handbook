@@ -15,7 +15,7 @@ Where the user's `CLAUDE.md` names a place for plans, the plan goes there, under
 
 Whilst writing, search Discovered Tangents yourself for the open entries that match the plan's repositories, files and subjects. Discovered Tangents is a folder of the Library's vault (`$PARKVIEWLAB_LIBRARY`; the `tangent` skill gives the default and the entry's shape), which holds only the open ones, one Markdown file per idea with `target`, `origin` and `keywords` in its frontmatter: `grep -lE '^target: "?<repo>"?$'` over the folder for each of the plan's repositories, and a `grep` for a subject's specific terms where the plan's subject is wider than one repository. Read a file only where its name is not enough to decide.
 
-- An entry the plan carries out in full is named in the plan, and the plan ends with a closing step that sets it done once the plan has been executed: `status: done` in its frontmatter, the account of what finished it (the pull request or release) as its last paragraph, and the file moved to the `Handled Tangents` folder, as the `tangent` skill prescribes.
+- An entry the plan carries out in full is named in the plan, and the plan ends with a closing step that sets it done once the plan has been executed: `status: "done"` in its frontmatter, the account of what finished it (the pull request or release) as its last paragraph, and the file moved to the `Handled Tangents` folder, as the `tangent` skill prescribes.
 - Each related entry is put to the user, one at a time, with a recommendation on its merits: include it whole, or leave it. The answer is written into the plan.
 
 Something new found whilst planning, and not taken into the plan, is filed with the `tangent` skill.
