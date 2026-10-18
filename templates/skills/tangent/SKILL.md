@@ -5,7 +5,7 @@ description: Record a tangential idea discovered whilst working on something els
 
 # Tangent
 
-Work turns up work. An idea discovered whilst doing something else is either done then, in parallel, or set aside; the ones set aside are recorded here, because otherwise they are lost. Discovered Tangents is a folder of the org's Library, which is an Obsidian vault of Markdown files on every workstation (`$PARKVIEWLAB_LIBRARY` if set, otherwise `~/dev/ObsidianVaults/LibraryVault`), one file per idea; it is the inbox that feeds a repo's `docs/in-flight_ideas.md`. The convention it serves is in the handbook's `docs/documentation.md` ("Discovered tangents"). A session reads and writes the Library as it reads and writes any file: no agent and no server stands between. A session started outside the vault's tree (in a repository worktree, say) reaches it only if the vault is among the session's directories; where a write would be put to the user, the vault is added to the session's directories once, on each workstation, as the lab's workstation runbook says.
+Work turns up work. An idea discovered whilst doing something else is either done then, in parallel, or set aside; the ones set aside are recorded here, because otherwise they are lost. Discovered Tangents is a book in the `Tangents` collection of the org's Library, an Obsidian vault on every workstation (`$PARKVIEWLAB_LIBRARY` if set, otherwise `~/dev/ObsidianVaults/LibraryVault`), one note per idea; it is the inbox that feeds a repo's `docs/in-flight_ideas.md`. The convention it serves is in the handbook's `docs/documentation.md` ("Discovered tangents"). A session reads and writes the Library as it reads and writes any file: no agent and no server stands between. A session started outside the vault's tree (in a repository worktree, say) reaches it only if the vault is among the session's directories; where a write would be put to the user, the vault is added to the session's directories once, on each workstation, as the lab's workstation runbook says.
 
 ## Recording is authorised; telling the user is required
 
@@ -13,7 +13,7 @@ Recording an entry needs no approval, and you do not interrupt the work to ask f
 
 ## The entry
 
-One file, `Discovered Tangents/<title>.md`, the title a short noun phrase naming the idea (no `/`, `:` or other character a filesystem refuses), shaped thus:
+One file, `Tangents/Discovered Tangents/<title>.md`, the title a short noun phrase naming the idea (no `/`, `:` or other character a filesystem refuses), shaped thus:
 
 ```
 ---
@@ -38,7 +38,7 @@ What it would take: <agent time, with the waits named, where an estimate can be 
 ## Record one
 
 1. Decide that it belongs here. It does if it is work that should be done and is not being done now. It does not if you can simply do it as part of the current task, if it is a defect in the change you are making (fix it), if it is a preference about how to work (that is a memory), or if the target repo's `docs/in-flight_ideas.md` already states it: read that file first when the idea concerns a repo you have open.
-2. Look for a near-duplicate: `grep -il --exclude=README.md` over the folder for the entry's two or three most specific terms, reading a hit only where its name suggests the same idea. An entry that states the same idea is updated with the new origin and any new reasoning, not written twice, and the line to the user says which you did.
+2. Look for a near-duplicate: `grep -il --exclude='000 - *'` over the folder for the entry's two or three most specific terms, reading a hit only where its name suggests the same idea. An entry that states the same idea is updated with the new origin and any new reasoning, not written twice, and the line to the user says which you did.
 3. Write the file in the shape above. Only this session knows the substance, so nothing here is delegated.
 4. Tell the user, as above.
 
@@ -46,8 +46,8 @@ Several tangents found in one stretch of work are several files, not one file wi
 
 ## List the open ones
 
-At the start of work on a repo, and whenever asked: `grep -lE '^target: "?<repo>"?$' "${PARKVIEWLAB_LIBRARY:-$HOME/dev/ObsidianVaults/LibraryVault}/Discovered Tangents"/*.md` (the folder holds only the open ones), then the file names and, where a name is not enough, the first paragraph. Give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in Discovered Tangents is acted upon silently.
+At the start of work on a repo, and whenever asked: `grep -lE '^target: "?<repo>"?$' "${PARKVIEWLAB_LIBRARY:-$HOME/dev/ObsidianVaults/LibraryVault}/Tangents/Discovered Tangents"/*.md` (the folder holds only the open ones), then the file names and, where a name is not enough, the first paragraph. Give them as a short list: the title, one line of substance, and the date. This is a prompt for the user's judgement, not a plan. An entry is a question, not a commitment, and nothing in Discovered Tangents is acted upon silently.
 
 ## Close one
 
-An idea whose design is clear, whose trade-offs are understood and whose fit with the repo's northstar is good is ripe for its repo's `docs/in-flight_ideas.md`, and from there for a plan. Ripeness is the user's call: propose the promotion, with the reason, and wait. On the go-ahead, the entry moves into that repo's `docs/in-flight_ideas.md` in an ordinary `doc-` branch and pull request. Then, as for every closed entry, on the user's instruction and never on your own judgement: set `status` to `promoted` (with `destination`), `done` or `dropped`, append the account of how it was handled as the file's last paragraph (the pull request, the release, the proposal, or the reason it was dropped), and move the file to the `Handled Tangents` folder, so that Discovered Tangents holds only the open ones and Handled Tangents the record of where each idea came from and what became of it.
+An idea whose design is clear, whose trade-offs are understood and whose fit with the repo's northstar is good is ripe for its repo's `docs/in-flight_ideas.md`, and from there for a plan. Ripeness is the user's call: propose the promotion, with the reason, and wait. On the go-ahead, the entry moves into that repo's `docs/in-flight_ideas.md` in an ordinary `doc-` branch and pull request. Then, as for every closed entry, on the user's instruction and never on your own judgement: set `status` to `promoted` (with `destination`), `done` or `dropped`, append the account of how it was handled as the file's last paragraph (the pull request, the release, the proposal, or the reason it was dropped), and move the file to `Tangents/Handled Tangents`, so that Discovered Tangents holds only the open ones and Handled Tangents the record of where each idea came from and what became of it.
