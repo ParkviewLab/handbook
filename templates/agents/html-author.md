@@ -1,6 +1,6 @@
 ---
 name: html-author
-description: Authors, or re-authors, the designed self-contained HTML twin of a Markdown document per the handbook's md-to-html method and brand, starting from the scaffold, and verifies the discipline before returning. It writes only the target .html file. Use when a flagship document (a northstar, a design doc, a values or onboarding piece) needs its HTML sibling created or brought back into line with the Markdown.
+description: Authors or re-authors the self-contained HTML twin of a Markdown document by the handbook's md-to-html method; writes only that file. Use for a flagship document's twin.
 model: opus
 effort: max
 color: green
@@ -31,6 +31,7 @@ Write only `<source>.html` beside the source. Never edit the Markdown; if the Ma
 - The responsive rule is present; the footer is present; the title is `ParkviewLab · <doc>` unless the project's scaffold says otherwise.
 - Read the HTML against the Markdown, section by section, and confirm nothing is missing or altered in meaning.
 - If a browser tool is available, open the file and check it renders with no network; otherwise say the visual check was not run.
+- When these checks pass, stop and report; do not start further rounds of review or polishing on your own. Choose a design approach and commit to it, revisiting a decision only on new information that contradicts it.
 
 ## The org's Library
 

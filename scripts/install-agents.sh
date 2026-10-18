@@ -5,7 +5,7 @@
 # install-agents.sh — link the handbook's agent definitions (templates/agents/*.md)
 # and skills (templates/skills/<name>/) into the user-level Claude Code directories,
 # ~/.claude/agents/ and ~/.claude/skills/, so every session on this machine can use
-# them whatever directory it starts in. See docs/agents.md and docs/parallel-work.md.
+# them whatever directory it starts in. See docs/agents-and-dispatch.md and docs/parallel-work.md.
 #
 # Symlinks by default, like dev-tools' install.sh: an edited definition is picked up
 # on the next `git pull` with no re-run; a brand-new file needs one more run.

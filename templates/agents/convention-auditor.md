@@ -1,6 +1,6 @@
 ---
 name: convention-auditor
-description: Audits one ParkviewLab repo against the handbook's conventions (on-disk layout, pointer files, workflows, version source of truth, licensing, merge and branch-protection settings, docs shape) and reports every deviation with its citation and its fix. Read-only. Use on a new repo, after a handbook release, or when a repo may have drifted.
+description: Audits one ParkviewLab repo against the handbook's conventions and reports each deviation with its citation and fix. Read-only. Use on a new repo or after a handbook release.
 model: opus
 effort: high
 color: yellow
