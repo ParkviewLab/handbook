@@ -108,6 +108,8 @@ The test subset excludes the slow/networked tiers (see [`testing.md`](testing.md
 
 **Electron apps** use [`test-electron.yml`](../templates/.github/workflows/test-electron.yml): `npm ci` · `npm run lint` · `npm run build` (the electron-vite build as a smoke test). See [`electron-tooling.md`](electron-tooling.md).
 
+**Tauri apps** run `cargo test` and `clippy` on macOS and Ubuntu, plus the bundled helper's checks where there is one. See [`tauri-tooling.md`](tauri-tooling.md).
+
 ## `release.yml`: on `v*` tag push
 
 Every repo's release workflow is `.github/workflows/release.yml`, whatever the repo publishes, and it is assembled from the parts in [`templates/.github/workflows/release/`](../templates/.github/workflows/release/): the gate, the job of each of the product's publish targets, and the job that creates the GitHub Release. Which jobs those are is decided by the targets, never by the language; [`releases.md`](releases.md#what-a-release-publishes) is the rule and the table of targets, and describes what each job publishes.
