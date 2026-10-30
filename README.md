@@ -26,6 +26,7 @@ Start with [`docs/northstar.md`](docs/northstar.md) (or the designed [`docs/nort
 | [python-tooling.md](docs/python-tooling.md) | uv + ruff + ty + hatchling, the `pyproject.toml` shape |
 | [node-tooling.md](docs/node-tooling.md) | npm + TypeScript + ESLint + Vitest, the `package.json` shape |
 | [electron-tooling.md](docs/electron-tooling.md) | electron-vite + electron-builder, cross-platform desktop installers |
+| [tauri-tooling.md](docs/tauri-tooling.md) | Tauri 2 desktop apps with a Rust core, plain HTML, and an optional bundled Python helper |
 | [mcp-server-conventions.md](docs/mcp-server-conventions.md) | The shared Python MCP server architecture |
 | [docs-site.md](docs/docs-site.md) | Publishing a repo's own `docs/` as a GitHub Pages site from `main` |
 | [website.md](docs/website.md) | Website repos: `live`/`staging`, Pages-via-Actions deploy, custom-domain HTTPS, page footers (the lighter profile) |
